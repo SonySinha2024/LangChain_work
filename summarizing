@@ -1,0 +1,22 @@
+## env and 
+import os
+from dotenv import load_dotenv
+from langchain_mistralai import ChatMistralAI
+from langchain_core.prompts import ChatPromptTemplate 
+
+config_file_path='C:/MLalgo/task1/UseCaseTasks/.env'
+
+api_key=os.environ.get('MISTRAL_7_B_API_KEY')
+load_dotenv(dotenv_path=config_file_path)
+# MODEL_MISTRAL_7_B=os.environ.get('MODEL_MISTRAL_7_B')
+# api_key = ''
+
+MISTRAL_7_B_API_KEY=os.getenv('MISTRAL_7_B_API_KEY')
+# MODEL_MISTRAL_7_B=os.getenv('MODEL_MISTRAL_7_B')
+
+
+llm = ChatMistralAI(model="open-mistral-7b",
+                     temperature=0, 
+                     api_key=MISTRAL_7_B_API_KEY)
+testmistral=llm.invoke([("user", "Write a paragraph on Machine Learning")])
+print(testmistral)
