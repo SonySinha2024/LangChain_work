@@ -1,0 +1,13 @@
+import os
+from langchain_mistralai import ChatMistralAI
+from langchain_core.prompts import ChatPromptTemplate 
+
+api_key = 'Y4z5XmbVZvcwnbwD4v20WYTPZyE7yq4B'
+# mistral_model = "Mistral-small"
+
+# mistral_model = "Mistral 7B"
+
+mistral_model = "open-mistral-7b"
+llm = ChatMistralAI(model=mistral_model, temperature=0, api_key=api_key)
+testmistral=llm.invoke([("user", "what are the seven colors of rainbow")])
+print(testmistral)
