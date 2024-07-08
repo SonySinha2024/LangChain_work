@@ -1,0 +1,83 @@
+import gradio as gr
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+#from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_mistralai import ChatMistralAI
+import pandas as pd
+from io import StringIO
+from langchain_nomic.embeddings import NomicEmbeddings
+
+# apikey =
+# api_key = 
+api_key ='Y4z5XmbVZvcwnbwD4v20WYTPZyE7yq4B' 
+apikey ='nk-Ei7TKcGktODsxoXYo4PdXklOO5ZlVfmoQEp77W-UHO4'           
+
+
+def query_pdf(query):
+    loader = PyPDFLoader("BuildifyReport.pdf")
+    documents = loader.load()
+
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=30, separator="\n")
+    docs = text_splitter.split_documents(documents=documents)
+
+    embeddings = NomicEmbeddings(model='nomic-embed-text-v1', nomic_api_key=apikey)
+
+    vectorstore = FAISS.from_documents(docs, embeddings)
+
+    vectorstore.save_local("faiss_index_machine")
+
+    persisted_vectorstore = FAISS.load_local("faiss_index_machine", embeddings, allow_dangerous_deserialization=True)
+
+    models_llm = ChatMistralAI(model="open-mistral-7b", temperature=0, api_key=api_key)
+
+
+    prompt_template = """
+    Answer the following query only based on the provided context. 
+    Do not provide any information that is not contained in the context. 
+    If the answer is not found in the context, respond with: "The answer to the query is not mentioned in the context of the PDF document."
+
+    Query: {query}
+    """
+
+    def strict_prompt(query):
+        return prompt_template.format(query=query)
+
+    qa = RetrievalQA.from_chain_type(llm=models_llm, chain_type="stuff", retriever=persisted_vectorstore.as_retriever())
+    result = qa.run(query)
+
+
+
+    if not result.strip() or "The answer to the query is not mentioned in the context of the PDF document." in result:
+        return "The answer to the query is not mentioned in the context of the PDF document."
+
+    return result
+
+custom_css = """
+input[type='submit'] {
+    background-color: green;
+    color: white;
+}
+"""
+
+def gradio_interface(query):
+    return query_pdf(query)
+
+interface = gr.Interface(
+    fn=gradio_interface,
+    inputs=gr.Textbox(label="QUERY"),
+    outputs=gr.Textbox(label="OUTPUT"),
+    title="PDF CHATBOT",
+    description="Enter your query about the PDF document.",
+    flagging_options=["SAVE"],
+    css=custom_css
+)
+#interface = gr.Interface(fn=gradio_interface, inputs="text", outputs="text", title="PDF ChatBot")
+
+if __name__ == "__main__":
+    interface.launch()
+
