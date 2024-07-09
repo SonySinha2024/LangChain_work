@@ -1,0 +1,143 @@
+## using AI21 Labs , model=J2-Ultra, ai21 embeddings
+import gradio as gr
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_mistralai import ChatMistralAI
+#from langchain_openai import ChatOpenAI
+from langchain_nomic.embeddings import NomicEmbeddings
+from langchain_community.document_loaders import CSVLoader
+
+from langchain_ai21 import ChatAI21
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ai21 import AI21Embeddings
+import google.generativeai as genai
+
+mistral_api_key = ''
+nomic_apikey = ''
+AI21_API_KEY=''
+
+
+
+def query_pdf(query, log):
+    loader = CSVLoader("Book.csv")
+    documents = loader.load()
+
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=30, separator="\n")
+    docs = text_splitter.split_documents(documents=documents)
+
+    #embeddings = NomicEmbeddings(model='nomic-embed-text-v1', nomic_api_key=nomic_apikey)
+    embeddings = AI21Embeddings(api_key=AI21_API_KEY)
+    vectorstore = FAISS.from_documents(docs, embeddings)
+
+    vectorstore.save_local("faiss_index_machine")
+    persisted_vectorstore = FAISS.load_local("faiss_index_machine", embeddings, allow_dangerous_deserialization=True)
+
+    #models_llm = ChatMistralAI(model="open-mistral-7b", temperature=0, api_key=mistral_api_key)
+
+    #models_llm = ChatMistralAI(model="mistral-large-latest", temperature=0, api_key=mistral_api_key)
+    
+    
+
+    models_llm = ChatAI21(model="j2-ultra",temperature=0,api_key=AI21_API_KEY)
+
+    # prompt = ChatPromptTemplate.from_messages(
+    # [
+    #     ("system", "You are a helpful assistant that translates English to French."),
+    #     ("human", "Translate this sentence from English to French. {english_text}."),
+    # ])
+
+    # chain = prompt | chat
+    # chain.invoke({"english_text": "Hello, how are you?"})
+
+    prompt_template = """
+    "system",You are a helpful assistant that performs numerical computations,
+    "human",Compute the following: {equation}
+    Answer the following query only based on the provided context.
+    Answer the question based only on the following context:
+    {context}
+    When numeric values or dates are involved, ensure that the answer reflects the appropriate interpretation and calculation from the retrieved context.
+    Do not provide any information that is not contained in the context. 
+    If the answer is not found in the context, respond with: "The answer to the query is not mentioned in the context of the CSV document."
+
+    Query: {query}
+    """
+
+
+
+#     prompt_template = """
+#     Answer the query using the tabular data in the uploaded document. Consider all relevant rows and data types (numeric, string, date). Understand and apply keywords such as "top," "highest," "lowest," "below," etc., in basic English while responding. If the answer is not found in the document, respond with: "The answer to the query is not mentioned in the context of the document."
+
+#     **Query:** {query}
+
+#     **Instructions:**
+#     1. Search the uploaded document for rows relevant to the query.
+#     2. Extract and analyze the relevant data from these rows, considering all data types.
+#     3. Summarize or aggregate the data as necessary to answer the query.
+#     4. Handle terms like "top," "highest," "lowest" by providing the required sorted or filtered data.
+#     5. Specify the criteria used for filtering, sorting, or aggregation in your response.
+
+#     **Examples:**
+#     - For "highest sales": Provide the row with the maximum sales value.
+#     - For "top 3": List the top 3 entries sorted by the relevant field.
+#     - For "below 100": Filter and list all entries with values less than 100.
+# """
+
+
+
+    def strict_prompt(query):
+        return prompt_template.format(query=query)
+    
+#     retriever=persisted_vectorstore.as_retriever()
+
+#     chain = (
+#     {"context": retriever, "question": RunnablePassthrough()}
+#     | prompt_template
+#     | models_llm
+#     | StrOutputParser()
+# )
+
+
+    qa = RetrievalQA.from_chain_type(llm=models_llm, chain_type="stuff", retriever=persisted_vectorstore.as_retriever())
+    result = qa.run(query)
+
+    if not result.strip() or "The answer to the query is not mentioned in the context of the document." in result:
+        result = "The answer to the query is not mentioned in the context of the document."
+
+    log.append((query, result))
+    return result, log
+
+def gradio_interface(query, log):
+    response, log = query_pdf(query, log)
+    return response, update_html(log), log
+
+def update_html(log):
+    rows = "".join([f"<tr><td style='border: 1px solid black; padding: 5px;'>{q}</td><td style='border: 1px solid black; padding: 5px;'>{r}</td></tr>" for q, r in log])
+    return f"""
+    <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
+        <thead>
+            <tr>
+                <th style='border: 1px solid black; padding: 5px;'>Query</th>
+                <th style='border: 1px solid black; padding: 5px;'>Output</th>
+            </tr>
+        </thead>
+        <tbody>
+            {rows}
+        </tbody>
+    </table>
+    """
+
+interface = gr.Interface(
+    fn=gradio_interface,
+    inputs=[gr.Textbox(label="QUERY"), gr.State([])],  
+    outputs=[gr.Textbox(label="OUTPUT"), gr.HTML(label="Log"), gr.State([])],
+    title="CSV ChatBot"
+)
+
+if __name__ == "__main__":
+    interface.launch()
+
+
