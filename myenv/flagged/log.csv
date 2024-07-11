@@ -1,0 +1,116 @@
+QUERY,log,OUTPUT,Log,log,flag,username,timestamp
+tell me details about the transaction made by cheque,,"I can tell you about two transactions made by check:
+
+**Transaction 1:**
+
+* **Transaction Date:** 09-05-2024
+* **Transaction Type:** Credit 
+* **Expense Amount:** 0
+* **Deposit Amount:** 30000
+* **Balance:** 12555787525
+
+**Transaction 2:**
+
+* **Transaction Date:** 02-07-2024
+* **Transaction Type:** Credit
+* **Expense Amount:** 0
+* **Deposit Amount:**  (Information not available)
+* **Balance:** 12555666025 
+","'
+    <table style=""width:100%; border-collapse: collapse; border: 1px solid black;"">
+        <thead>
+            <tr>
+                <th style='border: 1px solid black; padding: 5px;'>Query</th>
+                <th style='border: 1px solid black; padding: 5px;'>Output</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid black; padding: 5px;'>tell me details about the transaction made by cheque</td><td style='border: 1px solid black; padding: 5px;'>I can tell you about two transactions made by check:
+
+**Transaction 1:**
+
+* **Transaction Date:** 09-05-2024
+* **Transaction Type:** Credit 
+* **Expense Amount:** 0
+* **Deposit Amount:** 30000
+* **Balance:** 12555787525
+
+**Transaction 2:**
+
+* **Transaction Date:** 02-07-2024
+* **Transaction Type:** Credit
+* **Expense Amount:** 0
+* **Deposit Amount:**  (Information not available)
+* **Balance:** 12555666025 
+</td></tr>
+        </tbody>
+    </table>
+    ",,,,2024-07-10 19:47:28.790684
+tell me details about the transaction made on Cleaning Material,,"There are two transactions for labor costs:
+
+Transaction ID #: 32
+* **Transaction Details:** Labor cost
+* **Transaction Date:** 02-07-2024
+* **Transaction Type:** Debit
+* **Expense Amount:** 10000
+* **Deposit Amount:** 0
+* **Balance:** 12555718025
+
+Transaction ID #: 52
+* **Transaction Details:** Labor cost
+* **Transaction Date:** 05-07-2024
+* **Transaction Type:** Debit
+* **Expense Amount:** 40000
+* **Deposit Amount:** 0
+* **Balance:** 12555680025 
+","'
+    <table style=""width:100%; border-collapse: collapse; border: 1px solid black;"">
+        <thead>
+            <tr>
+                <th style='border: 1px solid black; padding: 5px;'>Query</th>
+                <th style='border: 1px solid black; padding: 5px;'>Output</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid black; padding: 5px;'>tell me details about the transaction made by cheque</td><td style='border: 1px solid black; padding: 5px;'>I can tell you about two transactions made by check:
+
+**Transaction 1:**
+
+* **Transaction Date:** 09-05-2024
+* **Transaction Type:** Credit 
+* **Expense Amount:** 0
+* **Deposit Amount:** 30000
+* **Balance:** 12555787525
+
+**Transaction 2:**
+
+* **Transaction Date:** 02-07-2024
+* **Transaction Type:** Credit
+* **Expense Amount:** 0
+* **Deposit Amount:**  (Information not available)
+* **Balance:** 12555666025 
+</td></tr><tr><td style='border: 1px solid black; padding: 5px;'>tell me details about the transaction made by cash</td><td style='border: 1px solid black; padding: 5px;'>I can tell you about multiple transactions made in cash. 
+
+* On 05-07-2024, a cash transaction of type ""Credit"" occurred with a balance of 12555590025. 
+* On 01-07-2024, a cash deposit of 30000 was made, resulting in a balance of 12555704025. 
+</td></tr><tr><td style='border: 1px solid black; padding: 5px;'>tell me details about the transaction made on labor cost</td><td style='border: 1px solid black; padding: 5px;'>There are two transactions for labor costs:
+
+Transaction ID #: 32
+* **Transaction Details:** Labor cost
+* **Transaction Date:** 02-07-2024
+* **Transaction Type:** Debit
+* **Expense Amount:** 10000
+* **Deposit Amount:** 0
+* **Balance:** 12555718025
+
+Transaction ID #: 52
+* **Transaction Details:** Labor cost
+* **Transaction Date:** 05-07-2024
+* **Transaction Type:** Debit
+* **Expense Amount:** 40000
+* **Deposit Amount:** 0
+* **Balance:** 12555680025 
+</td></tr>
+        </tbody>
+    </table>
+    ",,,,2024-07-10 19:55:12.277576
