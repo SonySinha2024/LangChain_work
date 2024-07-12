@@ -10,8 +10,8 @@ from langchain_mistralai import ChatMistralAI
 from langchain_nomic.embeddings import NomicEmbeddings
 from langchain_community.document_loaders import CSVLoader
 
-mistral_api_key = 'VO1WqLGTxQOFZi5jpjkwj5j0Ca0O04BI'
-nomic_apikey = 'nk-Ei7TKcGktODsxoXYo4PdXklOO5ZlVfmoQEp77W-UHO4'
+mistral_api_key = ''
+nomic_apikey = ''
 
 def query_pdf(query, log):
     loader = CSVLoader("BalanceSheetSara.csv")
@@ -28,7 +28,7 @@ def query_pdf(query, log):
 
 
     #from langchain.llms import HuggingFaceHub
-    # HUGGINGFACEHUB_API_TOKEN='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'
+    # HUGGINGFACEHUB_API_TOKEN=''
     # models_llm = HuggingFaceHub(repo_id="HuggingFaceH4/zephyr-7b-alpha",
     #                             model_kwargs={"temperature":0.5,"max_new_tokens":512,"max_length":64},
     #                             huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN)
@@ -48,7 +48,7 @@ def query_pdf(query, log):
     #         n_ctx=4096
     #         )
 
-    # HUGGINGFACEHUB_API_TOKEN='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'
+    # HUGGINGFACEHUB_API_TOKEN=''
     # models_llm = HuggingFaceHub(repo_id="google/flan-t5-xl",
     #                             model_kwargs={"temperature":0.5,"max_new_tokens":512,"max_length":64},
     # huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN)    
@@ -58,7 +58,7 @@ def query_pdf(query, log):
 #     # pip install langchain-anthropic                         
 #     from langchain_anthropic import ChatAnthropic
 
-#     ANTHROPIC_API_KEY='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'
+#     ANTHROPIC_API_KEY=''
 #     models_llm = ChatAnthropic(
 #     model="Claude 2",
 #     api_key=ANTHROPIC_API_KEY,
@@ -77,20 +77,20 @@ def query_pdf(query, log):
 
     #pip install langchain-together
     # from langchain_together import ChatTogether
-    # together_api_key='5ef993ceeabda364e86f855bca80b4ea92ef3aaea3de3422811461e24ccf3893'
+    # together_api_key=''
     # models_llm = ChatTogether(
     #     together_api_key=together_api_key,
     #     model="meta-llama/Llama-3-70b-chat-hf",
     # )
 
     #from langchain_together import ChatTogether
-    # together_api_key='5ef993ceeabda364e86f855bca80b4ea92ef3aaea3de3422811461e24ccf3893'
+    # together_api_key=''
     # models_llm = ChatTogether(
     #     together_api_key=together_api_key,
     #     model="microsoft/phi-2",  ####coding model
     # )
     
-    # together_api_key='5ef993ceeabda364e86f855bca80b4ea92ef3aaea3de3422811461e24ccf3893'
+    # together_api_key=''
     # models_llm = ChatTogether(
     #     together_api_key=together_api_key,
     #     model="codellama/CodeLlama-70b-Python-hf") ####coding model
@@ -102,7 +102,7 @@ def query_pdf(query, log):
     #pip install langchain_google_genai
     from langchain_google_genai import ChatGoogleGenerativeAI
 
-    models_llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro",google_api_key='AIzaSyB8xpvBG4IghqENvxxj2mV3vfnGNiZjras' )
+    models_llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro",google_api_key='' )
 
 
     prompt_template = """
