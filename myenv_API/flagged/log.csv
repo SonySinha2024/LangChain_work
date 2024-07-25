@@ -1,0 +1,20 @@
+QUERY,log,OUTPUT,Log,log,flag,username,timestamp
+tell me the sum of expense paid amount by Dhanashri,,"Dhanashri paid 40000 for Cleaning Material on 05-07-2024, 12000 for Utility Cost on 04-04-2024, and 30000 for Utility Cost on 05-07-2024. The sum of these expenses is 40000 + 12000 + 30000 = 82000.
+
+So the answer is 82000. 
+","'
+    <table style=""width:100%; border-collapse: collapse; border: 1px solid black;"">
+        <thead>
+            <tr>
+                <th style='border: 1px solid black; padding: 5px;'>Query</th>
+                <th style='border: 1px solid black; padding: 5px;'>Output</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid black; padding: 5px;'>tell me the sum of expense paid amount by Dhanashri</td><td style='border: 1px solid black; padding: 5px;'>Dhanashri paid 40000 for Cleaning Material on 05-07-2024, 12000 for Utility Cost on 04-04-2024, and 30000 for Utility Cost on 05-07-2024. The sum of these expenses is 40000 + 12000 + 30000 = 82000.
+
+So the answer is 82000. 
+</td></tr>
+        </tbody>
+    </table>
+    ",,,,2024-07-15 19:39:09.753612

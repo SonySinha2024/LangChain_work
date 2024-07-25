@@ -1,0 +1,12 @@
+#,ID,Expense By,Expense Type,Payment Recipient,Purpose,ApproveApprovedNot Approved,Expense Date,Paid Amount ?
+1,37806,Omkar Prithviraj Gaikwad,Cleaning Material,,,false,25-06-2024,20000
+2,37807,Omkar Prithviraj Gaikwad,Cleaning Material,,,false,25-06-2024,5000
+3,39021,Anwesita Purohit,Cleaning Material,,,false,01-07-2024,100000
+4,40003,sejal,Labor cost,,,false,02-07-2024,10000
+5,40004,Anwesita Purohit,Cleaning Material,,,false,02-07-2024,2000
+6,43059,sejal,Cleaning Material,,,false,04-07-2024,2000
+7,43060,1.11111E+37,Cleaning Material,,,false,04-07-2024,1000
+8,43078,Anwesita Purohit,Labor cost,,,false,05-07-2024,40000
+9,43079,Dhanashri,Cleaning Material,,,false,05-07-2024,40000
+10,43080,Dhanashri,Utility Cost,,,false,05-07-2024,30000
+11,43087,Dhanashri,Utility Cost,,,false,04-04-2024,12000

@@ -1,0 +1,22 @@
+langchain == 0.2.7
+langchain_community == 0.2.7
+gradio == 4.38.2
+langchain_nomic == 0.1.2
+langchain_mistralai == 0.1.10
+faiss-cpu == 1.8.0.post1
+langchain_google_genai == 1.0.7
+
+fastAPI == 0.111.1
+PyJWT == 2.8.0
+python-dotenv == 1.0.1
+pydantic == 2.8.2
+requests == 2.32.3
+
+flask-swagger-ui ==4.11.1
+
+
+
+##streamlit run src/controller/streamlit_interface.py
+
+
+# new nomic key='nk-YDKb6zTFdTXZx2rty9LFv5Jr0iwxgRCwlx3Cs8NsuFQ'
