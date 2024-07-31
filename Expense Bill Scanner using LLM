@@ -10,7 +10,7 @@ import google.generativeai as genai
 
 GOOGLE_API_KEY=''
 
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+genai.configure(api_key='')
 
 #LLm
 def get_gemini_response(input_text, image, prompt):
