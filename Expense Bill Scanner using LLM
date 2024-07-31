@@ -76,4 +76,90 @@ if submit:
     st.subheader("The Response is")
     st.write(response)
 
+
+####output
+The Response is
+This is a tax invoice from Gujarat Freight Tools.
+
+Invoice details:
+
+Invoice No.: GST112020
+Invoice Date: 04-Mar-2020
+Challan No.: 865
+Challan Date: 03-Mar-2020
+P.O. No.: 66
+Delivery Date: 04-Mar-2020
+L.R. No.: 958
+E-Way No.: EWB54864584
+Reverse Charge: No
+Due Date: 19-Mar-2020
+Customer details:
+
+Name: Kevin Motors
+Address: Chandani Chowk, New Delhi, Opposite Statue, New Delhiq, Delhi - 110014
+Phone: 9372346666
+GSTIN: 07AOLCC1206D1ZG
+Place of Supply: Delhi (07)
+Items details:
+
+Sr. No.: 1
+
+Name of Product / Service: Automatic Saw
+
+HSN / SAC: 8202
+
+Qty: 1.00 PCS
+
+Rate: 586.00
+
+Taxable Value: 586.00
+
+IGST: 9.00%
+
+IGST Amount: 52.74
+
+Total: 638.74
+
+Sr. No.: 2
+
+Name of Product / Service: Stanley Hammer
+
+HSN / SAC: 8205
+
+Qty: 1.00 PCS
+
+Rate: 568.00
+
+Taxable Value: 568.00
+
+IGST: 9.00%
+
+IGST Amount: 51.12
+
+Total: 619.12
+
+Total details:
+
+Total Qty: 2.00
+Taxable Amount: 1,154.00
+IGST: 103.86
+Total Tax: 103.86
+Total Amount After Tax: ₹ 1,258.00 (E & O.E)
+Bank details:
+
+Bank Name: State Bank of India
+Branch Name: RAF CAMP
+Bank Account Number: 200000004512
+Bank Branch IFSC: SBIN0000488
+Terms and Conditions:
+
+Subject to Ahmedabad Jurisdiction.
+Our responsibility ceases as soon as the goods leave our premises.
+Goods once sold will not be taken back.
+Delivery ex-premises.
+GST Payable on Reverse Charge: N.A.
+
+Authorised Signatory:
+
+This is computer generated invoice no signature required.
     
