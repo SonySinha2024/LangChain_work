@@ -1,0 +1,82 @@
+import pandas as pd
+import sqlite3
+
+def generate_dynamic_questions(df):
+    questions = []
+    column_names = df.columns.tolist()
+    
+    for i, row in df.iterrows():
+        for col in column_names[1:]:  # Skip the first columns
+            col_value = row[col]
+            
+            if pd.api.types.is_numeric_dtype(df[col]):
+                questions.append(f"What is the value of {col} for row {i+1}?")
+            elif pd.api.types.is_string_dtype(df[col]):
+                questions.append(f"What is the {col} for row {i+1}?")
+            elif pd.api.types.is_datetime64_any_dtype(df[col]):
+                questions.append(f"When did the {col} occur for row {i+1}?")
+            else:
+                questions.append(f"What is the {col} for row {i+1}?")
+                
+    return questions
+
+def process_csv(file_path):
+    df = pd.read_csv(file_path)
+    
+    # Ensure the first row is treated as column names
+    if df.iloc[0].isnull().any():
+        df.columns = df.iloc[0]
+        df = df[1:]
+    
+    # Generate the questions
+    questions = generate_dynamic_questions(df)
+    return questions
+
+def save_questions_to_db(questions, db_name='questions.db'):
+    # Connect to SQLite database (or create it if it doesn't exist)
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    
+    # Create table for questions
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS questions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            question TEXT NOT NULL
+        )
+    ''')
+    
+    # Insert questions into the table
+    for question in questions:
+        cursor.execute('INSERT INTO questions (question) VALUES (?)', (question,))
+    
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
+
+def display_questions_from_db(db_name='questions.db'):
+    # Connect to SQLite database
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    
+    # Fetch and display all questions
+    cursor.execute('SELECT * FROM questions')
+    rows = cursor.fetchall()
+    
+    for row in rows:
+        print(row)
+    
+    # Close the connection
+    conn.close()
+
+# Example usage
+file_path = 'BalanceSheetSara.csv'
+questions = process_csv(file_path)
+
+# Save questions to SQLite database
+save_questions_to_db(questions)
+
+print("Questions have been saved to the database.")
+print("Stored questions:")
+
+# Display questions from the database
+display_questions_from_db()
