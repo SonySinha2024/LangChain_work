@@ -1,0 +1,231 @@
+from fastapi import FastAPI, HTTPException, Request, File, UploadFile
+from fastapi.responses import JSONResponse
+from dotenv import load_dotenv
+import os
+import uvicorn
+from service.query_service import query_CSV, process_invoice
+from model.finbot_models import SearchRequest, ImageRequest
+from model.custom_exceptions import GeminiRateLimitExceeded, GeminiRateLimitExceededForImage, NomicRateLimitExceeded
+import logging as log
+
+# Configure logging
+log.basicConfig(level=log.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+log = log.getLogger(__name__)
+
+# Load environment variables from .env file
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'config', '.env')
+load_dotenv(dotenv_path=dotenv_path)
+
+google_api_key = os.getenv('google_api_key')
+nomic_apikey = os.getenv('nomic_apikey')
+google_image_api_key = os.getenv('google_image_api_key')
+
+if not google_api_key or not nomic_apikey or not google_image_api_key:
+    log.error("Required API keys are missing from environment variables.")
+    raise EnvironmentError("Required API keys are missing from environment variables.")
+
+# FastAPI app
+app = FastAPI(debug=True)
+
+@app.get("/")
+async def get_docs():
+    log.info("Received request for root endpoint")
+    return {"message": "Welcome to the Financial Bot"}
+
+@app.post('/search')
+async def search(request: SearchRequest):
+    log.info("Search request received with prompt: %s", request.query_prompt)
+    prompt = f"User:{request.query_prompt}\nAI:"
+    try:
+        response = query_CSV(prompt)
+        response = response.replace('\n', '')
+        log.info("Completed search request successfully.")
+    except GeminiRateLimitExceeded as e:
+        log.error("Gemini rate limit exceeded: %s", e)
+        raise e
+    except NomicRateLimitExceeded as e:
+        log.error("Nomic rate limit exceeded: %s", e)
+        raise e
+    except Exception as e:
+        log.error("Unexpected error during search request: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
+    return {"response_code": 200, "llm_response": response}
+
+@app.post('/extract_image')
+async def extract_image(input_prompt: str, file: UploadFile = File(...)):
+    log.info("Request received for Transaction Image Extraction with prompt: %s", input_prompt)
+    try:
+        contents = await file.read()
+        response = process_invoice(input_prompt, contents)
+        log.info("Completed image extraction request successfully.")
+        return JSONResponse(content={"data": response})
+    except FileNotFoundError as e:
+        log.error("File not found: %s", e)
+        raise HTTPException(status_code=404, detail=str(e))
+    except RuntimeError as e:
+        log.error("Runtime error during image extraction: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
+    except Exception as e:
+        log.error("Unexpected error during image extraction: %s", e)
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+
+@app.exception_handler(GeminiRateLimitExceeded)
+async def gemini_rate_limit_handler(request: Request, exc: GeminiRateLimitExceeded):
+    log.warning("Gemini rate limit exceeded for request to: %s", request.url.path)
+    return JSONResponse(status_code=429, content={"message": exc.detail})
+
+@app.exception_handler(GeminiRateLimitExceededForImage)
+async def gemini_rate_limit_handler_for_image(request: Request, exc: GeminiRateLimitExceededForImage):
+    log.warning("Gemini rate limit exceeded for image extraction request to: %s", request.url.path)
+    return JSONResponse(status_code=429, content={"message": exc.detail})
+
+@app.exception_handler(NomicRateLimitExceeded)
+async def nomic_rate_limit_handler(request: Request, exc: NomicRateLimitExceeded):
+    log.warning("Nomic rate limit exceeded for request to: %s", request.url.path)
+    return JSONResponse(status_code=429, content={"message": exc.detail})
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    log.error("HTTP Exception occurred for request to %s: %s", request.url.path, exc.detail)
+    return JSONResponse(status_code=exc.status_code, content={"message": exc.detail})
+
+if __name__ == "__main__":
+    log.info("Starting FastAPI application")
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+===================================================
+
+
+import os
+from dotenv import load_dotenv
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_mistralai import ChatMistralAI
+from langchain_nomic.embeddings import NomicEmbeddings
+from langchain_community.document_loaders import CSVLoader
+from langchain_google_genai import ChatGoogleGenerativeAI
+import google.generativeai as genai
+import re
+
+# Load environment variables from .env file
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'config', '.env')
+load_dotenv(dotenv_path=dotenv_path)
+
+#google_api_key = os.getenv('google_api_key')
+#nomic_apikey = os.getenv('nomic_apikey')
+google_image_api_key = os.getenv('google_image_api_key')
+
+if not google_image_api_key:
+    raise EnvironmentError("Required API keys are missing from environment variables.")
+
+genai.configure(api_key=google_image_api_key)
+
+def query_CSV(query):
+    loader = CSVLoader("C:/gitjava/constructionfirst/machine-learning/fin-bot/static/csvFiles/ExpensesData.csv")
+    #loader = CSVLoader("E:/Git_Setup_base/constructionfirst/machine-learning/fin-bot/static/csvFiles/ExpensesData.csv")
+    documents = loader.load()
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=30, separator="\n")
+    docs = text_splitter.split_documents(documents)
+    embeddings = NomicEmbeddings(model='nomic-embed-text-v1', nomic_api_key=nomic_apikey)
+    vectorstore = FAISS.from_documents(docs, embeddings)
+    vectorstore.save_local("faiss_index_machine")
+    persisted_vectorstore = FAISS.load_local("faiss_index_machine", embeddings, allow_dangerous_deserialization=True)
+    models_llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", google_api_key=google_api_key)
+
+    prompt_template = """
+    Consider yourself as an assistant who can perform complex mathematical functions like finding the totals, calculating the 
+    average, finding the maximum and minimum values, finding the top ten highest expenses, credits, debits amount.
+    Answer the following query only based on the provided context.
+    Answer the question based only on the following context:
+    {context}
+    When numeric values or dates are involved, ensure that the answer reflects the appropriate interpretation and calculation from the retrieved context.
+    When context is missing then consider that value as zero.
+    Do not provide any information that is not contained in the context. 
+    If the answer is not found in the context, respond with: "The answer to the query is not mentioned in the context of the CSV document."
+
+    Query: {query}
+    """
+    
+    def strict_prompt(query):
+        return prompt_template.format(query=query)
+    
+    qa = RetrievalQA.from_chain_type(llm=models_llm, chain_type="stuff", retriever=persisted_vectorstore.as_retriever())
+    result = qa.run(query)
+
+    if not result.strip() or "The answer to the query is not mentioned in the context of the document." in result:
+        result = "The answer to the query is not mentioned in the context of the document."
+    return result
+
+
+def process_invoice(input_prompt, image_data):
+    base_prompt = """
+    You are an expert in understanding invoices.
+    You will receive input images as invoices &
+    you will have to answer questions based on the input image.
+    Please provide the information in the following standardized format:
+
+    Description: [Description]
+    Date: [Date]
+    Transaction Id: [Transaction Id]
+    Payee: [Payee]
+    Payor: [Payor]
+    Payment Source: [Payment Source]
+    Amount: [Amount]
+    Payment Mode: [Payment Mode]
+    Gross Payment: [Gross Payment]
+    Note: [Note]
+    """
+    
+    final_prompt = f"""
+    {base_prompt}   
+    User Input: {input_prompt}
+    """
+    
+    image_parts = [
+        {
+            "mime_type": "image/jpeg", 
+            "data": image_data
+        }
+    ]
+
+    response_text = get_gemini_response(input_prompt, image_parts, final_prompt)
+    
+    # Adjusted regular expressions
+    description = re.search(r'Description: (.*)', response_text)
+    payment_date = re.search(r'Date: (.*)', response_text)
+    transaction_id = re.search(r'Transaction Id: (\d+)', response_text)
+    payee = re.search(r'Payee: (.*)', response_text)
+    payor = re.search(r'Payor: (.*)', response_text)
+    payment_source = re.search(r'Payment Source: (.*)', response_text)
+    amount = re.search(r'Amount: (.*)', response_text)
+    payment_mode = re.search(r'Payment Mode: (.*)', response_text)
+    gross_payment = re.search(r'Gross Payment: (.*)', response_text)
+    note = re.search(r'Note: (.*)', response_text)
+
+    extracted_data = {
+         "description": description.group(1).strip() if description else "No description available",
+         "date": payment_date.group(1).strip() if payment_date else "NA",
+         "transactionId": transaction_id.group(1).strip() if transaction_id else "NA",
+         "payee": payee.group(1).strip() if payee else "NA",
+         "payor": payor.group(1).strip() if payor else "NA",
+         "paymentSource": payment_source.group(1).strip() if payment_source else "NA",
+         "amount": amount.group(1).strip() if amount else "NA",
+         "paymentMode": payment_mode.group(1).strip() if payment_mode else "NA",
+         "grossPayment": gross_payment.group(1).strip() if gross_payment else "NA",
+         "note": note.group(1).strip() if note else "No note available"
+    }
+
+    return extracted_data
+
+def get_gemini_response(input_text, image, prompt):
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    try:
+        response = model.generate_content([input_text, image[0], prompt])
+        return response.text
+    except Exception as e:
+        print(f"Error in generating content: {e}")
+        raise RuntimeError(f"Error in generating content: {str(e)}")
+
