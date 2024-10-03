@@ -1,0 +1,45 @@
+## Text Generation using GPT2
+
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+import torch
+import streamlit as st
+
+## Load pre-trained model and tokenizer
+model = GPT2LMHeadModel.from_pretrained('gpt2')
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+
+# Streamlit app UI
+st.title("Story Generator with GPT-2")
+st.write("Enter a prompt to generate your story!")
+
+# User input
+prompt = st.text_input("Story Title or Prompt", "Once upon a time...")
+
+# When the user clicks the button
+if st.button("Generate Story"):
+    with st.spinner('Generating story...'):
+    # Encode the prompt
+     input_ids = tokenizer.encode(prompt, return_tensors='pt')
+
+    # Create attention mask
+    attention_mask = torch.ones(input_ids.shape, dtype=torch.long)
+
+    # Generate text
+    output = model.generate(
+    input_ids,
+    attention_mask=attention_mask,
+    max_length=300,  # Increase max length for a longer story
+    num_return_sequences=1,
+    pad_token_id=tokenizer.eos_token_id,
+    do_sample=True,  # Enable sampling for more varied output
+    top_k=40,        # Limit the sampling pool to the top 40 tokens
+    top_p=0.9,       # Use nucleus sampling
+    temperature=0.8, # Control randomness
+    repetition_penalty=2.0  # Penalize repeated phrases
+    )
+
+    # Decode and display the generated text
+    story = tokenizer.decode(output[0], skip_special_tokens=True)
+    st.subheader("Generated Story")
+    st.write(story)
+    
