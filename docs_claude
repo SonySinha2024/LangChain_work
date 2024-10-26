@@ -1,0 +1,212 @@
+Claude : developed by Anthropic AI
+uses: voice interfaces for chatbot
+      automatic translation features between langauages
+      analyis of all test case scenarios
+
+vision:extracting insights from graphs
+       
+Tool Use: Claude to reason, plan, and execute actions by generating
+          structured outputs
+
+Claude 3.5 Sonnet:
+
+Latest 1P API
+model name	claude-3-5-sonnet-20241022
+	-
+Latest AWS Bedrock
+model name	anthropic.claude-3-5-sonnet-20241022-v2:0
+	-
+Vertex AI
+model name	claude-3-5-sonnet-v2@20241022
+
+
+AI JailBreak: technique which can cause failure of jail breaks.
+example: 
+causing system to violate its operator's policies.
+executing malicious instructions
+or any prompt injection
+use: to prevent ai model to generate harmful content.
+
+AI safety and security risks:
+Unauthorized data access
+Sensitive data exfiltration
+Model evasion
+Generating ransomware
+Indirect prompt injection inserts a malicious payload into data,
+leading to jailbreak of system, happens mostly for third parties
+
+Suggestions: Prompt Filtering, Identity management,
+AI-content filtering, detection of attempts of jail break,
+Python Risk Identification Toolkit for generative AI (PyRIT).
+
+
+Anthromorphizing AI: act of giving AI Human Characteristics,
+emotions or intentions that are not warranted:
+like 
+1. presenting AI with human-like social actor with voice user interfaces.
+2. Using first person pronouns in computer prompts and responses.
+
+
+create an api wrapper, develop a simple api wrapper and use
+flask api or fast api to wrap code into http service
+
+
+Effectively moderating these examples requires a nuanced 
+understanding of language. In the comment, 
+This movie was great, I really enjoyed it. 
+The main actor really killed it!, 
+the content moderation system needs to recognize that “killed it” is
+ a metaphor, not an indication of actual violence
+
+Curate a dataset: Once you’ve identified these issues, compile a dataset of these problematic examples. This dataset should include the original legal documents alongside your corrected summaries, ensuring that Claude learns the desired behavior.
+
+Perform fine-tuning: Fine-tuning involves retraining the model on your curated dataset to adjust its weights and parameters. This retraining helps Claude better understand the specific requirements of your legal domain, improving its ability 
+to summarize documents according to your standards.
+
+1. Sonnet, haiku,Opus
+
+Context Window: 200k
+Max_output: 8192 tokens
+Cost (Input / Output per MTok)	$3.00 / $15.00
+
+When your prompts involve multiple components like
+context, instructions, and examples, 
+XML tags can be a game-changer. 
+They help Claude parse your prompts more accurately,
+leading to higher-quality outputs.
+
+XML tip: Use tags like <instructions>, <example>, and
+<formatting> to clearly separate different parts of your prompt.
+This prevents Claude from mixing up instructions with examples
+or context.
+
+Text embeddings are numerical representations of text that 
+enable measuring semantic similarity. 
+yovage ai: embedding model
+
+
+The embeddings will allow us to do semantic search / retrieval in the vector space.
+ We can then convert an query,into an embedding, and then conduct a nearest neighbor search to find the most relevant document based on
+ the distance in the embedding space.
+
+
+Arguements : Description
+
+1. max_tokens: the total number of tokens model outputs before it is forced to stop
+2. temperature: the amount of randomness injected into results.
+3. system: used to specify a system prompt, which can provide role details and context to claude
+4. stop_sequences: json array of strings that will cause the model 
+                   to stop generating text if encountered
+                   Due to escaping rules in Google Sheets™, 
+                   double quotes inside the string must be escaped by doubling them.
+5. api_key: used to specify a particular api key to call claude.
+
+vision 
+can include multiple images in a single request (up to 5 for claude.ai and 100 for API requests)
+For optimal performance, we recommend resizing images before uploading if they exceed size or token limits. 
+If your image’s long edge is more than 1568 pixels, or your image is more than ~1,600 tokens,
+it will first be scaled down, preserving aspect ratio, until it’s within the size limits.
+If your input image is too large and needs to be resized, it will increase latency of time-to-first-token, without giving you any additional model performance. Very small images under 200 pixels on any given edge may degrade performance.
+
+
+
+Each image you include in a request to Claude counts towards your token usage.
+To calculate the approximate cost, 
+multiply the approximate number of image tokens by the per-token price of the model you’re using.
+
+If your image does not need to be resized,
+ you can estimate the number of tokens used through this algorithm: tokens = (width px * height px)/750
+
+
+With the Claude 3 Sonnet model,
+ chain of thought is less common by default, 
+but you can prompt Claude to show its reasoning
+ by adding something like "Before answering, explain 
+your reasoning step-by-step in tags." 
+to the user message or system prompt.
+<thinking>
+
+Prompt caching is a powerful feature that optimizes your API usage by allowing resuming from specific prefixes in your prompts. This approach significantly reduces processing time and costs for repetitive 
+tasks or prompts with consistent elements.
+
+In this example, the entire text of “Pride and Prejudice” is 
+cached using the cache_control parameter. 
+This enables reuse of this large text across
+multiple API calls without reprocessing it each time. 
+Changing only the user message allows you to ask various 
+questions about the book while utilizing the cached content, 
+leading to faster responses and improved efficiency.
+
+Prompt caching is in beta
+
+We’re excited to announce that prompt caching is now in public beta! 
+To access this feature, you’ll need to include
+the anthropic-beta: prompt-caching-2024-07-31 header in your API requests.
+
+
+How prompt caching works
+When you send a request with prompt caching enabled:
+
+The system checks if the prompt prefix is already cached from a recent query.
+If found, it uses the cached version, 
+reducing processing time and costs.
+Otherwise, it processes the full prompt 
+and caches the prefix for future use.
+This is especially useful for:
+
+Prompts with many examples
+Large amounts of context or background information
+Repetitive tasks with consistent instructions
+Long multi-turn conversations
+The cache has a 5-minute lifetime, 
+refreshed each time the cached content is used.
+
+Prompt caching caches the full prefix
+
+Prompt caching references the entire prompt - tools, system, and messages (in that order) up to and including the block designated with cache_control.
+Prompt caching introduces a new pricing structure. 
+
+Cache prefixes are created in the following order: tools, system, then messages.
+
+Using the cache_control parameter, you can define up to 4 cache breakpoints, allowing you to cache different reusable sections separately.
+
+The minimum cacheable prompt length is:
+
+1024 tokens for Claude 3.5 Sonnet and Claude 3 Opus
+2048 tokens for Claude 3 Haiku
+Shorter prompts cannot be cached, even if marked with cache_control. Any requests to cache fewer than this number of tokens will be processed without caching. To see if a prompt was cached, see the response usage fields.
+
+The cache has a 5 minute time to live (TTL). Currently, “ephemeral” is the only supported cache type, which corresponds to this 5-minute lifetime.
+
+​
+What can be cached
+Every block in the request can be designated for caching with cache_control. This includes:
+
+Tools: Tool definitions in the tools array
+System messages: Content blocks in the system array
+Messages: Content blocks in the messages.content array, for both user and assistant turnsThe minimum cacheable prompt length is:
+
+1024 tokens for Claude 3.5 Sonnet and Claude 3 Opus
+2048 tokens for Claude 3 Haiku
+Shorter prompts cannot be cached, even if marked with cache_control. Any requests to cache fewer than this number of tokens will be processed without caching. To see if a prompt was cached, see the response usage fields.
+
+The cache has a 5 minute time to live (TTL). Currently, “ephemeral” is the only supported cache type, which corresponds to this 5-minute lifetime.
+
+​
+What can be cached
+Every block in the request can be designated for caching with cache_control. This includes:
+
+Tools: Tool definitions in the tools array
+System messages: Content blocks in the system array
+Messages: Content blocks in the messages.content array, for both user and assistant turns
+Images: Content blocks in the messages.content array, in user turns
+Tool use and tool results: Content blocks in the messages.content array, in both user and assistant turns
+Each of these elements can be marked with cache_control to enable caching for that portion of the request.
+
+Monitor cache performance using these API response fields, within usage in the response (or message_start event if streaming):
+
+cache_creation_input_tokens: Number of tokens written to the cache when creating a new entry.
+cache_read_input_tokens: Number of tokens retrieved from the cache for this request.
+input_tokens: Number of input tokens which were not read from or used to create a cache.
+
+
