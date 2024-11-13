@@ -1,0 +1,146 @@
+import streamlit as st
+import google.generativeai as genai
+import requests
+from bs4 import BeautifulSoup
+
+genai.configure(api_key="")
+model = genai.GenerativeModel("gemini-pro")
+chat = model.start_chat()
+
+st.set_page_config(page_title="query bot")
+st.header("Gemini Question and Answer Bot💁")
+st.header("Chat With Us")
+
+
+def preprocess_query(user_query):
+    corrected_query = user_query.strip().lower()
+    if "software testing" in corrected_query:
+        rephrased_query = f"Could you provide information about {corrected_query.replace('software testing', 'software testing related topics')}?"
+    else:
+        rephrased_query = f"Can you tell me more about {corrected_query}?"
+    return rephrased_query
+
+
+def fetch_text_from_url(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    text = " ".join(p.get_text() for p in soup.find_all("p"))
+    return text
+
+
+prompt_template = """
+You are a knowledgeable chatbot that responds only to questions related to software testing and development or based on the content of an uploaded PDF. 
+If the query is unrelated to software testing, development, or the PDF content, respond with:
+"I am sorry, please query only related to the context of the PDF or the software testing and development domain."
+Answer the following query based solely on the PDF context if available, or software testing and development domain as a fallback:
+Query: {query}
+"""
+
+
+def strict_prompt(query):
+    return prompt_template.format(query=query)
+
+def summarization_Testing(question):
+    return f"Summarize the information based on software testing domain:\n\n{question}"
+
+
+def qna_Testing(question):
+    return f"Answer the software testing domain question in simple terms, you can use software testing terminologies:\n\n{question}"
+
+
+def chain_of_thought_qna(question):
+    return f"Think step by step and explain your reasoning before answering the following question:\n\n{question}"
+
+
+def advice_SoftwareTesting(question):
+    return f"Provide general advice for Testing {question}.Ensure the advice is accurate and correct, you should not provide your own advices."
+
+
+def get_gemini_general_response(question, context=None, prompt_type="qna"):
+    model = genai.GenerativeModel("gemini-pro")
+    chat = model.start_chat(history=[])
+    if context:
+        question = f"{context}: {question}"
+    elif prompt_type == "summarization":
+        question = summarization_Testing(question)
+    elif prompt_type == "advice":
+        question = advice_SoftwareTesting(question)
+    elif prompt_type == "chain_of_thought":
+        question = chain_of_thought_qna(question)
+    else:
+        question = qna_Testing(question)
+    response = chat.send_message(question, stream=True)
+    response_text = "".join([chunk.text for chunk in response])
+    return response_text
+
+
+if 'chat_history' not in st.session_state:
+    st.session_state['chat_history'] = []
+if 'context' not in st.session_state:
+    st.session_state['context'] = None
+if 'query_count' not in st.session_state:
+    st.session_state['query_count'] = 1  
+
+
+url_input = st.text_input("Or enter a URL to use as context:")
+if url_input:
+    try:
+        context_text = fetch_text_from_url(url_input)
+        st.session_state['context'] = context_text  
+        st.write("URL content loaded successfully.")
+    except Exception as e:
+        st.write(f"Failed to fetch content from URL: {e}")
+
+
+if st.session_state['query_count'] >= 1:
+    user_query_1 = st.text_area("Enter your first query:", key="user_query_1", height=100)
+    if st.button("Submit First Query") and user_query_1:
+        optimized_query = preprocess_query(user_query_1)
+        response_1 = get_gemini_general_response(optimized_query, context=st.session_state['context'])
+        st.session_state['chat_history'].append(("User", optimized_query))
+        st.session_state['chat_history'].append(("Bot", response_1))
+        st.text_area("Response to First Query:", value=response_1, height=100, disabled=True)
+        st.session_state['query_count'] = 2  
+
+if st.session_state['query_count'] >= 2:
+    user_query_2 = st.text_area("Enter your second query:", key="user_query_2", height=100)
+    if st.button("Submit Second Query") and user_query_2:
+        optimized_query = preprocess_query(user_query_2)
+        response_2 = get_gemini_general_response(optimized_query, context=st.session_state['context'])
+        st.session_state['chat_history'].append(("User", optimized_query))
+        st.session_state['chat_history'].append(("Bot", response_2))
+        st.text_area("Response to Second Query:", value=response_2, height=100, disabled=True)
+        st.session_state['query_count'] = 3  # Open third query input
+
+if st.session_state['query_count'] >= 3:
+    user_query_3 = st.text_area("Enter your third query:", key="user_query_3", height=100)
+    if st.button("Submit Third Query") and user_query_3:
+        optimized_query = preprocess_query(user_query_3)
+        response_3 = get_gemini_general_response(optimized_query, context=st.session_state['context'])
+        st.session_state['chat_history'].append(("User", optimized_query))
+        st.session_state['chat_history'].append(("Bot", response_3))
+        st.text_area("Response to Third Query:", value=response_3, height=100, disabled=True)
+        st.session_state['query_count'] = 4  # Open fourth query input
+
+if st.session_state['query_count'] >= 4:
+    user_query_4 = st.text_area("Enter your fourth query:", key="user_query_4", height=100)
+    if st.button("Submit Fourth Query") and user_query_4:
+        optimized_query = preprocess_query(user_query_4)
+        response_4 = get_gemini_general_response(optimized_query, context=st.session_state['context'])
+        st.session_state['chat_history'].append(("User", optimized_query))
+        st.session_state['chat_history'].append(("Bot", response_4))
+        st.text_area("Response to Fourth Query:", value=response_4, height=100, disabled=True)
+
+
+st.subheader("Chat History:")
+for speaker, message in st.session_state['chat_history']:
+    st.write(f"**{speaker}:** {message}")
+
+
+if st.button("Download Chat History"):
+    with open("chat_history.txt", "w") as f:
+        for speaker, message in st.session_state['chat_history']:
+            f.write(f"{speaker}: {message}\n")
+    st.success("Chat history saved to 'chat_history.txt'.")
+
+st.write("Thank you for using the Software Testing Chatbot, You can sav
