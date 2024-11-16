@@ -1,0 +1,332 @@
+import streamlit as st
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+# Define system message for the prompt
+system = """You have the ability to issue search queries to get information to help answer user information.
+
+You do not NEED to look things up. If you don't need to, then just respond normally."""
+
+# Create the prompt template manually if from_messages is not available
+prompt = PromptTemplate(
+    input_variables=["question"],
+    template=f"{system}\nHuman: {{question}}"
+)
+
+# Initialize the LLM without any tools
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", google_api_key="")
+
+# No tools are used here, so no binding is necessary
+# Structured LLM for processing the prompt
+structured_llm = llm  # Using LLM directly without additional tools
+
+# Query analyzer pipeline setup
+query_analyzer = {"question": RunnablePassthrough()} | prompt | structured_llm
+
+# Streamlit Interface
+st.title("Chat with LLM")
+st.write("Enter your question below to interact with the LLM:")
+
+# User input
+user_input = st.text_input("Ask a question:")
+
+# Button to submit the question
+if st.button("Submit"):
+    if user_input:
+        # Get the LLM response
+        try:
+            # Use .invoke() to get the response from LLM
+            result = query_analyzer.invoke({"question": user_input})
+
+            # Assuming result is an AIMessage or a similar object, access the content directly
+            if isinstance(result, str):
+                response = result
+            elif hasattr(result, 'content'):
+                response = result.content
+            else:
+                response = str(result)
+                
+            st.write("Response:", response)
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+    else:
+        st.warning("Please enter a question.")
+
+can u tell me , in above codes
+is there any usage of promptql of hasura 
+please explain
+
+ChatGPT said:
+ChatGPT
+In the code you provided, there is no direct usage or integration of PromptQL of Hasura.
+
+Explanation of the Current Code
+Here’s what your current setup is doing:
+
+Imports:
+
+You're using Streamlit for the interface.
+PromptTemplate, RunnablePassthrough, and ChatGoogleGenerativeAI are imported from LangChain and the Google GenAI package.
+Prompt Setup:
+
+A system message (system) is defined for the LLM, telling it it can issue search queries if necessary, although it's not actually doing any search in your case.
+PromptTemplate creates a prompt template with an input variable question.
+LLM Initialization:
+
+The ChatGoogleGenerativeAI instance (llm) is initialized to communicate with the gemini-1.5-pro model from Google Generative AI. No specific tools or databases are connected.
+Query Analyzer Pipeline:
+
+A query pipeline (query_analyzer) is created using RunnablePassthrough and PromptTemplate.
+This pipeline does not interact with any databases; it simply sends the input directly to the LLM, formats it with the prompt template, and then gets the response from the LLM.
+Streamlit Interface:
+
+The Streamlit UI captures user input, sends it to the LLM via the defined pipeline, and then displays the response.
+What is PromptQL of Hasura?
+PromptQL is a query language feature from Hasura that lets you construct GraphQL queries dynamically and interact with your database through natural language or prompt-based inputs.
+It's often used to integrate an LLM with a Hasura GraphQL endpoint to enable database querying based on user prompts.
+Why Is There No PromptQL Usage in Your Code?
+No GraphQL Interaction: The code does not include any GraphQL client or API endpoint to interact with Hasura.
+No Database Setup: There are no configurations for connecting to a Hasura backend or using PromptQL to dynamically construct queries.
+LLM Use Only: The focus of your code is purely on interacting with a language model (gemini-1.5-pro) to get natural language responses, without querying a database.
+How to Integrate PromptQL of Hasura
+If you want to integrate PromptQL with Hasura, you would typically need to:
+
+Connect to Hasura: Use a GraphQL client (like gql or requests in Python) to interact with your Hasura backend.
+Use PromptQL: Instruct the LLM to generate GraphQL queries based on user input and then execute those queries against the Hasura API.
+Fetch Data: Handle the database response and present it back to the user through Streamlit.
+Let me know if you want an example of how to integrate PromptQL with your current setup!
+
+
+
+
+
+
+You said:
+can u modify my codes to use promptQL OF hasura 
+to perform any use case of promptql of hasura
+ChatGPT said:
+ChatGPT
+To integrate PromptQL of Hasura into your existing code and make the LLM interact with a Hasura GraphQL backend, I'll demonstrate an example where the LLM generates a query based on user input, sends it to Hasura, and displays the database results in your Streamlit app.
+
+Use Case
+Let's assume you want the user to ask questions about data stored in a Hasura database. For example, asking about product details from a products table in a database managed by Hasura.
+
+Assumptions
+You have a Hasura GraphQL endpoint set up.
+You have an API key or authorization token for accessing the Hasura API.
+You have a products table with columns like id, name, price, and category.
+Steps
+Prompt the LLM to generate a GraphQL query using PromptQL.
+Send the query to the Hasura endpoint using a GraphQL client.
+Display the results in Streamlit.
+Required Dependencies
+You need to install the following Python packages:
+
+bash
+Copy code
+pip install streamlit langchain-google-genai gql requests
+Modified Code
+Here’s the code with Hasura integration using PromptQL:
+
+python
+Copy code
+import streamlit as st
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_google_genai import ChatGoogleGenerativeAI
+import requests
+from gql import Client, gql
+from gql.transport.requests import RequestsHTTPTransport
+
+# Define your Hasura GraphQL endpoint and authorization token
+HASURA_URL = "https://your-hasura-instance.herokuapp.com/v1/graphql"  # Replace with your Hasura URL
+HASURA_ADMIN_SECRET = "YOUR_HASURA_ADMIN_SECRET"  # Replace with your Hasura admin secret or API key
+
+# Set up the Hasura GraphQL client
+transport = RequestsHTTPTransport(
+    url=HASURA_URL,
+    headers={
+        "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
+        "Content-Type": "application/json"
+    },
+    use_json=True
+)
+client = Client(transport=transport, fetch_schema_from_transport=True)
+
+# Define system message for the prompt
+system = """You need to generate a GraphQL query to fetch data from a Hasura database.
+Generate a query based on user questions to get relevant information."""
+
+# Create the prompt template
+prompt = PromptTemplate(
+    input_variables=["question"],
+    template=f"{system}\nHuman: {{question}}"
+)
+
+# Initialize the LLM without any tools
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", google_api_key="YOUR_API_KEY")
+
+# Structured LLM for processing the prompt
+structured_llm = llm  # Using LLM directly without additional tools
+
+# Query analyzer pipeline setup
+query_analyzer = {"question": RunnablePassthrough()} | prompt | structured_llm
+
+# Streamlit Interface
+st.title("Chat with LLM using Hasura PromptQL")
+st.write("Ask a question about the products database:")
+
+# User input
+user_input = st.text_input("Ask a question:")
+
+# Button to submit the question
+if st.button("Submit"):
+    if user_input:
+        try:
+            # Use .invoke() to get the GraphQL query from the LLM
+            result = query_analyzer.invoke({"question": user_input})
+
+            # Assuming the result is a GraphQL query string
+            if isinstance(result, str):
+                graphql_query = result
+            elif hasattr(result, 'content'):
+                graphql_query = result.content
+            else:
+                graphql_query = str(result)
+
+            st.write("Generated GraphQL Query:", graphql_query)
+
+            # Execute the GraphQL query using the Hasura client
+            try:
+                query = gql(graphql_query)
+                response = client.execute(query)
+                st.write("Query Result:", response)
+            except Exception as e:
+                st.error(f"An error occurred when executing the query: {str(e)}")
+                
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+    else:
+        st.warning("Please enter a question.")
+Key Changes:
+Hasura GraphQL Client Setup:
+
+Used gql and requests to connect to the Hasura GraphQL API.
+Provided HASURA_URL and HASURA_ADMIN_SECRET for secure connection.
+LLM Interaction:
+
+The LLM now generates a GraphQL query based on user input.
+The generated query is then used to fetch data from the Hasura database.
+GraphQL Query Execution:
+
+After generating the query, it's executed using the gql client.
+The results are displayed in the Streamlit app.
+Instructions
+Replace placeholders (YOUR_API_KEY, YOUR_HASURA_ADMIN_SECRET, and https://your-hasura-instance.herokuapp.com) with actual values.
+Run Streamlit:
+bash
+Copy code
+streamlit run your_script_name.py
+Test by asking questions that the LLM can interpret into meaningful GraphQL queries, such as:
+"Show me the products in category 'Electronics'."
+"What is the price of the product with id 10?"
+Let me know if you have any specific database queries or use cases, and I can tailor the code accordingly!
+
+
+
+
+
+
+You said:
+Define your Hasura GraphQL endpoint and authorization token
+can we define it by any way the Hasura GraphQL endpoint free ,without any subscription
+ChatGPT said:
+ChatGPT
+Yes, you can use Hasura's free tier to set up a GraphQL endpoint without requiring a paid subscription. Here's how you can set up a free Hasura GraphQL endpoint and access it without a paid subscription:
+
+Steps to Set Up a Free Hasura GraphQL Endpoint
+Deploy Hasura for Free:
+
+You can use platforms like Render, Heroku, or Vercel to deploy a Hasura instance for free.
+Alternatively, you can run Hasura locally or use Hasura Cloud, which offers a free tier.
+Hasura Cloud (Free Tier):
+
+Visit Hasura Cloud and create a free account.
+After signing in, create a new project.
+You will get a GraphQL endpoint URL like:
+bash
+Copy code
+https://your-project-name.hasura.app/v1/graphql
+In Hasura Cloud, you can set up databases (like PostgreSQL) without needing a paid subscription.
+Local Deployment:
+
+Install Docker if you haven't already.
+Use the following command to run a local Hasura instance:
+bash
+Copy code
+docker run -d -p 8080:8080 hasura/graphql-engine:latest
+Access your local Hasura console at http://localhost:8080.
+For a local database, you can use PostgreSQL, which you can set up locally or through free cloud options like ElephantSQL.
+Setting Authorization
+If you use a free deployment (e.g., Hasura Cloud), the endpoint might require an admin secret for security.
+If no security is configured, you can access it without an authorization token, but it's generally recommended to use an admin secret.
+Configuration without a Paid Subscription
+To set up the Hasura GraphQL client for a free deployment, you can follow these examples:
+
+Example 1: Using Hasura Cloud Free Tier (with Admin Secret)
+Replace the placeholders in the Python code as shown:
+
+python
+Copy code
+# Replace these with your own free Hasura Cloud endpoint and admin secret
+HASURA_URL = "https://your-project-name.hasura.app/v1/graphql"  # Your Hasura Cloud URL
+HASURA_ADMIN_SECRET = "your-admin-secret"  # Admin secret from Hasura Cloud
+Example 2: Using a Local Hasura Deployment (No Admin Secret)
+If you are running Hasura locally without an admin secret, you can configure the client without a security token:
+
+python
+Copy code
+# Local Hasura endpoint (no admin secret required if running locally)
+HASURA_URL = "http://localhost:8080/v1/graphql"
+HASURA_ADMIN_SECRET = ""  # Leave empty if not using a secret
+Running Hasura without Subscription
+Hasura offers free access through:
+
+Hasura Cloud (Free tier available).
+Local Deployment (No subscription needed).
+Free Cloud Hosting on platforms like Heroku or Render.
+Security Tips
+Admin Secret: It's best to use an admin secret, even in the free tier, to secure your endpoint.
+
+Environment Variables: Store sensitive information like API keys or secrets in environment variables instead of hardcoding them. Example:
+
+python
+Copy code
+import os
+
+HASURA_URL = os.getenv("HASURA_URL")
+HASURA_ADMIN_SECRET = os.getenv("HASURA_ADMIN_SECRET")
+Access Control: Configure role-based access controls (RBAC) in the Hasura console to limit access to your data, even if you're using a free endpoint.
+
+Getting Your Hasura Admin Secret
+In Hasura Cloud:
+
+Go to your project dashboard.
+Navigate to Settings → GraphQL API.
+Find the Admin Secret section, and copy it.
+In Local Deployment:
+
+You can start Hasura with an environment variable specifying the admin secret:
+bash
+Copy code
+docker run -d -p 8080:8080 -e HASURA_GRAPHQL_ADMIN_SECRET=mysecretpassword hasura/graphql-engine:latest
+By following these steps, you can access and set up a free Hasura GraphQL endpoint. Let me know if you need help deploying or configuring the endpoint!
+
+
+
+
+
+
+
+
