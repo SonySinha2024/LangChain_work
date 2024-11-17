@@ -1,0 +1,54 @@
+import streamlit as st
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+# Define system message for the prompt
+system = """You have the ability to issue search queries to get information to help answer user information.
+
+You do not NEED to look things up. If you don't need to, then just respond normally."""
+
+# Create the prompt template manually if `from_messages` is not available
+prompt = PromptTemplate(
+    input_variables=["question"],
+    template=f"{system}\nHuman: {{question}}"
+)
+
+# Initialize the LLM without any tools
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", google_api_key="")
+
+# No tools are used here, so no binding is necessary
+# Structured LLM for processing the prompt
+structured_llm = llm  # Using LLM directly without additional tools
+
+# Query analyzer pipeline setup
+query_analyzer = {"question": RunnablePassthrough()} | prompt | structured_llm
+
+# Streamlit Interface
+st.title("Chat with LLM")
+st.write("Enter your question below to interact with the LLM:")
+
+# User input
+user_input = st.text_input("Ask a question:")
+
+# Button to submit the question
+if st.button("Submit"):
+    if user_input:
+        # Get the LLM response
+        try:
+            # Use .invoke() to get the response from LLM
+            result = query_analyzer.invoke({"question": user_input})
+
+            # Assuming result is an AIMessage or a similar object, access the content directly
+            if isinstance(result, str):
+                response = result
+            elif hasattr(result, 'content'):
+                response = result.content
+            else:
+                response = str(result)
+                
+            st.write("Response:", response)
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+    else:
+        st.warning("Please enter a question.")
