@@ -14,8 +14,8 @@ from langchain_nomic.embeddings import NomicEmbeddings
 
 # apikey =
 # api_key = 
-api_key ='Y4z5XmbVZvcwnbwD4v20WYTPZyE7yq4B' 
-apikey ='nk-Ei7TKcGktODsxoXYo4PdXklOO5ZlVfmoQEp77W-UHO4'           
+api_key ='' 
+apikey =''           
 
 
 def query_pdf(query):
