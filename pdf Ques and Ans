@@ -14,8 +14,8 @@ import pandas as pd
 from io import StringIO
 from langchain_nomic.embeddings import NomicEmbeddings
 
-apikey ='nk-TgPc80e4hnQygVY38dwUgjRuT-uKxzPhtV26IeIIRcc'
-api_key ='Y4z5XmbVZvcwnbwD4v20WYTPZyE7yq4B'                 
+apikey =''
+api_key =''                 
 
 
 def query_pdf(query):
