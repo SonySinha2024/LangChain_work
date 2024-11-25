@@ -16,10 +16,9 @@ from io import StringIO
 from langchain_nomic.embeddings import NomicEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-#apikey ='nk-TgPc80e4hnQygVY38dwUgjRuT-uKxzPhtV26IeIIRcc'
-#api_key ='Y4z5XmbVZvcwnbwD4v20WYTPZyE7yq4B'                 
-apikey="nk-KGzWOLwhx4-WWyAMj0Ypc0dMdO3owvlEDS04P54VQEk"
-api_key="HuCPUWl5Sm9uuR7Ld47TYHEzQ4p2phge"
+          
+apikey=""
+api_key="e"
 
 
 
