@@ -1,0 +1,361 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Windows\system32> mysql -h 35.244.38.83 -u root -p
+mysql : The term 'mysql' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the
+path is correct and try again.
+At line:1 char:1
++ mysql -h 35.244.38.83 -u root -p
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (mysql:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Windows\system32> docker build -t testrig-bot .
+ERROR: request returned Internal Server Error for API route and version http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/_ping, check if the server supports the requested API version
+PS C:\Windows\system32> docker build -t testrig-bot .
+[+] Building 0.3s (1/1) FINISHED                                                                                                                                        docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 2B                                                                                                                                                      0.0s
+ERROR: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
+PS C:\Windows\system32> cd C:\feb_18\chat_bot\musql_working
+PS C:\feb_18\chat_bot\musql_working> docker build -t testrig-bot .
+[+] Building 280.4s (10/10) FINISHED                                                                                                                                    docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.2s
+ => => transferring dockerfile: 651B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           4.3s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                   104.3s
+ => => resolve docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.1s
+ => => sha256:521cad6ddc5302ec0b1d426cdf6df64316fd18ddf3cb0924d24daee81b661501 250B / 250B                                                                                              0.3s
+ => => sha256:95b7226c62e1a4719940920ae7fffd1ea4915befd3139d7020b84da24182ffd9 19.85MB / 19.85MB                                                                                       20.7s
+ => => sha256:93bee3686f319cf7bd4fcc659256d85121430628478ba3d026b5a96967b35cbe 6.16MB / 6.16MB                                                                                          4.6s
+ => => sha256:447713e77b4fc3658cfba0c1e816b70ff6d9bf06563dc8cfcb0459406aed33b4 211.34MB / 211.34MB                                                                                     97.6s
+ => => sha256:155ad54a8b2812a0ec559ff82c0c6f0f0dddb337a226b11879f09e15f67b69fc 48.48MB / 48.48MB                                                                                       33.5s
+ => => sha256:1d281e50d3e435595c266df06531a7e8c2ebb0c185622c8ab2eed8d760e6576b 64.39MB / 64.39MB                                                                                       41.5s
+ => => sha256:8031108f3cda87bb32f090262d0109c8a0db99168050967becefad502e9a681b 24.06MB / 24.06MB                                                                                       22.7s
+ => => extracting sha256:155ad54a8b2812a0ec559ff82c0c6f0f0dddb337a226b11879f09e15f67b69fc                                                                                               4.1s
+ => => extracting sha256:8031108f3cda87bb32f090262d0109c8a0db99168050967becefad502e9a681b                                                                                               1.2s
+ => => extracting sha256:1d281e50d3e435595c266df06531a7e8c2ebb0c185622c8ab2eed8d760e6576b                                                                                               3.3s
+ => => extracting sha256:447713e77b4fc3658cfba0c1e816b70ff6d9bf06563dc8cfcb0459406aed33b4                                                                                               4.9s
+ => => extracting sha256:93bee3686f319cf7bd4fcc659256d85121430628478ba3d026b5a96967b35cbe                                                                                               0.3s
+ => => extracting sha256:95b7226c62e1a4719940920ae7fffd1ea4915befd3139d7020b84da24182ffd9                                                                                               0.7s
+ => => extracting sha256:521cad6ddc5302ec0b1d426cdf6df64316fd18ddf3cb0924d24daee81b661501                                                                                               0.1s
+ => [internal] load build context                                                                                                                                                       0.2s
+ => => transferring context: 72.12kB                                                                                                                                                    0.0s
+ => [2/5] WORKDIR /app                                                                                                                                                                  3.9s
+ => [3/5] COPY requirements.txt /app/                                                                                                                                                   0.6s
+ => [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                          129.5s
+ => [5/5] COPY . /app                                                                                                                                                                   0.4s
+ => exporting to image                                                                                                                                                                 36.5s
+ => => exporting layers                                                                                                                                                                27.7s
+ => => exporting manifest sha256:c979d9d19ad39025d470f9f3026093748a528602b25040c6cec904e9c2d5b1ae                                                                                       0.1s
+ => => exporting config sha256:9d0f7e4b14b83be72141a0a2720bc7d5c824d617850679cfd8ba4ffc92dc5ecc                                                                                         0.1s
+ => => exporting attestation manifest sha256:4e742b04881531d2bf853af460492319d6891216465489e071e3942e954063b8                                                                           0.1s
+ => => exporting manifest list sha256:a3f7828eff84202a62bbdf40bd4f612876dcfe2041f4d3d90ddda1f516ed852b                                                                                  0.1s
+ => => naming to docker.io/library/testrig-bot:latest                                                                                                                                   0.0s
+ => => unpacking to docker.io/library/testrig-bot:latest                                                                                                                                8.4s
+PS C:\feb_18\chat_bot\musql_working> docker images
+REPOSITORY                              TAG       IMAGE ID       CREATED          SIZE
+testrig-bot                             latest    a3f7828eff84   48 seconds ago   2.38GB
+gcr.io/testrig-chatboat/test-chatbot    latest    c8313c962bdb   3 days ago       2.95GB
+gcr.io/testrig-chatboat/my-python-app   latest    db21c8238202   6 days ago       2.95GB
+test-chatbot                            latest    db21c8238202   6 days ago       2.95GB
+test-chatbots                           latest    2827db15eade   6 days ago       2.95GB
+PS C:\feb_18\chat_bot\musql_working> docker run testrig-bot
+[2025-02-27 12:40:13 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2025-02-27 12:40:13 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2025-02-27 12:40:13 +0000] [1] [INFO] Using worker: sync
+[2025-02-27 12:40:13 +0000] [7] [INFO] Booting worker with pid: 7
+[2025-02-27 12:40:14 +0000] [7] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/arbiter.py", line 608, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/workers/base.py", line 135, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/workers/base.py", line 147, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/app/base.py", line 66, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 57, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 47, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.9/site-packages/gunicorn/util.py", line 370, in import_app
+    mod = importlib.import_module(module)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/app.py", line 5, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+[2025-02-27 12:40:14 +0000] [7] [INFO] Worker exiting (pid: 7)
+[2025-02-27 12:40:14 +0000] [1] [ERROR] Worker (pid:7) exited with code 3
+[2025-02-27 12:40:14 +0000] [1] [ERROR] Shutting down: Master
+[2025-02-27 12:40:14 +0000] [1] [ERROR] Reason: Worker failed to boot.
+[+] Building 3.4s (10/10) FINISHED                                                                                                                                      docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.0s
+ => => transferring dockerfile: 651B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           1.9s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       0.1s
+ => => transferring context: 43.64kB                                                                                                                                                    0.0s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   0.1s
+ => exporting to image                                                                                                                                                                  0.8s
+ => => exporting layers                                                                                                                                                                 0.3s
+ => => exporting manifest sha256:25ea6e5508cfd9b2722f2903d06692f5576d156bb950189c24429bcf3ae55bd9                                                                                       0.1s
+ => => exporting config sha256:6570e73c5912c943fc3a193fee11e96a02ed37f59089c7e12da0741792224d4e                                                                                         0.1s
+ => => exporting attestation manifest sha256:2efa4a0f98a00de74cc206fe29154d149383ef5833be0dade1fb22eed03d5a70                                                                           0.1s
+ => => exporting manifest list sha256:6c2e52db0cde0a1a92dcd59e5659bebef1897a03f9cc13ba4b8876b60e793c3d                                                                                  0.1s
+ => => naming to docker.io/library/testrig-bot:latest                                                                                                                                   0.0s
+ => => unpacking to docker.io/library/testrig-bot:latest                                                                                                                                0.1s
+PS C:\feb_18\chat_bot\musql_working> docker images
+REPOSITORY                              TAG       IMAGE ID       CREATED         SIZE
+testrig-bot                             latest    6c2e52db0cde   8 seconds ago   2.38GB
+gcr.io/testrig-chatboat/test-chatbot    latest    c8313c962bdb   3 days ago      2.95GB
+gcr.io/testrig-chatboat/my-python-app   latest    db21c8238202   6 days ago      2.95GB
+test-chatbot                            latest    db21c8238202   6 days ago      2.95GB
+test-chatbots                           latest    2827db15eade   6 days ago      2.95GB
+PS C:\feb_18\chat_bot\musql_working> docker run testrig-bot
+[2025-02-27 12:43:19 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2025-02-27 12:43:19 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2025-02-27 12:43:19 +0000] [1] [INFO] Using worker: sync
+[2025-02-27 12:43:19 +0000] [7] [INFO] Booting worker with pid: 7
+GOOGLE_APPLICATION_CREDENTIALS: config/service_account.json
+Google Cloud Storage client initialized successfully!
+2025-02-27 12:43:26,333 - app - INFO - Extracted keywords: ['by', 've', 'class', 'industrieshire', 'uniform', 'version', 'settled', 'latest', 'enterprise', 'regression', 'loadrunner', 'ha74wl', 'consequences', 'took', 'transforming', 'arise', 'complexities', '2046767503', 'businesses', 'handling']
+/app/app.py:172: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+2025-02-27 12:43:36,540 - app - ERROR - Failed to fetch content from URL: Could not import sentence_transformers python package. Please install it with `pip install sentence-transformers`.
+[2025-02-27 12:48:51 +0000] [1] [INFO] Handling signal: int
+[2025-02-27 12:48:51 +0000] [7] [INFO] Worker exiting (pid: 7)
+[2025-02-27 12:48:52 +0000] [1] [INFO] Shutting down: Master
+PS C:\feb_18\chat_bot\musql_working> docker run testrig-bot
+[2025-02-27 12:48:56 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2025-02-27 12:48:56 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2025-02-27 12:48:56 +0000] [1] [INFO] Using worker: sync
+[2025-02-27 12:48:56 +0000] [7] [INFO] Booting worker with pid: 7
+[2025-02-27 12:48:56 +0000] [1] [INFO] Handling signal: int
+[2025-02-27 12:48:56 +0000] [7] [INFO] Worker exiting (pid: 7)
+[2025-02-27 12:48:56 +0000] [1] [INFO] Shutting down: Master
+
+got 3 SIGTERM/SIGINTs, forcefully exiting
+PS C:\feb_18\chat_bot\musql_working>
+>> docker push gcr.io/testrig-chatboat/testrig-bot
+>>
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/testrig-bot]
+tag does not exist: gcr.io/testrig-chatboat/testrig-bot:latest
+PS C:\feb_18\chat_bot\musql_working>
+PS C:\feb_18\chat_bot\musql_working>
+PS C:\feb_18\chat_bot\musql_working>
+>> docker push gcr.io/testrig-chatboat/testrig-bot
+>> ^C
+PS C:\feb_18\chat_bot\musql_working> ^C
+PS C:\feb_18\chat_bot\musql_working>
+>> docker push gcr.io/testrig-chatboat/testrig-bot
+>>
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/testrig-bot]
+tag does not exist: gcr.io/testrig-chatboat/testrig-bot:latest
+PS C:\feb_18\chat_bot\musql_working>
+>> docker push gcr.io/testrig-chatboat/testrig-bot
+>> ^C
+PS C:\feb_18\chat_bot\musql_working>
+>> docker push gcr.io/testrig-chatboat/testrig-bot
+>> ^C
+PS C:\feb_18\chat_bot\musql_working> docker push gcr.io//testrig-bot
+invalid reference format
+PS C:\feb_18\chat_bot\musql_working> docker run -p 8080:8080 testrig-bot
+[2025-02-27 12:54:04 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2025-02-27 12:54:04 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2025-02-27 12:54:04 +0000] [1] [INFO] Using worker: sync
+[2025-02-27 12:54:04 +0000] [7] [INFO] Booting worker with pid: 7
+GOOGLE_APPLICATION_CREDENTIALS: config/service_account.json
+Google Cloud Storage client initialized successfully!
+2025-02-27 12:54:11,654 - app - INFO - Extracted keywords: ['rest', 'cycles', 'consistently', 'towards', 'complexity', 'integrating', 'close', 'proxy', 'connect', 'explore', 'is', 'ml', 'lifecycle', 'mobile', 'delivered', 'away', 'cypress', 'improves', 'worked', 'leaving']
+/app/app.py:172: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+2025-02-27 12:54:22,093 - app - ERROR - Failed to fetch content from URL: Could not import sentence_transformers python package. Please install it with `pip install sentence-transformers`.
+User details saved to GCS: user_details/feb-27-2025/unknown@example.com.txt
+User details saved to GCS: user_details/feb-27-2025/unknown@example.com.txt
+Updated combined chat logs in GCS: testrig-bot/feb-27-2025/chatlog_b6a05a36-9372-4011-be6c-4351d1283990.txt
+Merged file saved to GCS: testrig-bot/feb-27-2025/mergefile_b6a05a36-9372-4011-be6c-4351d1283990.txt
+[2025-02-27 12:55:49 +0000] [1] [INFO] Handling signal: int
+[2025-02-27 12:55:49 +0000] [7] [INFO] Worker exiting (pid: 7)
+
+got 3 SIGTERM/SIGINTs, forcefully exiting
+PS C:\feb_18\chat_bot\musql_working> ^C
+PS C:\feb_18\chat_bot\musql_working> http://localhost:8080/
+http://localhost:8080/ : The term 'http://localhost:8080/' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At line:1 char:1
++ http://localhost:8080/
++ ~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (http://localhost:8080/:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\feb_18\chat_bot\musql_working> ^C
+PS C:\feb_18\chat_bot\musql_working> gcloud auth configure-docker
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth configure-docker
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\feb_18\chat_bot\musql_working> gcloud auth configure-docker gcr.io
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth configure-docker gcr.io
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\feb_18\chat_bot\musql_working> docker push gcr.io/PROJECT-ID/testrig-bot
+invalid reference format: repository name (PROJECT-ID/testrig-bot) must be lowercase
+PS C:\feb_18\chat_bot\musql_working> docker push gcr.io/PROJECT-ID/testrig-bot^C
+PS C:\feb_18\chat_bot\musql_working> docker push gcr.io/testrig-chatboat/testrig-bot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/testrig-bot]
+tag does not exist: gcr.io/testrig-chatboat/testrig-bot:latest
+PS C:\feb_18\chat_bot\musql_working> docker images
+REPOSITORY                              TAG       IMAGE ID       CREATED          SIZE
+testrig-bot                             latest    6c2e52db0cde   18 minutes ago   2.38GB
+gcr.io/testrig-chatboat/test-chatbot    latest    c8313c962bdb   3 days ago       2.95GB
+test-chatbot                            latest    db21c8238202   6 days ago       2.95GB
+gcr.io/testrig-chatboat/my-python-app   latest    db21c8238202   6 days ago       2.95GB
+test-chatbots                           latest    2827db15eade   6 days ago       2.95GB
+PS C:\feb_18\chat_bot\musql_working> gcloud auth configure-docker gcr.io
+>> ^C
+PS C:\feb_18\chat_bot\musql_working> ^C
+PS C:\feb_18\chat_bot\musql_working>  gcloud auth configure-docker
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:2
++  gcloud auth configure-docker
++  ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\feb_18\chat_bot\musql_working>  gcloud auth configure-docker gcr.io
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:2
++  gcloud auth configure-docker gcr.io
++  ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\feb_18\chat_bot\musql_working> gcloud auth configure-docker gcr.io
+>> ^C
+PS C:\feb_18\chat_bot\musql_working> ^C
+PS C:\feb_18\chat_bot\musql_working> gcloud auth login
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth login
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\feb_18\chat_bot\musql_working> Set-ExecutionPolicy Unrestricted -Scope Process
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+PS C:\feb_18\chat_bot\musql_working> gcloud config set project testrig-chatboat
+Updated property [core/project].
+
+
+Updates are available for some Google Cloud CLI components.  To install them,
+please run:
+  $ gcloud components update
+
+PS C:\feb_18\chat_bot\musql_working> gcloud auth configure-docker gcr.io
+WARNING: Your config file at [C:\Users\admin\.docker\config.json] contains these credential helper entries:
+
+{
+  "credHelpers": {
+    "gcr.io": "gcloud"
+  }
+}
+Adding credentials for: gcr.io
+gcloud credential helpers already registered correctly.
+PS C:\feb_18\chat_bot\musql_working> docker tag testrig-bot gcr.io/testrig-chatboat/testrig-bot
+PS C:\feb_18\chat_bot\musql_working> docker push gcr.io/testrig-chatboat/testrig-bot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/testrig-bot]
+3e3cf8a44f85: Pushed
+93bee3686f31: Layer already exists
+95b7226c62e1: Layer already exists
+521cad6ddc53: Layer already exists
+4740b89c1c0a: Pushed
+62a04f9b7b93: Pushed
+063dd9db0df2: Pushed
+27e889e1cc66: Pushed
+8031108f3cda: Layer already exists
+1d281e50d3e4: Layer already exists
+447713e77b4f: Layer already exists
+155ad54a8b28: Layer already exists
+latest: digest: sha256:6c2e52db0cde0a1a92dcd59e5659bebef1897a03f9cc13ba4b8876b60e793c3d size: 856
+PS C:\feb_18\chat_bot\musql_working> gcloud container images list --repository gcr.io/testrig-chatboat
+NAME: gcr.io/testrig-chatboat/testrig-bot
+PS C:\feb_18\chat_bot\musql_working> gcloud container images list-tags gcr.io/testrig-chatboat/test-chatbot
+Listed 0 items.
+PS C:\feb_18\chat_bot\musql_working> gcloud container images list-tags gcr.io/testrig-chatboat/testrig-bot
+DIGEST: 25ea6e5508cf
+TAGS:
+
+DIGEST: 2efa4a0f98a0
+TAGS:
+
+DIGEST: 6c2e52db0cde
+TAGS: latest
+PS C:\feb_18\chat_bot\musql_working> docker run gcr.io/testrig-chatboat/test-chatbot
+[2025-02-27 13:15:52 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2025-02-27 13:15:52 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2025-02-27 13:15:52 +0000] [1] [INFO] Using worker: sync
+[2025-02-27 13:15:52 +0000] [7] [INFO] Booting worker with pid: 7
+Google Cloud Storage client initialized successfully!
+4931f35cf1c7d24a72e7e0903c8d625dcdfa7e4dbd4a0708a887b655329e13c1
+2025-02-27 13:16:07,491 - app - INFO - Extracted keywords: ['process', 'customer', 'robot', 'browserstack', 'costs', 'industrieshire', 'info', 'than', 'github', 'players', 'understood', 'book', 'al', 'testcomplete', 'protect', 'world', 'products', 'study', 'proactive', 'extended']
+/app/app.py:156: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+2025-02-27 13:16:20,963 - app - ERROR - Failed to fetch content from URL: Could not import sentence_transformers python package. Please install it with `pip install sentence-transformers`.
+[2025-02-27 13:19:33 +0000] [1] [INFO] Handling signal: int
+[2025-02-27 13:19:33 +0000] [7] [INFO] Worker exiting (pid: 7)
+[2025-02-27 13:19:34 +0000] [1] [INFO] Shutting down: Master
+
+got 3 SIGTERM/SIGINTs, forcefully exiting
+PS C:\feb_18\chat_bot\musql_working> ^C
+PS C:\feb_18\chat_bot\musql_working> gcloud run deploy testrig-bot --image gcr.io/testrig-chatboat/testrig-bot --platform=managed --region=us-central1 --allow-unauthenticated --project=testrig-chatboat
+Deploying container to Cloud Run service [testrig-bot] in project [testrig-chatboat] region [us-central1]
+OK Deploying new service... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [testrig-bot] revision [testrig-bot-00001-nd9] has been deployed and is serving 100 percent of traffic.
+Service URL: https://testrig-bot-185679386862.us-central1.run.app
+PS C:\feb_18\chat_bot\musql_working>
+
+
+
+
+
+
+
+
+
