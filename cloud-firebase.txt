@@ -1,0 +1,3001 @@
+
+DELETE FROM user_sessions WHERE service IS NULL;
+DELETE FROM user_sessions WHERE DATE(created_at) = '2025-02-24';
+ALTER TABLE user_sessions DROP COLUMN service_clicked_by_user;
+
+ALTER TABLE user_sessions MODIFY created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+testrig-chat-db
+
+Chatbot@2025
+
+connection name: testrig-chatboat:asia-south1:testrig-chat-db
+
+35.244.38.83:3306
+35.244.38.83
+
+3306
+
+mysql -h YOUR_IP_ADDRESS -u root -p
+mysql -h 35.244.38.83 -u root -p
+
+curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64
+chmod +x cloud_sql_proxy
+
+
+./cloud_sql_proxy -instances=testrig-chatboat:us-central1:your-instance-name=tcp:3306
+
+./cloud_sql_proxy -instances=testrig-chatboat:us-central1:testrig-chat-db=tcp:3306
+
+gcloud sql instances list
+
+
+./cloud_sql_proxy -instances=testrig-chatboat:us-central1:testrig-chat-db=tcp:3306
+
+./cloud_sql_proxy -instances=testrig-chatboat:asia-south1:testrig-chat-db=tcp:3306
+
+
+
+sonysinha526@cloudshell:~ (testrig-chatboat)$ ./cloud_sql_proxy -instances=testrig-chatboat:asia-south1:testrig-chat-db=tcp:3306
+2025/02/23 16:49:13 This is the Cloud SQL Proxy v1. It is no longer receiving active feature development. For the latest features and improvements, migrate to the v2 version of the Cloud SQL Proxy. For details, see: https://github.com/GoogleCloudPlatform/cloud-sql-proxy/blob/main/migration-guide.md
+2025/02/23 16:49:13 current FDs rlimit set to 1048576, wanted limit is 8500. Nothing to do here.
+2025/02/23 16:49:15 Listening on 127.0.0.1:3306 for testrig-chatboat:asia-south1:testrig-chat-db
+2025/02/23 16:49:15 Ready for new connections
+2025/02/23 16:49:15 Generated RSA key in 133.57633ms
+  ^C2025/02/23 16:56:31 Received TERM signal. Waiting up to 0s before terminating.
+sonysinha526@cloudshell:~ (testrig-chatboat)$ mysql -h 127.0.0.1 -u root -p
+Enter password: 
+ERROR 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (111)
+sonysinha526@cloudshell:~ (testrig-chatboat)$ mysql -h 35.244.38.83 -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 703
+Server version: 8.0.37-google (Google)
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+
+Cloud SQL Proxy should start successfully.
+You should be able to connect to MySQL.
+
+mysql> ^C
+mysql> CREATE DATABASE chatdb;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> USE chatdb;
+Database changed
+
+
+mysql> CREATE TABLE chat_history (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     session_id VARCHAR(255),
+    ->     username VARCHAR(255),
+    ->     email VARCHAR(255),
+    ->     message TEXT,
+    ->     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+
+SHOW TABLES;
+
+mysql> ^C
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_chatdb |
++------------------+
+| chat_history     |
++------------------+
+1 row in set (0.07 sec)
+
+mysql> DESC chat_history;
++------------+--------------+------+-----+-------------------+-------------------+
+| Field      | Type         | Null | Key | Default           | Extra             |
++------------+--------------+------+-----+-------------------+-------------------+
+| id         | int          | NO   | PRI | NULL              | auto_increment    |
+| session_id | varchar(255) | YES  |     | NULL              |                   |
+| username   | varchar(255) | YES  |     | NULL              |                   |
+| email      | varchar(255) | YES  |     | NULL              |                   |
+| message    | text         | YES  |     | NULL              |                   |
+| timestamp  | datetime     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.07 sec)
+
+
+
+
+
+///////////////////////////////
+/ let loadingTimeout = setTimeout(() => {
+//     loadingMessage.style.display = 'block';
+// }, 4000);
+=========================
+
+docker build -t testrig-chatbot .
+
+
+
+docker build -t my-python-app .
+docker images
+docker run -p 8000:8000 my-python-app
+docker rmi -f 
+
+
+
+========================
+
+
+
+
+Microsoft Windows [Version 10.0.19045.5371]
+(c) Microsoft Corporation. All rights reserved.
+
+
+cmd
+
+C:\Users\TESTRIG>npm install -g firebase-tools
+
+added 631 packages in 2m
+
+71 packages are looking for funding
+  run `npm fund` for details
+
+C:\Users\TESTRIG>
+C:\Users\TESTRIG>
+C:\Users\TESTRIG>firebase --version
+13.31.2
+
+C:\Users\TESTRIG>firebase login
+i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+
+? Allow Firebase to collect CLI and Emulator Suite usage and error reporting information? Yes
+i  To change your data collection preference at any time, run `firebase logout` and log in again.
+
+Visit this URL on this device to log in:
+https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=23675846&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+
+Waiting for authentication...
+
++  Success! Logged in as sonysinha526@gmail.com
+
+C:\Users\TESTRIG>mkdir chatbot-testrig
+
+C:\Users\TESTRIG>cd chatbot-testrig
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices.
+
+Error: Must select at least one feature. Use SPACEBAR to select features, or specify a feature by running firebase init [feature_name]
+
+C:\Users\TESTRIG\chatbot-testrig>
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Use an existing project
+? Select a default Firebase project for this directory: chatbot-testrig (Chatbot-testrig)
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? public
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
++  Wrote public/404.html
++  Wrote public/index.html
+
+i  Writing configuration info to firebase.json...
+i  Writing project information to .firebaserc...
+i  Writing gitignore file to .gitignore...
+
++  Firebase initialization complete!
+
+C:\Users\TESTRIG\chatbot-testrig>firebase deploy
+^C
+C:\Users\TESTRIG\chatbot-testrig>
+
+C:\Users\TESTRIG\chatbot-testrig>firebase deploy
+
+=== Deploying to 'chatbot-testrig'...
+
+i  deploying hosting
+i  hosting[chatbot-testrig]: beginning deploy...
+i  hosting[chatbot-testrig]: found 4 files in public
++  hosting[chatbot-testrig]: file upload complete
+i  hosting[chatbot-testrig]: finalizing version...
++  hosting[chatbot-testrig]: version finalized
+i  hosting[chatbot-testrig]: releasing new version...
++  hosting[chatbot-testrig]: release complete
+
++  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/chatbot-testrig/overview
+Hosting URL: https://chatbot-testrig.web.app
+
+
+C:\Users\TESTRIG\chatbot-testrig>
+
+
+===================
+
+
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install -r requirements.txt
+ERROR: Could not find a version that satisfies the requirement firebase_functions (from versions: none)
+ERROR: No matching distribution found for firebase_functions
+
+i get this error, what to do , my requirements file has 
+firebase_functions
+flask
+google-cloud-storage
+uuid
+requests
+flask_cors
+google.generativeai
+unstructured
+langchain_community
+flask_session
+chromadb
+google-cloud-storage
+packages
+gunicorn
+click
+python-dotenv
+
+
+
+
+
+You're getting this error because firebase-functions is not available for Python. 
+Firebase Functions is specifically designed for Node.js, not Python.
+
+✅ Solution: Use Firebase Hosting for Static Files Instead
+Since you're trying to integrate chatbot.js into another application, you don’t need Firebase Functions. Instead, you can use Firebase Hosting to deploy your chatbot.js file.
+
+🚀 Step-by-Step: Deploying chatbot.js Using Firebase Hosting
+1️⃣ Install Firebase CLI
+Open Command Prompt (cmd) or PowerShell and run:
+
+sh
+Copy
+Edit
+npm install -g firebase-tools
+This will install Firebase tools globally.
+
+2️⃣ Login to Firebase
+Run:
+
+sh
+Copy
+Edit
+firebase login
+It will open a browser to authenticate with your Google account.
+
+3️⃣ Initialize Firebase Hosting
+Navigate to your chatbot project directory:
+
+sh
+Copy
+Edit
+cd C:\Users\TESTRIG\chatbot-testrig
+firebase init hosting
+During setup, choose:
+Use existing Firebase project (select the project you created in Firebase Console)
+Set "public" directory → Enter public (or your folder containing chatbot.js)
+Configure as a single-page app (SPA)? → No
+Set up automatic builds & deploys with GitHub? → No
+4️⃣ Move chatbot.js to Public Folder
+Make sure your chatbot.js file is inside the public/ folder of your Firebase project.
+
+5️⃣ Deploy to Firebase
+Run:
+
+sh
+Copy
+Edit
+firebase deploy
+After deployment, Firebase will give you a public HTTPS URL where your chatbot.js file is accessible.
+
+✅ Now, You Can Use chatbot.js in Other Applications
+Simply include it in your HTML file like this:
+
+html
+Copy
+Edit
+<script src="https://your-firebase-project.web.app/chatbot.js"></script>
+Replace your-firebase-project.web.app with the actual Firebase Hosting URL.
+
+Let me know if you need help with any step! 🚀
+
+
+<script src="https://chatbot-testrig.web.app/chatbot.js"></script>
+
+==================================================================
+
+Microsoft Windows [Version 10.0.19045.5371]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\TESTRIG>npm install -g firebase-tools
+
+added 631 packages in 2m
+
+71 packages are looking for funding
+  run `npm fund` for details
+
+C:\Users\TESTRIG>
+C:\Users\TESTRIG>
+C:\Users\TESTRIG>firebase --version
+13.31.2
+
+C:\Users\TESTRIG>firebase login
+i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+
+? Allow Firebase to collect CLI and Emulator Suite usage and error reporting information? Yes
+i  To change your data collection preference at any time, run `firebase logout` and log in again.
+
+Visit this URL on this device to log in:
+https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=23675846&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+
+Waiting for authentication...
+
++  Success! Logged in as sonysinha526@gmail.com
+
+C:\Users\TESTRIG>mkdir chatbot-testrig
+
+C:\Users\TESTRIG>cd chatbot-testrig
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices.
+
+Error: Must select at least one feature. Use SPACEBAR to select features, or specify a feature by running firebase init [feature_name]
+
+C:\Users\TESTRIG\chatbot-testrig>
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Use an existing project
+? Select a default Firebase project for this directory: chatbot-testrig (Chatbot-testrig)
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? public
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
++  Wrote public/404.html
++  Wrote public/index.html
+
+i  Writing configuration info to firebase.json...
+i  Writing project information to .firebaserc...
+i  Writing gitignore file to .gitignore...
+
++  Firebase initialization complete!
+
+C:\Users\TESTRIG\chatbot-testrig>firebase deploy
+^C
+C:\Users\TESTRIG\chatbot-testrig>
+
+C:\Users\TESTRIG\chatbot-testrig>firebase deploy
+
+=== Deploying to 'chatbot-testrig'...
+
+i  deploying hosting
+i  hosting[chatbot-testrig]: beginning deploy...
+i  hosting[chatbot-testrig]: found 4 files in public
++  hosting[chatbot-testrig]: file upload complete
+i  hosting[chatbot-testrig]: finalizing version...
++  hosting[chatbot-testrig]: version finalized
+i  hosting[chatbot-testrig]: releasing new version...
++  hosting[chatbot-testrig]: release complete
+
++  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/chatbot-testrig/overview
+Hosting URL: https://chatbot-testrig.web.app
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Functions: Configure a Cloud
+Functions directory and its files, Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Functions Setup
+Let's create a new codebase for your functions.
+A directory corresponding to the codebase will be created in your project
+with sample code pre-configured.
+
+See https://firebase.google.com/docs/functions/organize-functions for
+more information on organizing your functions using codebases.
+
+Functions can be deployed with firebase deploy.
+
+? What language would you like to use to write Cloud Functions? Python
++  Wrote functions/requirements.txt
++  Wrote functions/.gitignore
++  Wrote functions/main.py
+? Do you want to install dependencies now? Yes
+Collecting pip
+  Using cached pip-25.0.1-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 20.2.3
+    Uninstalling pip-20.2.3:
+      Successfully uninstalled pip-20.2.3
+ERROR: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'C:\\Users\\TESTRIG\\AppData\\Local\\Temp\\pip-uninstall-0psjr_fl\\pip3.exe'
+Consider using the `--user` option or check the permissions.
+
+
+Error: An unexpected error has occurred.
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Functions: Configure a Cloud
+Functions directory and its files, Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Functions Setup
+Let's create a new codebase for your functions.
+A directory corresponding to the codebase will be created in your project
+with sample code pre-configured.
+
+See https://firebase.google.com/docs/functions/organize-functions for
+more information on organizing your functions using codebases.
+
+Functions can be deployed with firebase deploy.
+
+? What language would you like to use to write Cloud Functions? Python
+? File functions/requirements.txt already exists. Overwrite? Yes
++  Wrote functions/requirements.txt
+i  functions/.gitignore is unchanged
+i  functions/main.py is unchanged
+? Do you want to install dependencies now? Yes
+Requirement already satisfied: pip in c:\users\testrig\chatbot-testrig\functions\venv\lib\site-packages (25.0.1)
+ERROR: Could not find a version that satisfies the requirement firebase_functions~=0.1.0 (from versions: none)
+ERROR: No matching distribution found for firebase_functions~=0.1.0
+
+Error: An unexpected error has occurred.
+
+C:\Users\TESTRIG\chatbot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Functions: Configure a Cloud
+Functions directory and its files, Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Functions Setup
+Let's create a new codebase for your functions.
+A directory corresponding to the codebase will be created in your project
+with sample code pre-configured.
+
+See https://firebase.google.com/docs/functions/organize-functions for
+more information on organizing your functions using codebases.
+
+Functions can be deployed with firebase deploy.
+
+? What language would you like to use to write Cloud Functions? Python
+? File functions/requirements.txt already exists. Overwrite? No
+i  Skipping write of functions/requirements.txt
++  Wrote functions/.gitignore
+? File functions/main.py already exists. Overwrite? No
+i  Skipping write of functions/main.py
+? Do you want to install dependencies now? Yes
+Collecting pip
+  Using cached pip-25.0.1-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 20.2.3
+    Uninstalling pip-20.2.3:
+      Successfully uninstalled pip-20.2.3
+ERROR: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'C:\\Users\\TESTRIG\\AppData\\Local\\Temp\\pip-uninstall-c42etbpk\\pip3.exe'
+Consider using the `--user` option or check the permissions.
+
+
+Error: An unexpected error has occurred.
+
+C:\Users\TESTRIG\chatbot-testrig>
+
+C:\Users\TESTRIG\chatbot-testrig>cd C:\Users\TESTRIG\chatbot-testrig\functions
+
+C:\Users\TESTRIG\chatbot-testrig\functions>pip install --user -r requirements.txt
+ERROR: Could not find a version that satisfies the requirement firebase_functions (from versions: none)
+ERROR: No matching distribution found for firebase_functions
+
+C:\Users\TESTRIG\chatbot-testrig\functions>python -m pip install --upgrade --user pip
+Requirement already satisfied: pip in c:\users\testrig\appdata\local\programs\python\python39\lib\site-packages (25.0.1)
+
+C:\Users\TESTRIG\chatbot-testrig\functions>
+C:\Users\TESTRIG\chatbot-testrig\functions>python -m venv venv
+
+C:\Users\TESTRIG\chatbot-testrig\functions>
+
+C:\Users\TESTRIG\chatbot-testrig\functions>venv\Scripts\activate
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install -r requirements.txt
+ERROR: Could not find a version that satisfies the requirement firebase_functions (from versions: none)
+ERROR: No matching distribution found for firebase_functions
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>python --version
+Python 3.9.0
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install firebase-functions
+ERROR: Could not find a version that satisfies the requirement firebase-functions (from versions: none)
+ERROR: No matching distribution found for firebase-functions
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install --upgrade pip setuptools wheel
+Requirement already satisfied: pip in c:\users\testrig\chatbot-testrig\functions\venv\lib\site-packages (25.0.1)
+Requirement already satisfied: setuptools in c:\users\testrig\chatbot-testrig\functions\venv\lib\site-packages (49.2.1)
+Collecting setuptools
+  Using cached setuptools-75.8.0-py3-none-any.whl.metadata (6.7 kB)
+Collecting wheel
+  Downloading wheel-0.45.1-py3-none-any.whl.metadata (2.3 kB)
+Using cached setuptools-75.8.0-py3-none-any.whl (1.2 MB)
+Downloading wheel-0.45.1-py3-none-any.whl (72 kB)
+Installing collected packages: wheel, setuptools
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 49.2.1
+    Uninstalling setuptools-49.2.1:
+      Successfully uninstalled setuptools-49.2.1
+Successfully installed setuptools-75.8.0 wheel-0.45.1
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install firebase-functions
+ERROR: Could not find a version that satisfies the requirement firebase-functions (from versions: none)
+ERROR: No matching distribution found for firebase-functions
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install -r requirements.txt
+ERROR: Could not find a version that satisfies the requirement firebase_functions (from versions: none)
+ERROR: No matching distribution found for firebase_functions
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install -r requirements.txt
+Collecting flask (from -r requirements.txt (line 2))
+  Using cached flask-3.1.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting google-cloud-storage (from -r requirements.txt (line 3))
+  Downloading google_cloud_storage-3.0.0-py2.py3-none-any.whl.metadata (12 kB)
+Collecting uuid (from -r requirements.txt (line 4))
+  Using cached uuid-1.30-py3-none-any.whl
+Collecting requests (from -r requirements.txt (line 5))
+  Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+Collecting flask_cors (from -r requirements.txt (line 6))
+  Using cached Flask_Cors-5.0.0-py2.py3-none-any.whl.metadata (5.5 kB)
+Collecting google.generativeai (from -r requirements.txt (line 7))
+  Using cached google_generativeai-0.8.4-py3-none-any.whl.metadata (4.2 kB)
+Collecting unstructured (from -r requirements.txt (line 8))
+  Downloading unstructured-0.16.22-py3-none-any.whl.metadata (24 kB)
+Collecting langchain_community (from -r requirements.txt (line 9))
+  Downloading langchain_community-0.3.18-py3-none-any.whl.metadata (2.4 kB)
+Collecting flask_session (from -r requirements.txt (line 10))
+  Using cached flask_session-0.8.0-py3-none-any.whl.metadata (5.2 kB)
+Collecting chromadb (from -r requirements.txt (line 11))
+  Using cached chromadb-0.6.3-py3-none-any.whl.metadata (6.8 kB)
+Collecting packages (from -r requirements.txt (line 13))
+  Using cached packages-0.1.1-py3-none-any.whl.metadata (731 bytes)
+Collecting gunicorn (from -r requirements.txt (line 14))
+  Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting click (from -r requirements.txt (line 15))
+  Using cached click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+Collecting python-dotenv (from -r requirements.txt (line 16))
+  Using cached python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+Collecting Werkzeug>=3.1 (from flask->-r requirements.txt (line 2))
+  Using cached werkzeug-3.1.3-py3-none-any.whl.metadata (3.7 kB)
+Collecting Jinja2>=3.1.2 (from flask->-r requirements.txt (line 2))
+  Using cached jinja2-3.1.5-py3-none-any.whl.metadata (2.6 kB)
+Collecting itsdangerous>=2.2 (from flask->-r requirements.txt (line 2))
+  Using cached itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting blinker>=1.9 (from flask->-r requirements.txt (line 2))
+  Using cached blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting importlib-metadata>=3.6 (from flask->-r requirements.txt (line 2))
+  Using cached importlib_metadata-8.6.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting google-auth<3.0dev,>=2.26.1 (from google-cloud-storage->-r requirements.txt (line 3))
+  Downloading google_auth-2.38.0-py2.py3-none-any.whl.metadata (4.8 kB)
+Collecting google-api-core<3.0.0dev,>=2.15.0 (from google-cloud-storage->-r requirements.txt (line 3))
+  Downloading google_api_core-2.24.1-py3-none-any.whl.metadata (3.0 kB)
+Collecting google-cloud-core<3.0dev,>=2.3.0 (from google-cloud-storage->-r requirements.txt (line 3))
+  Downloading google_cloud_core-2.4.2rc0-py2.py3-none-any.whl.metadata (2.7 kB)
+Collecting google-resumable-media>=2.7.2 (from google-cloud-storage->-r requirements.txt (line 3))
+  Downloading google_resumable_media-2.7.2-py2.py3-none-any.whl.metadata (2.2 kB)
+Collecting google-crc32c<2.0dev,>=1.0 (from google-cloud-storage->-r requirements.txt (line 3))
+  Downloading google_crc32c-1.6.0-cp39-cp39-win_amd64.whl.metadata (2.4 kB)
+Collecting charset-normalizer<4,>=2 (from requests->-r requirements.txt (line 5))
+  Downloading charset_normalizer-3.4.1-cp39-cp39-win_amd64.whl.metadata (36 kB)
+Collecting idna<4,>=2.5 (from requests->-r requirements.txt (line 5))
+  Downloading idna-3.10-py3-none-any.whl.metadata (10 kB)
+Collecting urllib3<3,>=1.21.1 (from requests->-r requirements.txt (line 5))
+  Downloading urllib3-2.3.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting certifi>=2017.4.17 (from requests->-r requirements.txt (line 5))
+  Downloading certifi-2025.1.31-py3-none-any.whl.metadata (2.5 kB)
+Collecting google-ai-generativelanguage==0.6.15 (from google.generativeai->-r requirements.txt (line 7))
+  Using cached google_ai_generativelanguage-0.6.15-py3-none-any.whl.metadata (5.7 kB)
+Collecting google-api-python-client (from google.generativeai->-r requirements.txt (line 7))
+  Downloading google_api_python_client-2.161.0-py2.py3-none-any.whl.metadata (6.7 kB)
+Collecting protobuf (from google.generativeai->-r requirements.txt (line 7))
+  Downloading protobuf-5.29.3-cp39-cp39-win_amd64.whl.metadata (592 bytes)
+Collecting pydantic (from google.generativeai->-r requirements.txt (line 7))
+  Using cached pydantic-2.10.6-py3-none-any.whl.metadata (30 kB)
+Collecting tqdm (from google.generativeai->-r requirements.txt (line 7))
+  Using cached tqdm-4.67.1-py3-none-any.whl.metadata (57 kB)
+Collecting typing-extensions (from google.generativeai->-r requirements.txt (line 7))
+  Using cached typing_extensions-4.12.2-py3-none-any.whl.metadata (3.0 kB)
+Collecting proto-plus<2.0.0dev,>=1.22.3 (from google-ai-generativelanguage==0.6.15->google.generativeai->-r requirements.txt (line 7))
+  Downloading proto_plus-1.26.0-py3-none-any.whl.metadata (2.2 kB)
+Collecting chardet (from unstructured->-r requirements.txt (line 8))
+  Using cached chardet-5.2.0-py3-none-any.whl.metadata (3.4 kB)
+Collecting filetype (from unstructured->-r requirements.txt (line 8))
+  Using cached filetype-1.2.0-py2.py3-none-any.whl.metadata (6.5 kB)
+Collecting python-magic (from unstructured->-r requirements.txt (line 8))
+  Using cached python_magic-0.4.27-py2.py3-none-any.whl.metadata (5.8 kB)
+Collecting lxml (from unstructured->-r requirements.txt (line 8))
+  Downloading lxml-5.3.1-cp39-cp39-win_amd64.whl.metadata (3.8 kB)
+Collecting nltk (from unstructured->-r requirements.txt (line 8))
+  Using cached nltk-3.9.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting beautifulsoup4 (from unstructured->-r requirements.txt (line 8))
+  Downloading beautifulsoup4-4.13.3-py3-none-any.whl.metadata (3.8 kB)
+Collecting emoji (from unstructured->-r requirements.txt (line 8))
+  Using cached emoji-2.14.1-py3-none-any.whl.metadata (5.7 kB)
+Collecting dataclasses-json (from unstructured->-r requirements.txt (line 8))
+  Using cached dataclasses_json-0.6.7-py3-none-any.whl.metadata (25 kB)
+Collecting python-iso639 (from unstructured->-r requirements.txt (line 8))
+  Downloading python_iso639-2025.2.18-py3-none-any.whl.metadata (14 kB)
+Collecting langdetect (from unstructured->-r requirements.txt (line 8))
+  Using cached langdetect-1.0.9-py3-none-any.whl
+Collecting numpy<2 (from unstructured->-r requirements.txt (line 8))
+  Using cached numpy-1.26.4-cp39-cp39-win_amd64.whl.metadata (61 kB)
+Collecting rapidfuzz (from unstructured->-r requirements.txt (line 8))
+  Downloading rapidfuzz-3.12.1-cp39-cp39-win_amd64.whl.metadata (11 kB)
+Collecting backoff (from unstructured->-r requirements.txt (line 8))
+  Using cached backoff-2.2.1-py3-none-any.whl.metadata (14 kB)
+Collecting unstructured-client (from unstructured->-r requirements.txt (line 8))
+  Downloading unstructured_client-0.30.1-py3-none-any.whl.metadata (23 kB)
+Collecting wrapt (from unstructured->-r requirements.txt (line 8))
+  Using cached wrapt-1.17.2-cp39-cp39-win_amd64.whl.metadata (6.5 kB)
+Collecting psutil (from unstructured->-r requirements.txt (line 8))
+  Downloading psutil-7.0.0-cp37-abi3-win_amd64.whl.metadata (23 kB)
+Collecting python-oxmsg (from unstructured->-r requirements.txt (line 8))
+  Downloading python_oxmsg-0.0.2-py3-none-any.whl.metadata (5.0 kB)
+Collecting html5lib (from unstructured->-r requirements.txt (line 8))
+  Using cached html5lib-1.1-py2.py3-none-any.whl.metadata (16 kB)
+Collecting langchain-core<1.0.0,>=0.3.37 (from langchain_community->-r requirements.txt (line 9))
+  Downloading langchain_core-0.3.37-py3-none-any.whl.metadata (5.9 kB)
+Collecting langchain<1.0.0,>=0.3.19 (from langchain_community->-r requirements.txt (line 9))
+  Downloading langchain-0.3.19-py3-none-any.whl.metadata (7.9 kB)
+Collecting SQLAlchemy<3,>=1.4 (from langchain_community->-r requirements.txt (line 9))
+  Downloading SQLAlchemy-2.0.38-cp39-cp39-win_amd64.whl.metadata (9.9 kB)
+Collecting PyYAML>=5.3 (from langchain_community->-r requirements.txt (line 9))
+  Using cached PyYAML-6.0.2-cp39-cp39-win_amd64.whl.metadata (2.1 kB)
+Collecting aiohttp<4.0.0,>=3.8.3 (from langchain_community->-r requirements.txt (line 9))
+  Downloading aiohttp-3.11.12-cp39-cp39-win_amd64.whl.metadata (8.0 kB)
+Collecting tenacity!=8.4.0,<10,>=8.1.0 (from langchain_community->-r requirements.txt (line 9))
+  Using cached tenacity-9.0.0-py3-none-any.whl.metadata (1.2 kB)
+Collecting pydantic-settings<3.0.0,>=2.4.0 (from langchain_community->-r requirements.txt (line 9))
+  Using cached pydantic_settings-2.7.1-py3-none-any.whl.metadata (3.5 kB)
+Collecting langsmith<0.4,>=0.1.125 (from langchain_community->-r requirements.txt (line 9))
+  Downloading langsmith-0.3.8-py3-none-any.whl.metadata (14 kB)
+Collecting httpx-sse<1.0.0,>=0.4.0 (from langchain_community->-r requirements.txt (line 9))
+  Using cached httpx_sse-0.4.0-py3-none-any.whl.metadata (9.0 kB)
+Collecting msgspec>=0.18.6 (from flask_session->-r requirements.txt (line 10))
+  Using cached msgspec-0.19.0-cp39-cp39-win_amd64.whl.metadata (7.1 kB)
+Collecting cachelib (from flask_session->-r requirements.txt (line 10))
+  Using cached cachelib-0.13.0-py3-none-any.whl.metadata (2.0 kB)
+Collecting build>=1.0.3 (from chromadb->-r requirements.txt (line 11))
+  Using cached build-1.2.2.post1-py3-none-any.whl.metadata (6.5 kB)
+Collecting chroma-hnswlib==0.7.6 (from chromadb->-r requirements.txt (line 11))
+  Using cached chroma_hnswlib-0.7.6-cp39-cp39-win_amd64.whl.metadata (262 bytes)
+Collecting fastapi>=0.95.2 (from chromadb->-r requirements.txt (line 11))
+  Downloading fastapi-0.115.8-py3-none-any.whl.metadata (27 kB)
+Collecting uvicorn>=0.18.3 (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 11))
+  Using cached uvicorn-0.34.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting posthog>=2.4.0 (from chromadb->-r requirements.txt (line 11))
+  Downloading posthog-3.14.2-py2.py3-none-any.whl.metadata (2.9 kB)
+Collecting onnxruntime>=1.14.1 (from chromadb->-r requirements.txt (line 11))
+  Using cached onnxruntime-1.19.2-cp39-cp39-win_amd64.whl.metadata (4.7 kB)
+Collecting opentelemetry-api>=1.2.0 (from chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_api-1.30.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting opentelemetry-exporter-otlp-proto-grpc>=1.2.0 (from chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.30.0-py3-none-any.whl.metadata (2.4 kB)
+Collecting opentelemetry-instrumentation-fastapi>=0.41b0 (from chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_instrumentation_fastapi-0.51b0-py3-none-any.whl.metadata (2.2 kB)
+Collecting opentelemetry-sdk>=1.2.0 (from chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_sdk-1.30.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting tokenizers>=0.13.2 (from chromadb->-r requirements.txt (line 11))
+  Using cached tokenizers-0.21.0-cp39-abi3-win_amd64.whl.metadata (6.9 kB)
+Collecting pypika>=0.48.9 (from chromadb->-r requirements.txt (line 11))
+  Using cached PyPika-0.48.9-py2.py3-none-any.whl
+Collecting overrides>=7.3.1 (from chromadb->-r requirements.txt (line 11))
+  Using cached overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)
+Collecting importlib-resources (from chromadb->-r requirements.txt (line 11))
+  Using cached importlib_resources-6.5.2-py3-none-any.whl.metadata (3.9 kB)
+Collecting grpcio>=1.58.0 (from chromadb->-r requirements.txt (line 11))
+  Using cached grpcio-1.70.0-cp39-cp39-win_amd64.whl.metadata (4.0 kB)
+Collecting bcrypt>=4.0.1 (from chromadb->-r requirements.txt (line 11))
+  Using cached bcrypt-4.2.1-cp39-abi3-win_amd64.whl.metadata (10 kB)
+Collecting typer>=0.9.0 (from chromadb->-r requirements.txt (line 11))
+  Using cached typer-0.15.1-py3-none-any.whl.metadata (15 kB)
+Collecting kubernetes>=28.1.0 (from chromadb->-r requirements.txt (line 11))
+  Downloading kubernetes-32.0.1-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting mmh3>=4.0.1 (from chromadb->-r requirements.txt (line 11))
+  Using cached mmh3-5.1.0-cp39-cp39-win_amd64.whl.metadata (16 kB)
+Collecting orjson>=3.9.12 (from chromadb->-r requirements.txt (line 11))
+  Using cached orjson-3.10.15-cp39-cp39-win_amd64.whl.metadata (42 kB)
+Collecting httpx>=0.27.0 (from chromadb->-r requirements.txt (line 11))
+  Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting rich>=10.11.0 (from chromadb->-r requirements.txt (line 11))
+  Using cached rich-13.9.4-py3-none-any.whl.metadata (18 kB)
+Collecting cached_property<2.0.0,>=1.5.1 (from packages->-r requirements.txt (line 13))
+  Using cached cached_property-1.5.2-py2.py3-none-any.whl.metadata (11 kB)
+INFO: pip is looking at multiple versions of packages to determine which version is compatible with other requirements. This could take a while.
+Collecting packages (from -r requirements.txt (line 13))
+  Downloading packages-0.1.0-py3-none-any.whl.metadata (240 bytes)
+Collecting packaging (from gunicorn->-r requirements.txt (line 14))
+  Using cached packaging-24.2-py3-none-any.whl.metadata (3.2 kB)
+Collecting colorama (from click->-r requirements.txt (line 15))
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting aiohappyeyeballs>=2.3.0 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Downloading aiohappyeyeballs-2.4.6-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.1.2 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached aiosignal-1.3.2-py2.py3-none-any.whl.metadata (3.8 kB)
+Collecting async-timeout<6.0,>=4.0 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached async_timeout-5.0.1-py3-none-any.whl.metadata (5.1 kB)
+Collecting attrs>=17.3.0 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached attrs-25.1.0-py3-none-any.whl.metadata (10 kB)
+Collecting frozenlist>=1.1.1 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached frozenlist-1.5.0-cp39-cp39-win_amd64.whl.metadata (14 kB)
+Collecting multidict<7.0,>=4.5 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached multidict-6.1.0-cp39-cp39-win_amd64.whl.metadata (5.1 kB)
+Collecting propcache>=0.2.0 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached propcache-0.2.1-cp39-cp39-win_amd64.whl.metadata (9.5 kB)
+Collecting yarl<2.0,>=1.17.0 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached yarl-1.18.3-cp39-cp39-win_amd64.whl.metadata (71 kB)
+Collecting pyproject_hooks (from build>=1.0.3->chromadb->-r requirements.txt (line 11))
+  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+Collecting tomli>=1.1.0 (from build>=1.0.3->chromadb->-r requirements.txt (line 11))
+  Using cached tomli-2.2.1-py3-none-any.whl.metadata (10 kB)
+Collecting marshmallow<4.0.0,>=3.18.0 (from dataclasses-json->unstructured->-r requirements.txt (line 8))
+  Downloading marshmallow-3.26.1-py3-none-any.whl.metadata (7.3 kB)
+Collecting typing-inspect<1,>=0.4.0 (from dataclasses-json->unstructured->-r requirements.txt (line 8))
+  Using cached typing_inspect-0.9.0-py3-none-any.whl.metadata (1.5 kB)
+Collecting starlette<0.46.0,>=0.40.0 (from fastapi>=0.95.2->chromadb->-r requirements.txt (line 11))
+  Using cached starlette-0.45.3-py3-none-any.whl.metadata (6.3 kB)
+Collecting googleapis-common-protos<2.0.dev0,>=1.56.2 (from google-api-core<3.0.0dev,>=2.15.0->google-cloud-storage->-r requirements.txt (line 3))
+  Downloading googleapis_common_protos-1.67.0-py2.py3-none-any.whl.metadata (5.1 kB)
+Collecting cachetools<6.0,>=2.0.0 (from google-auth<3.0dev,>=2.26.1->google-cloud-storage->-r requirements.txt (line 3))
+  Downloading cachetools-5.5.1-py3-none-any.whl.metadata (5.4 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth<3.0dev,>=2.26.1->google-cloud-storage->-r requirements.txt (line 3))
+  Downloading pyasn1_modules-0.4.1-py3-none-any.whl.metadata (3.5 kB)
+Collecting rsa<5,>=3.1.4 (from google-auth<3.0dev,>=2.26.1->google-cloud-storage->-r requirements.txt (line 3))
+  Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
+Collecting anyio (from httpx>=0.27.0->chromadb->-r requirements.txt (line 11))
+  Using cached anyio-4.8.0-py3-none-any.whl.metadata (4.6 kB)
+Collecting httpcore==1.* (from httpx>=0.27.0->chromadb->-r requirements.txt (line 11))
+  Using cached httpcore-1.0.7-py3-none-any.whl.metadata (21 kB)
+Collecting h11<0.15,>=0.13 (from httpcore==1.*->httpx>=0.27.0->chromadb->-r requirements.txt (line 11))
+  Using cached h11-0.14.0-py3-none-any.whl.metadata (8.2 kB)
+Collecting zipp>=3.20 (from importlib-metadata>=3.6->flask->-r requirements.txt (line 2))
+  Using cached zipp-3.21.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting MarkupSafe>=2.0 (from Jinja2>=3.1.2->flask->-r requirements.txt (line 2))
+  Using cached MarkupSafe-3.0.2-cp39-cp39-win_amd64.whl.metadata (4.1 kB)
+Collecting six>=1.9.0 (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 11))
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting python-dateutil>=2.5.3 (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 11))
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 11))
+  Using cached websocket_client-1.8.0-py3-none-any.whl.metadata (8.0 kB)
+Collecting requests-oauthlib (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 11))
+  Using cached requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+Collecting oauthlib>=3.2.2 (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 11))
+  Using cached oauthlib-3.2.2-py3-none-any.whl.metadata (7.5 kB)
+Collecting durationpy>=0.7 (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 11))
+  Using cached durationpy-0.9-py3-none-any.whl.metadata (338 bytes)
+Collecting langchain-text-splitters<1.0.0,>=0.3.6 (from langchain<1.0.0,>=0.3.19->langchain_community->-r requirements.txt (line 9))
+  Downloading langchain_text_splitters-0.3.6-py3-none-any.whl.metadata (1.9 kB)
+Collecting async-timeout<6.0,>=4.0 (from aiohttp<4.0.0,>=3.8.3->langchain_community->-r requirements.txt (line 9))
+  Using cached async_timeout-4.0.3-py3-none-any.whl.metadata (4.2 kB)
+Collecting jsonpatch<2.0,>=1.33 (from langchain-core<1.0.0,>=0.3.37->langchain_community->-r requirements.txt (line 9))
+  Using cached jsonpatch-1.33-py2.py3-none-any.whl.metadata (3.0 kB)
+Collecting requests-toolbelt<2.0.0,>=1.0.0 (from langsmith<0.4,>=0.1.125->langchain_community->-r requirements.txt (line 9))
+  Using cached requests_toolbelt-1.0.0-py2.py3-none-any.whl.metadata (14 kB)
+Collecting zstandard<0.24.0,>=0.23.0 (from langsmith<0.4,>=0.1.125->langchain_community->-r requirements.txt (line 9))
+  Using cached zstandard-0.23.0-cp39-cp39-win_amd64.whl.metadata (3.0 kB)
+Collecting coloredlogs (from onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 11))
+  Using cached coloredlogs-15.0.1-py2.py3-none-any.whl.metadata (12 kB)
+Collecting flatbuffers (from onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 11))
+  Downloading flatbuffers-25.2.10-py2.py3-none-any.whl.metadata (875 bytes)
+Collecting sympy (from onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 11))
+  Using cached sympy-1.13.3-py3-none-any.whl.metadata (12 kB)
+Collecting deprecated>=1.2.6 (from opentelemetry-api>=1.2.0->chromadb->-r requirements.txt (line 11))
+  Using cached Deprecated-1.2.18-py2.py3-none-any.whl.metadata (5.7 kB)
+Collecting importlib-metadata>=3.6 (from flask->-r requirements.txt (line 2))
+  Using cached importlib_metadata-8.5.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting opentelemetry-exporter-otlp-proto-common==1.30.0 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_exporter_otlp_proto_common-1.30.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting opentelemetry-proto==1.30.0 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_proto-1.30.0-py3-none-any.whl.metadata (2.4 kB)
+Collecting opentelemetry-instrumentation-asgi==0.51b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_instrumentation_asgi-0.51b0-py3-none-any.whl.metadata (2.1 kB)
+Collecting opentelemetry-instrumentation==0.51b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_instrumentation-0.51b0-py3-none-any.whl.metadata (6.3 kB)
+Collecting opentelemetry-semantic-conventions==0.51b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_semantic_conventions-0.51b0-py3-none-any.whl.metadata (2.5 kB)
+Collecting opentelemetry-util-http==0.51b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb->-r requirements.txt (line 11))
+  Downloading opentelemetry_util_http-0.51b0-py3-none-any.whl.metadata (2.6 kB)
+Collecting asgiref~=3.0 (from opentelemetry-instrumentation-asgi==0.51b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb->-r requirements.txt (line 11))
+  Using cached asgiref-3.8.1-py3-none-any.whl.metadata (9.3 kB)
+Collecting monotonic>=1.5 (from posthog>=2.4.0->chromadb->-r requirements.txt (line 11))
+  Using cached monotonic-1.6-py2.py3-none-any.whl.metadata (1.5 kB)
+Collecting annotated-types>=0.6.0 (from pydantic->google.generativeai->-r requirements.txt (line 7))
+  Using cached annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.27.2 (from pydantic->google.generativeai->-r requirements.txt (line 7))
+  Using cached pydantic_core-2.27.2-cp39-cp39-win_amd64.whl.metadata (6.7 kB)
+Collecting markdown-it-py>=2.2.0 (from rich>=10.11.0->chromadb->-r requirements.txt (line 11))
+  Using cached markdown_it_py-3.0.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich>=10.11.0->chromadb->-r requirements.txt (line 11))
+  Using cached pygments-2.19.1-py3-none-any.whl.metadata (2.5 kB)
+Collecting greenlet!=0.4.17 (from SQLAlchemy<3,>=1.4->langchain_community->-r requirements.txt (line 9))
+  Using cached greenlet-3.1.1-cp39-cp39-win_amd64.whl.metadata (3.9 kB)
+Collecting huggingface-hub<1.0,>=0.16.4 (from tokenizers>=0.13.2->chromadb->-r requirements.txt (line 11))
+  Downloading huggingface_hub-0.29.0-py3-none-any.whl.metadata (13 kB)
+Collecting shellingham>=1.3.0 (from typer>=0.9.0->chromadb->-r requirements.txt (line 11))
+  Using cached shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+Collecting httptools>=0.6.3 (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 11))
+  Using cached httptools-0.6.4-cp39-cp39-win_amd64.whl.metadata (3.7 kB)
+Collecting watchfiles>=0.13 (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 11))
+  Using cached watchfiles-1.0.4-cp39-cp39-win_amd64.whl.metadata (5.0 kB)
+Collecting websockets>=10.4 (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 11))
+  Downloading websockets-15.0-cp39-cp39-win_amd64.whl.metadata (7.0 kB)
+Collecting soupsieve>1.2 (from beautifulsoup4->unstructured->-r requirements.txt (line 8))
+  Using cached soupsieve-2.6-py3-none-any.whl.metadata (4.6 kB)
+Collecting httplib2<1.dev0,>=0.19.0 (from google-api-python-client->google.generativeai->-r requirements.txt (line 7))
+  Using cached httplib2-0.22.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting google-auth-httplib2<1.0.0,>=0.2.0 (from google-api-python-client->google.generativeai->-r requirements.txt (line 7))
+  Using cached google_auth_httplib2-0.2.0-py2.py3-none-any.whl.metadata (2.2 kB)
+Collecting uritemplate<5,>=3.0.1 (from google-api-python-client->google.generativeai->-r requirements.txt (line 7))
+  Using cached uritemplate-4.1.1-py2.py3-none-any.whl.metadata (2.9 kB)
+Collecting webencodings (from html5lib->unstructured->-r requirements.txt (line 8))
+  Using cached webencodings-0.5.1-py2.py3-none-any.whl.metadata (2.1 kB)
+Collecting joblib (from nltk->unstructured->-r requirements.txt (line 8))
+  Using cached joblib-1.4.2-py3-none-any.whl.metadata (5.4 kB)
+Collecting regex>=2021.8.3 (from nltk->unstructured->-r requirements.txt (line 8))
+  Using cached regex-2024.11.6-cp39-cp39-win_amd64.whl.metadata (41 kB)
+Collecting olefile (from python-oxmsg->unstructured->-r requirements.txt (line 8))
+  Using cached olefile-0.47-py2.py3-none-any.whl.metadata (9.7 kB)
+Collecting aiofiles>=24.1.0 (from unstructured-client->unstructured->-r requirements.txt (line 8))
+  Using cached aiofiles-24.1.0-py3-none-any.whl.metadata (10 kB)
+Collecting cryptography>=3.1 (from unstructured-client->unstructured->-r requirements.txt (line 8))
+  Using cached cryptography-43.0.3-cp39-abi3-win_amd64.whl.metadata (5.4 kB)
+Collecting eval-type-backport>=0.2.0 (from unstructured-client->unstructured->-r requirements.txt (line 8))
+  Using cached eval_type_backport-0.2.2-py3-none-any.whl.metadata (2.2 kB)
+Collecting nest-asyncio>=1.6.0 (from unstructured-client->unstructured->-r requirements.txt (line 8))
+  Using cached nest_asyncio-1.6.0-py3-none-any.whl.metadata (2.8 kB)
+Collecting pypdf>=4.0 (from unstructured-client->unstructured->-r requirements.txt (line 8))
+  Downloading pypdf-5.3.0-py3-none-any.whl.metadata (7.2 kB)
+Collecting cffi>=1.12 (from cryptography>=3.1->unstructured-client->unstructured->-r requirements.txt (line 8))
+  Using cached cffi-1.17.1-cp39-cp39-win_amd64.whl.metadata (1.6 kB)
+Collecting grpcio-status<2.0.dev0,>=1.33.2 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.15->google.generativeai->-r requirements.txt (line 7))
+  Using cached grpcio_status-1.70.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting pyparsing!=3.0.0,!=3.0.1,!=3.0.2,!=3.0.3,<4,>=2.4.2 (from httplib2<1.dev0,>=0.19.0->google-api-python-client->google.generativeai->-r requirements.txt (line 7))
+  Using cached pyparsing-3.2.1-py3-none-any.whl.metadata (5.0 kB)
+Collecting filelock (from huggingface-hub<1.0,>=0.16.4->tokenizers>=0.13.2->chromadb->-r requirements.txt (line 11))
+  Using cached filelock-3.17.0-py3-none-any.whl.metadata (2.9 kB)
+Collecting fsspec>=2023.5.0 (from huggingface-hub<1.0,>=0.16.4->tokenizers>=0.13.2->chromadb->-r requirements.txt (line 11))
+  Downloading fsspec-2025.2.0-py3-none-any.whl.metadata (11 kB)
+Collecting jsonpointer>=1.9 (from jsonpatch<2.0,>=1.33->langchain-core<1.0.0,>=0.3.37->langchain_community->-r requirements.txt (line 9))
+  Using cached jsonpointer-3.0.0-py2.py3-none-any.whl.metadata (2.3 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=10.11.0->chromadb->-r requirements.txt (line 11))
+  Using cached mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Collecting pyasn1<0.7.0,>=0.4.6 (from pyasn1-modules>=0.2.1->google-auth<3.0dev,>=2.26.1->google-cloud-storage->-r requirements.txt (line 3))
+  Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+Collecting exceptiongroup>=1.0.2 (from anyio->httpx>=0.27.0->chromadb->-r requirements.txt (line 11))
+  Using cached exceptiongroup-1.2.2-py3-none-any.whl.metadata (6.6 kB)
+Collecting sniffio>=1.1 (from anyio->httpx>=0.27.0->chromadb->-r requirements.txt (line 11))
+  Using cached sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+Collecting mypy-extensions>=0.3.0 (from typing-inspect<1,>=0.4.0->dataclasses-json->unstructured->-r requirements.txt (line 8))
+  Using cached mypy_extensions-1.0.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting humanfriendly>=9.1 (from coloredlogs->onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 11))
+  Using cached humanfriendly-10.0-py2.py3-none-any.whl.metadata (9.2 kB)
+Collecting mpmath<1.4,>=1.1.0 (from sympy->onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 11))
+  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting pycparser (from cffi>=1.12->cryptography>=3.1->unstructured-client->unstructured->-r requirements.txt (line 8))
+  Using cached pycparser-2.22-py3-none-any.whl.metadata (943 bytes)
+Collecting pyreadline3 (from humanfriendly>=9.1->coloredlogs->onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 11))
+  Using cached pyreadline3-3.5.4-py3-none-any.whl.metadata (4.7 kB)
+Using cached flask-3.1.0-py3-none-any.whl (102 kB)
+Downloading google_cloud_storage-3.0.0-py2.py3-none-any.whl (173 kB)
+Downloading requests-2.32.3-py3-none-any.whl (64 kB)
+Using cached Flask_Cors-5.0.0-py2.py3-none-any.whl (14 kB)
+Using cached google_generativeai-0.8.4-py3-none-any.whl (175 kB)
+Using cached google_ai_generativelanguage-0.6.15-py3-none-any.whl (1.3 MB)
+Downloading unstructured-0.16.22-py3-none-any.whl (1.8 MB)
+   ---------------------------------------- 1.8/1.8 MB 5.0 MB/s eta 0:00:00
+Downloading langchain_community-0.3.18-py3-none-any.whl (2.5 MB)
+   ---------------------------------------- 2.5/2.5 MB 4.0 MB/s eta 0:00:00
+Using cached flask_session-0.8.0-py3-none-any.whl (24 kB)
+Using cached chromadb-0.6.3-py3-none-any.whl (611 kB)
+Using cached chroma_hnswlib-0.7.6-cp39-cp39-win_amd64.whl (151 kB)
+Downloading packages-0.1.0-py3-none-any.whl (1.0 kB)
+Downloading gunicorn-23.0.0-py3-none-any.whl (85 kB)
+Using cached click-8.1.8-py3-none-any.whl (98 kB)
+Using cached python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+Downloading aiohttp-3.11.12-cp39-cp39-win_amd64.whl (442 kB)
+Using cached bcrypt-4.2.1-cp39-abi3-win_amd64.whl (153 kB)
+Using cached blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Using cached build-1.2.2.post1-py3-none-any.whl (22 kB)
+Downloading certifi-2025.1.31-py3-none-any.whl (166 kB)
+Downloading charset_normalizer-3.4.1-cp39-cp39-win_amd64.whl (102 kB)
+Using cached dataclasses_json-0.6.7-py3-none-any.whl (28 kB)
+Downloading fastapi-0.115.8-py3-none-any.whl (94 kB)
+Downloading google_api_core-2.24.1-py3-none-any.whl (160 kB)
+Downloading google_auth-2.38.0-py2.py3-none-any.whl (210 kB)
+Downloading google_cloud_core-2.4.2rc0-py2.py3-none-any.whl (29 kB)
+Downloading google_crc32c-1.6.0-cp39-cp39-win_amd64.whl (33 kB)
+Downloading google_resumable_media-2.7.2-py2.py3-none-any.whl (81 kB)
+Using cached grpcio-1.70.0-cp39-cp39-win_amd64.whl (4.3 MB)
+Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Using cached httpcore-1.0.7-py3-none-any.whl (78 kB)
+Using cached httpx_sse-0.4.0-py3-none-any.whl (7.8 kB)
+Downloading idna-3.10-py3-none-any.whl (70 kB)
+Using cached itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Using cached jinja2-3.1.5-py3-none-any.whl (134 kB)
+Downloading kubernetes-32.0.1-py2.py3-none-any.whl (2.0 MB)
+   ---------------------------------------- 2.0/2.0 MB 2.3 MB/s eta 0:00:00
+Downloading langchain-0.3.19-py3-none-any.whl (1.0 MB)
+   ---------------------------------------- 1.0/1.0 MB 3.2 MB/s eta 0:00:00
+Downloading langchain_core-0.3.37-py3-none-any.whl (413 kB)
+Downloading langsmith-0.3.8-py3-none-any.whl (332 kB)
+Using cached mmh3-5.1.0-cp39-cp39-win_amd64.whl (41 kB)
+Using cached msgspec-0.19.0-cp39-cp39-win_amd64.whl (186 kB)
+Using cached numpy-1.26.4-cp39-cp39-win_amd64.whl (15.8 MB)
+Using cached onnxruntime-1.19.2-cp39-cp39-win_amd64.whl (11.1 MB)
+Downloading opentelemetry_api-1.30.0-py3-none-any.whl (64 kB)
+Using cached importlib_metadata-8.5.0-py3-none-any.whl (26 kB)
+Downloading opentelemetry_exporter_otlp_proto_grpc-1.30.0-py3-none-any.whl (18 kB)
+Downloading opentelemetry_exporter_otlp_proto_common-1.30.0-py3-none-any.whl (18 kB)
+Downloading opentelemetry_proto-1.30.0-py3-none-any.whl (55 kB)
+Downloading opentelemetry_instrumentation_fastapi-0.51b0-py3-none-any.whl (12 kB)
+Downloading opentelemetry_instrumentation-0.51b0-py3-none-any.whl (30 kB)
+Downloading opentelemetry_instrumentation_asgi-0.51b0-py3-none-any.whl (16 kB)
+Downloading opentelemetry_semantic_conventions-0.51b0-py3-none-any.whl (177 kB)
+Downloading opentelemetry_util_http-0.51b0-py3-none-any.whl (7.3 kB)
+Downloading opentelemetry_sdk-1.30.0-py3-none-any.whl (118 kB)
+Using cached orjson-3.10.15-cp39-cp39-win_amd64.whl (133 kB)
+Using cached overrides-7.7.0-py3-none-any.whl (17 kB)
+Using cached packaging-24.2-py3-none-any.whl (65 kB)
+Downloading posthog-3.14.2-py2.py3-none-any.whl (73 kB)
+Using cached backoff-2.2.1-py3-none-any.whl (15 kB)
+Downloading protobuf-5.29.3-cp39-cp39-win_amd64.whl (434 kB)
+Using cached pydantic-2.10.6-py3-none-any.whl (431 kB)
+Using cached pydantic_core-2.27.2-cp39-cp39-win_amd64.whl (2.0 MB)
+Using cached pydantic_settings-2.7.1-py3-none-any.whl (29 kB)
+Using cached PyYAML-6.0.2-cp39-cp39-win_amd64.whl (162 kB)
+Using cached rich-13.9.4-py3-none-any.whl (242 kB)
+Downloading SQLAlchemy-2.0.38-cp39-cp39-win_amd64.whl (2.1 MB)
+   ---------------------------------------- 2.1/2.1 MB 3.9 MB/s eta 0:00:00
+Using cached tenacity-9.0.0-py3-none-any.whl (28 kB)
+Using cached tokenizers-0.21.0-cp39-abi3-win_amd64.whl (2.4 MB)
+Using cached tqdm-4.67.1-py3-none-any.whl (78 kB)
+Using cached typer-0.15.1-py3-none-any.whl (44 kB)
+Using cached typing_extensions-4.12.2-py3-none-any.whl (37 kB)
+Downloading urllib3-2.3.0-py3-none-any.whl (128 kB)
+Using cached uvicorn-0.34.0-py3-none-any.whl (62 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Using cached werkzeug-3.1.3-py3-none-any.whl (224 kB)
+Using cached wrapt-1.17.2-cp39-cp39-win_amd64.whl (38 kB)
+Downloading beautifulsoup4-4.13.3-py3-none-any.whl (186 kB)
+Using cached cachelib-0.13.0-py3-none-any.whl (20 kB)
+Using cached chardet-5.2.0-py3-none-any.whl (199 kB)
+Using cached emoji-2.14.1-py3-none-any.whl (590 kB)
+Using cached filetype-1.2.0-py2.py3-none-any.whl (19 kB)
+Downloading google_api_python_client-2.161.0-py2.py3-none-any.whl (12.9 MB)
+   ---------------------------------------- 12.9/12.9 MB 3.5 MB/s eta 0:00:00
+Using cached html5lib-1.1-py2.py3-none-any.whl (112 kB)
+Using cached importlib_resources-6.5.2-py3-none-any.whl (37 kB)
+Downloading lxml-5.3.1-cp39-cp39-win_amd64.whl (3.8 MB)
+   ---------------------------------------- 3.8/3.8 MB 5.3 MB/s eta 0:00:00
+Using cached nltk-3.9.1-py3-none-any.whl (1.5 MB)
+Downloading psutil-7.0.0-cp37-abi3-win_amd64.whl (244 kB)
+Downloading python_iso639-2025.2.18-py3-none-any.whl (167 kB)
+Using cached python_magic-0.4.27-py2.py3-none-any.whl (13 kB)
+Downloading python_oxmsg-0.0.2-py3-none-any.whl (31 kB)
+Downloading rapidfuzz-3.12.1-cp39-cp39-win_amd64.whl (1.6 MB)
+   ---------------------------------------- 1.6/1.6 MB 4.6 MB/s eta 0:00:00
+Downloading unstructured_client-0.30.1-py3-none-any.whl (112 kB)
+Using cached aiofiles-24.1.0-py3-none-any.whl (15 kB)
+Downloading aiohappyeyeballs-2.4.6-py3-none-any.whl (14 kB)
+Using cached aiosignal-1.3.2-py2.py3-none-any.whl (7.6 kB)
+Using cached annotated_types-0.7.0-py3-none-any.whl (13 kB)
+Using cached async_timeout-4.0.3-py3-none-any.whl (5.7 kB)
+Using cached attrs-25.1.0-py3-none-any.whl (63 kB)
+Downloading cachetools-5.5.1-py3-none-any.whl (9.5 kB)
+Using cached cryptography-43.0.3-cp39-abi3-win_amd64.whl (3.1 MB)
+Using cached Deprecated-1.2.18-py2.py3-none-any.whl (10.0 kB)
+Using cached durationpy-0.9-py3-none-any.whl (3.5 kB)
+Using cached eval_type_backport-0.2.2-py3-none-any.whl (5.8 kB)
+Using cached frozenlist-1.5.0-cp39-cp39-win_amd64.whl (51 kB)
+Using cached google_auth_httplib2-0.2.0-py2.py3-none-any.whl (9.3 kB)
+Downloading googleapis_common_protos-1.67.0-py2.py3-none-any.whl (164 kB)
+Using cached greenlet-3.1.1-cp39-cp39-win_amd64.whl (298 kB)
+Using cached h11-0.14.0-py3-none-any.whl (58 kB)
+Using cached httplib2-0.22.0-py3-none-any.whl (96 kB)
+Using cached httptools-0.6.4-cp39-cp39-win_amd64.whl (89 kB)
+Downloading huggingface_hub-0.29.0-py3-none-any.whl (468 kB)
+Using cached jsonpatch-1.33-py2.py3-none-any.whl (12 kB)
+Downloading langchain_text_splitters-0.3.6-py3-none-any.whl (31 kB)
+Using cached markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+Using cached MarkupSafe-3.0.2-cp39-cp39-win_amd64.whl (15 kB)
+Downloading marshmallow-3.26.1-py3-none-any.whl (50 kB)
+Using cached monotonic-1.6-py2.py3-none-any.whl (8.2 kB)
+Using cached multidict-6.1.0-cp39-cp39-win_amd64.whl (28 kB)
+Using cached nest_asyncio-1.6.0-py3-none-any.whl (5.2 kB)
+Using cached oauthlib-3.2.2-py3-none-any.whl (151 kB)
+Using cached propcache-0.2.1-cp39-cp39-win_amd64.whl (44 kB)
+Downloading proto_plus-1.26.0-py3-none-any.whl (50 kB)
+Downloading pyasn1_modules-0.4.1-py3-none-any.whl (181 kB)
+Using cached pygments-2.19.1-py3-none-any.whl (1.2 MB)
+Downloading pypdf-5.3.0-py3-none-any.whl (300 kB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached regex-2024.11.6-cp39-cp39-win_amd64.whl (274 kB)
+Using cached requests_toolbelt-1.0.0-py2.py3-none-any.whl (54 kB)
+Downloading rsa-4.9-py3-none-any.whl (34 kB)
+Using cached shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Using cached soupsieve-2.6-py3-none-any.whl (36 kB)
+Using cached starlette-0.45.3-py3-none-any.whl (71 kB)
+Using cached anyio-4.8.0-py3-none-any.whl (96 kB)
+Using cached tomli-2.2.1-py3-none-any.whl (14 kB)
+Using cached typing_inspect-0.9.0-py3-none-any.whl (8.8 kB)
+Using cached uritemplate-4.1.1-py2.py3-none-any.whl (10 kB)
+Using cached watchfiles-1.0.4-cp39-cp39-win_amd64.whl (284 kB)
+Using cached websocket_client-1.8.0-py3-none-any.whl (58 kB)
+Downloading websockets-15.0-cp39-cp39-win_amd64.whl (176 kB)
+Using cached yarl-1.18.3-cp39-cp39-win_amd64.whl (90 kB)
+Using cached zipp-3.21.0-py3-none-any.whl (9.6 kB)
+Using cached zstandard-0.23.0-cp39-cp39-win_amd64.whl (495 kB)
+Using cached coloredlogs-15.0.1-py2.py3-none-any.whl (46 kB)
+Downloading flatbuffers-25.2.10-py2.py3-none-any.whl (30 kB)
+Using cached joblib-1.4.2-py3-none-any.whl (301 kB)
+Using cached olefile-0.47-py2.py3-none-any.whl (114 kB)
+Using cached pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+Using cached requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Using cached sympy-1.13.3-py3-none-any.whl (6.2 MB)
+Using cached webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
+Using cached asgiref-3.8.1-py3-none-any.whl (23 kB)
+Using cached cffi-1.17.1-cp39-cp39-win_amd64.whl (181 kB)
+Using cached exceptiongroup-1.2.2-py3-none-any.whl (16 kB)
+Downloading fsspec-2025.2.0-py3-none-any.whl (184 kB)
+Using cached grpcio_status-1.70.0-py3-none-any.whl (14 kB)
+Using cached humanfriendly-10.0-py2.py3-none-any.whl (86 kB)
+Using cached jsonpointer-3.0.0-py2.py3-none-any.whl (7.6 kB)
+Using cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Using cached mpmath-1.3.0-py3-none-any.whl (536 kB)
+Using cached mypy_extensions-1.0.0-py3-none-any.whl (4.7 kB)
+Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
+Using cached pyparsing-3.2.1-py3-none-any.whl (107 kB)
+Using cached sniffio-1.3.1-py3-none-any.whl (10 kB)
+Using cached filelock-3.17.0-py3-none-any.whl (16 kB)
+Using cached pycparser-2.22-py3-none-any.whl (117 kB)
+Using cached pyreadline3-3.5.4-py3-none-any.whl (83 kB)
+Installing collected packages: webencodings, uuid, pypika, mpmath, monotonic, flatbuffers, filetype, durationpy, zstandard, zipp, wrapt, websockets, websocket-client, urllib3, uritemplate, typing-extensions, tomli, tenacity, sympy, soupsieve, sniffio, six, shellingham, regex, rapidfuzz, PyYAML, python-magic, python-iso639, python-dotenv, pyreadline3, pyproject_hooks, pyparsing, pygments, pycparser, pyasn1, psutil, protobuf, propcache, packaging, packages, overrides, orjson, opentelemetry-util-http, olefile, oauthlib, numpy, nest-asyncio, mypy-extensions, msgspec, mmh3, mdurl, MarkupSafe, lxml, jsonpointer, joblib, itsdangerous, idna, httpx-sse, httptools, h11, grpcio, greenlet, google-crc32c, fsspec, frozenlist, filelock, exceptiongroup, eval-type-backport, emoji, colorama, charset-normalizer, chardet, certifi, cachetools, cachelib, blinker, bcrypt, backoff, attrs, async-timeout, annotated-types, aiohappyeyeballs, aiofiles, Werkzeug, typing-inspect, tqdm, SQLAlchemy, rsa, requests, python-dateutil, pypdf, pydantic-core, pyasn1-modules, proto-plus, opentelemetry-proto, multidict, marshmallow, markdown-it-py, langdetect, jsonpatch, Jinja2, importlib-resources, importlib-metadata, humanfriendly, httplib2, httpcore, html5lib, gunicorn, googleapis-common-protos, google-resumable-media, deprecated, click, chroma-hnswlib, cffi, beautifulsoup4, asgiref, anyio, aiosignal, yarl, watchfiles, uvicorn, starlette, rich, requests-toolbelt, requests-oauthlib, python-oxmsg, pydantic, posthog, opentelemetry-exporter-otlp-proto-common, opentelemetry-api, nltk, huggingface-hub, httpx, grpcio-status, google-auth, flask, dataclasses-json, cryptography, coloredlogs, build, unstructured-client, typer, tokenizers, pydantic-settings, opentelemetry-semantic-conventions, onnxruntime, langsmith, kubernetes, google-auth-httplib2, google-api-core, flask_session, flask_cors, fastapi, aiohttp, unstructured, opentelemetry-sdk, opentelemetry-instrumentation, langchain-core, google-cloud-core, google-api-python-client, opentelemetry-instrumentation-asgi, opentelemetry-exporter-otlp-proto-grpc, langchain-text-splitters, google-cloud-storage, google-ai-generativelanguage, opentelemetry-instrumentation-fastapi, langchain, google.generativeai, langchain_community, chromadb
+Successfully installed Jinja2-3.1.5 MarkupSafe-3.0.2 PyYAML-6.0.2 SQLAlchemy-2.0.38 Werkzeug-3.1.3 aiofiles-24.1.0 aiohappyeyeballs-2.4.6 aiohttp-3.11.12 aiosignal-1.3.2 annotated-types-0.7.0 anyio-4.8.0 asgiref-3.8.1 async-timeout-4.0.3 attrs-25.1.0 backoff-2.2.1 bcrypt-4.2.1 beautifulsoup4-4.13.3 blinker-1.9.0 build-1.2.2.post1 cachelib-0.13.0 cachetools-5.5.1 certifi-2025.1.31 cffi-1.17.1 chardet-5.2.0 charset-normalizer-3.4.1 chroma-hnswlib-0.7.6 chromadb-0.6.3 click-8.1.8 colorama-0.4.6 coloredlogs-15.0.1 cryptography-43.0.3 dataclasses-json-0.6.7 deprecated-1.2.18 durationpy-0.9 emoji-2.14.1 eval-type-backport-0.2.2 exceptiongroup-1.2.2 fastapi-0.115.8 filelock-3.17.0 filetype-1.2.0 flask-3.1.0 flask_cors-5.0.0 flask_session-0.8.0 flatbuffers-25.2.10 frozenlist-1.5.0 fsspec-2025.2.0 google-ai-generativelanguage-0.6.15 google-api-core-2.24.1 google-api-python-client-2.161.0 google-auth-2.38.0 google-auth-httplib2-0.2.0 google-cloud-core-2.4.2rc0 google-cloud-storage-3.0.0 google-crc32c-1.6.0 google-resumable-media-2.7.2 google.generativeai-0.8.4 googleapis-common-protos-1.67.0 greenlet-3.1.1 grpcio-1.70.0 grpcio-status-1.70.0 gunicorn-23.0.0 h11-0.14.0 html5lib-1.1 httpcore-1.0.7 httplib2-0.22.0 httptools-0.6.4 httpx-0.28.1 httpx-sse-0.4.0 huggingface-hub-0.29.0 humanfriendly-10.0 idna-3.10 importlib-metadata-8.5.0 importlib-resources-6.5.2 itsdangerous-2.2.0 joblib-1.4.2 jsonpatch-1.33 jsonpointer-3.0.0 kubernetes-32.0.1 langchain-0.3.19 langchain-core-0.3.37 langchain-text-splitters-0.3.6 langchain_community-0.3.18 langdetect-1.0.9 langsmith-0.3.8 lxml-5.3.1 markdown-it-py-3.0.0 marshmallow-3.26.1 mdurl-0.1.2 mmh3-5.1.0 monotonic-1.6 mpmath-1.3.0 msgspec-0.19.0 multidict-6.1.0 mypy-extensions-1.0.0 nest-asyncio-1.6.0 nltk-3.9.1 numpy-1.26.4 oauthlib-3.2.2 olefile-0.47 onnxruntime-1.19.2 opentelemetry-api-1.30.0 opentelemetry-exporter-otlp-proto-common-1.30.0 opentelemetry-exporter-otlp-proto-grpc-1.30.0 opentelemetry-instrumentation-0.51b0 opentelemetry-instrumentation-asgi-0.51b0 opentelemetry-instrumentation-fastapi-0.51b0 opentelemetry-proto-1.30.0 opentelemetry-sdk-1.30.0 opentelemetry-semantic-conventions-0.51b0 opentelemetry-util-http-0.51b0 orjson-3.10.15 overrides-7.7.0 packages-0.1.0 packaging-24.2 posthog-3.14.2 propcache-0.2.1 proto-plus-1.26.0 protobuf-5.29.3 psutil-7.0.0 pyasn1-0.6.1 pyasn1-modules-0.4.1 pycparser-2.22 pydantic-2.10.6 pydantic-core-2.27.2 pydantic-settings-2.7.1 pygments-2.19.1 pyparsing-3.2.1 pypdf-5.3.0 pypika-0.48.9 pyproject_hooks-1.2.0 pyreadline3-3.5.4 python-dateutil-2.9.0.post0 python-dotenv-1.0.1 python-iso639-2025.2.18 python-magic-0.4.27 python-oxmsg-0.0.2 rapidfuzz-3.12.1 regex-2024.11.6 requests-2.32.3 requests-oauthlib-2.0.0 requests-toolbelt-1.0.0 rich-13.9.4 rsa-4.9 shellingham-1.5.4 six-1.17.0 sniffio-1.3.1 soupsieve-2.6 starlette-0.45.3 sympy-1.13.3 tenacity-9.0.0 tokenizers-0.21.0 tomli-2.2.1 tqdm-4.67.1 typer-0.15.1 typing-extensions-4.12.2 typing-inspect-0.9.0 unstructured-0.16.22 unstructured-client-0.30.1 uritemplate-4.1.1 urllib3-2.3.0 uuid-1.30 uvicorn-0.34.0 watchfiles-1.0.4 webencodings-0.5.1 websocket-client-1.8.0 websockets-15.0 wrapt-1.17.2 yarl-1.18.3 zipp-3.21.0 zstandard-0.23.0
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>pip install firebase-functions
+ERROR: Could not find a version that satisfies the requirement firebase-functions (from versions: none)
+ERROR: No matching distribution found for firebase-functions
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>python --version
+Python 3.9.0
+
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>npm install -g firebase-tools
+^CTerminate batch job (Y/N)?
+^C
+(venv) C:\Users\TESTRIG\chatbot-testrig\functions>cd ..
+
+(venv) C:\Users\TESTRIG\chatbot-testrig>cd ..
+
+(venv) C:\Users\TESTRIG>npm install -g firebase-tools
+
+changed 631 packages in 1m
+
+71 packages are looking for funding
+  run `npm fund` for details
+
+(venv) C:\Users\TESTRIG>firebase login
+Already logged in as sonysinha526@gmail.com
+
+(venv) C:\Users\TESTRIG>cd C:\Users\TESTRIG\chatbot-testrig
+
+(venv) C:\Users\TESTRIG\chatbot-testrig>firebase init hosting
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\chatbot-testrig
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? Yes
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? public
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
+i  public/404.html is unchanged
+? File public/index.html already exists. Overwrite? No
+i  Skipping write of public/index.html
+
+i  Writing configuration info to firebase.json...
+i  Writing project information to .firebaserc...
+
++  Firebase initialization complete!
+
+(venv) C:\Users\TESTRIG\chatbot-testrig>firebase deploy
+
+=== Deploying to 'chatbot-testrig'...
+
+i  deploying hosting
+i  hosting[chatbot-testrig]: beginning deploy...
+i  hosting[chatbot-testrig]: found 4 files in public
++  hosting[chatbot-testrig]: file upload complete
+i  hosting[chatbot-testrig]: finalizing version...
++  hosting[chatbot-testrig]: version finalized
+i  hosting[chatbot-testrig]: releasing new version...
++  hosting[chatbot-testrig]: release complete
+
++  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/chatbot-testrig/overview
+Hosting URL: https://chatbot-testrig.web.app
+
+(venv) C:\Users\TESTRIG\chatbot-testrig>deactivate
+C:\Users\TESTRIG\chatbot-testrig>cd C:\final_bot_codes\chat_bot
+
+C:\final_bot_codes\chat_bot>firebase init hosting
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\final_bot_codes\chat_bot
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+? Are you ready to proceed? Yes
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Add Firebase to an existing Google Cloud Platform project
+? Select the Google Cloud Platform project you would like to add Firebase: testrig-chatboat (testrig-chatboat)
+√ Adding Firebase resources to Google Cloud Platform project
+
+=== Your Firebase project is ready! ===
+
+Project information:
+   - Project ID: testrig-chatboat
+   - Project Name: testrig-chatboat
+
+Firebase console is available at
+https://console.firebase.google.com/project/testrig-chatboat/overview
+i  Using project testrig-chatboat (testrig-chatboat)
+
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? public
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
++  Wrote public/404.html
++  Wrote public/index.html
+
+i  Writing configuration info to firebase.json...
+i  Writing project information to .firebaserc...
+i  Writing gitignore file to .gitignore...
+
++  Firebase initialization complete!
+
+C:\final_bot_codes\chat_bot>firebase deploy
+
+=== Deploying to 'testrig-chatboat'...
+
+i  deploying hosting
+i  hosting[testrig-chatboat]: beginning deploy...
+i  hosting[testrig-chatboat]: found 2 files in public
++  hosting[testrig-chatboat]: file upload complete
+i  hosting[testrig-chatboat]: finalizing version...
++  hosting[testrig-chatboat]: version finalized
+i  hosting[testrig-chatboat]: releasing new version...
++  hosting[testrig-chatboat]: release complete
+
++  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/testrig-chatboat/overview
+Hosting URL: https://testrig-chatboat.web.app
+
+C:\final_bot_codes\chat_bot>firebase init hosting
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\final_bot_codes\chat_bot
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+  * You are initializing within an existing Firebase project directory
+
+? Are you ready to proceed? Yes
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+i  Using project testrig-chatboat (testrig-chatboat)
+
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? public
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
+i  public/404.html is unchanged
+i  public/index.html is unchanged
+
+i  Writing configuration info to firebase.json...
+i  Writing project information to .firebaserc...
+
++  Firebase initialization complete!
+
+C:\final_bot_codes\chat_bot>firebase deploy
+
+=== Deploying to 'testrig-chatboat'...
+
+i  deploying hosting
+i  hosting[testrig-chatboat]: beginning deploy...
+i  hosting[testrig-chatboat]: found 3 files in public
++  hosting[testrig-chatboat]: file upload complete
+i  hosting[testrig-chatboat]: finalizing version...
++  hosting[testrig-chatboat]: version finalized
+i  hosting[testrig-chatboat]: releasing new version...
++  hosting[testrig-chatboat]: release complete
+
++  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/testrig-chatboat/overview
+Hosting URL: https://testrig-chatboat.web.app
+
+C:\final_bot_codes\chat_bot>
+
+
+
+=============
+
+
+Cloud Build, Cloud Run, and Cloud Functions Explained
+1. Cloud Build
+Definition
+Google Cloud Build is a fully managed CI/CD (Continuous Integration/Continuous Deployment) 
+service that lets you build, test, and deploy applications on Google Cloud.
+
+Purpose
+Automates the process of building, testing, and deploying applications.
+Used to create Docker images and push them to Google Container Registry (GCR) or Artifact Registry.
+Helps in setting up automated pipelines for application deployment.
+
+
+How It Works?
+Define build steps in a cloudbuild.yaml file.
+Cloud Build pulls the source code from repositories like GitHub, GitLab, or Cloud Source Repositories.
+Executes the defined build steps (e.g., install dependencies, run tests, build Docker image).
+Pushes the output (e.g., Docker image) to Container Registry or deploys it to Cloud Run, Kubernetes, or App Engine.
+Pros
+✅ Fully managed and scalable.
+✅ Secure, as it integrates with IAM (Identity and Access Management).
+✅ Supports multiple environments (GKE, Cloud Run, Compute Engine).
+✅ Works well with GitHub and GitLab for CI/CD.
+
+Cons
+❌ Can be slow if not optimized properly.
+❌ Requires YAML configuration, which can be complex.
+❌ Debugging build failures can be tricky.
+
+2. Cloud Run
+Definition
+Google Cloud Run is a serverless container runtime that lets you deploy stateless applications and microservices using containers.
+
+Purpose
+Runs containerized applications on-demand.
+Automatically scales based on traffic.
+Suitable for REST APIs, microservices, and event-driven workloads.
+How It Works?
+You create a Docker container with your application.
+Push it to Google Container Registry (GCR) or Artifact Registry.
+Deploy it to Cloud Run using gcloud CLI or Cloud Console.
+Cloud Run automatically scales the application based on incoming requests.
+Pros
+✅ Serverless – No infrastructure management.
+✅ Scalable – Scales up and down automatically.
+✅ Supports any language (as long as it's containerized).
+✅ Integrated with other Google Cloud services like Cloud SQL, Firestore.
+
+Cons
+❌ Cold start issues (can take time to spin up a container).
+
+
+==========
+
+
+Step-by-Step Guide to Using Cloud Build 🚀
+Cloud Build is a powerful tool for automating builds and deployments in Google Cloud. Below is a detailed step-by-step guide to set up Cloud Build 
+and deploy your application.
+
+🔹 Step 1: Enable Cloud Build API
+Before using Cloud Build, you need to enable its API in your Google Cloud project.
+
+Enable Cloud Build API via Console
+Go to Google Cloud Console: Cloud Build API.
+Click "Enable" to activate Cloud Build for your project.
+Enable Cloud Build API via CLI
+If using Google Cloud SDK, run:
+
+sh
+Copy
+Edit
+gcloud services enable cloudbuild.googleapis.com
+
+🔹 Step 2: Install and Configure Google Cloud SDK
+Ensure you have the Google Cloud SDK installed on your local machine.
+
+Install Google Cloud SDK
+Download and install it from: Google Cloud SDK
+Authenticate:
+sh
+Copy
+Edit
+gcloud auth login
+Set your project:
+sh
+Copy
+Edit
+gcloud config set project [PROJECT_ID]
+Replace [PROJECT_ID] with your actual project ID.
+
+🔹 Step 3: Create a Cloud Build Configuration File
+Cloud Build uses a cloudbuild.yaml file to define build steps.
+
+Example: cloudbuild.yaml for a Python App
+yaml
+Copy
+Edit
+steps:
+  # Step 1: Pull the Python base image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-python-app', '.']
+
+  # Step 2: Push Docker image to Google Container Registry (GCR)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/my-python-app']
+
+# Optional: Deploy the image to Cloud Run automatically
+images:
+  - 'gcr.io/$PROJECT_ID/my-python-app'
+
+
+
+🔹 Step 4: Store Source Code in a Repository
+Cloud Build can pull source code from various repositories:
+
+GitHub
+GitLab
+Cloud Source Repositories
+If using GitHub, you can connect your repository via Cloud Build Triggers.
+
+Connect GitHub to Cloud Build
+Go to Cloud Build Triggers.
+Click Create Trigger.
+Choose GitHub and authorize access.
+Select your repository.
+Configure the trigger to run on push events.
+🔹 Step 5: Run the Cloud Build
+Now that everything is set up, trigger a build.
+
+Trigger a Build from the Terminal
+Run:
+
+sh
+Copy
+Edit
+gcloud builds submit --config cloudbuild.yaml .
+This will: ✅ Build the Docker image
+✅ Push it to Container Registry
+✅ Deploy it (if configured)
+
+🔹 Step 6: Deploy to Cloud Run
+Once the Docker image is built, deploy it to Cloud Run.
+
+sh
+Copy
+Edit
+gcloud run deploy my-python-app \
+  --image gcr.io/$PROJECT_ID/my-python-app \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated
+🔹 Step 7: Monitor the Build
+You can check the status of your builds using:
+
+sh
+Copy
+Edit
+gcloud builds list
+Or view logs in Google Cloud Console → Cloud Build.
+
+✅ Summary
+Step	Action
+1️⃣	Enable Cloud Build API
+2️⃣	Install Google Cloud SDK & Authenticate
+3️⃣	Create a cloudbuild.yaml file
+4️⃣	Store code in a repository (GitHub, GitLab, Cloud Source Repos)
+5️⃣	Run gcloud builds submit to trigger the build
+6️⃣	Deploy to Cloud Run
+7️⃣	Monitor the build process
+🎯 Next Steps
+✅ Automate builds using triggers
+✅ Integrate CI/CD for continuous deployment
+✅ Use Cloud Functions for event-driven automation
+
+===========================================================================
+
+
+
+Step 3: Create a Cloud Build Configuration File (cloudbuild.yaml)
+Cloud Build uses a YAML configuration file (cloudbuild.yaml) to define how your application should be built and deployed.
+This file specifies the build steps, tools, and commands that Cloud Build should execute.
+
+Understanding cloudbuild.yaml in Detail
+Below is the cloudbuild.yaml file you provided, broken down step by step:
+
+yaml
+Copy
+Edit
+steps:
+  # Step 1: Build the Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-python-app', '.']
+
+  # Step 2: Push the Docker Image to Google Container Registry (GCR)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/my-python-app']
+
+# Optional: Specify the image that was built and pushed
+images:
+  - 'gcr.io/$PROJECT_ID/my-python-app'
+🔹 Explanation of Each Part
+
+
+
+1️⃣ Define Build Steps (steps:)
+Each step represents a command that Cloud Build will execute.
+Each step runs inside a container.
+The name field specifies which container image will be used to execute that step.
+
+2️⃣ Step 1: Build the Docker Image
+yaml
+Copy
+Edit
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-python-app', '.']
+What happens in this step?
+✔ Uses the official Docker builder image (gcr.io/cloud-builders/docker).
+✔ Runs the Docker build command:
+
+sh
+Copy
+Edit
+docker build -t gcr.io/$PROJECT_ID/my-python-app .
+✔ This creates a Docker image using the Dockerfile in your project.
+✔ The -t flag tags the image with the name gcr.io/$PROJECT_ID/my-python-app.
+✔ The . at the end tells Docker to look for the Dockerfile in the current directory.
+
+📌 Output of this step:
+✅ A Docker image is created in your local build environment.
+
+3️⃣ Step 2: Push the Image to Google Container Registry (GCR)
+yaml
+Copy
+Edit
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/my-python-app']
+What happens in this step?
+✔ Uses the same Docker image builder (gcr.io/cloud-builders/docker).
+✔ Runs the Docker push command:
+
+sh
+Copy
+Edit
+docker push gcr.io/$PROJECT_ID/my-python-app
+✔ This uploads the image to Google Container Registry (GCR).
+✔ This allows the image to be accessed and deployed from anywhere.
+
+📌 Output of this step:
+✅ The Docker image is now stored in Google Cloud Container Registry (gcr.io).
+
+4️⃣ Step 3: Specify Output Images
+yaml
+Copy
+Edit
+images:
+  - 'gcr.io/$PROJECT_ID/my-python-app'
+What does this do?
+✔ Tells Cloud Build which images were created and pushed during the build process.
+✔ This allows Cloud Build to track the generated Docker image.
+✔ These images can be later deployed to Cloud Run, Kubernetes, or other services.
+
+📌 Output of this step:
+✅ Cloud Build registers gcr.io/$PROJECT_ID/my-python-app as a built artifact.
+
+💡 How Cloud Build Executes This File
+When you run:
+
+sh
+Copy
+Edit
+gcloud builds submit --config cloudbuild.yaml .
+Cloud Build will:
+
+Read the cloudbuild.yaml file.
+Execute step 1 → Build the Docker image.
+Execute step 2 → Push the image to Google Container Registry (GCR).
+Register the image under images:.
+🚀 Next Steps: Deploying to Cloud Run
+Once the Docker image is in Google Container Registry (GCR), you can deploy it to Cloud Run with:
+
+sh
+Copy
+Edit
+gcloud run deploy my-python-app \
+  --image gcr.io/$PROJECT_ID/my-python-app \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated
+✅ Summary
+Step	Action
+1	Build the Docker image from your source code
+2	Push the Docker image to Google Container Registry (GCR)
+3	Register the built image under images:
+4	Deploy the image to Cloud Run or Kubernetes
+This process automates builds and deployments, making it easier to deploy and scale applications.
+
+
+====================
+
+
+🔹 Step 1: Create a Dockerfile
+A Dockerfile is a script that tells Docker how to build your application inside a container.
+
+Example Dockerfile for a Python App
+Create a new file named Dockerfile in your project directory and add the following:
+
+dockerfile
+Copy
+Edit
+# Use an official Python runtime as a parent image
+FROM python:3.9
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose the port your app runs on
+EXPOSE 8000
+
+# Define the command to run the application
+CMD ["python", "app.py"]
+🔹 Explanation of each line:
+
+FROM python:3.9 → Uses Python 3.9 as the base image.
+WORKDIR /app → Sets the working directory inside the container.
+COPY . /app → Copies all files from your local project directory to the container.
+RUN pip install --no-cache-dir -r requirements.txt → Installs dependencies.
+EXPOSE 8000 → Opens port 8000 (change if your app uses a different port).
+CMD ["python", "app.py"] → Runs app.py when the container starts.
+🔹 Step 2: Build the Docker Image
+Once you have the Dockerfile ready, you can build the Docker image using the following command:
+
+sh
+Copy
+Edit
+docker build -t my-python-app .
+🔹 Explanation:
+
+docker build → Command to build a Docker image.
+-t my-python-app → Tags the image with the name my-python-app.
+. → Specifies that the current directory (.) contains the Dockerfile.
+📌 Output: After running this command, Docker will create a containerized version of your application.
+
+🔹 Step 3: Verify the Built Image
+Once the build is complete, you can check if the image was successfully created by running:
+
+sh
+Copy
+Edit
+docker images
+This will list all available Docker images. You should see an image named my-python-app.
+
+🔹 Step 4: Run the Docker Container
+Now that you have built the image, you can run it inside a container:
+
+sh
+Copy
+Edit
+docker run -p 8000:8000 my-python-app
+🔹 Explanation:
+
+docker run → Runs a Docker container from an image.
+-p 8000:8000 → Maps container port 8000 to local machine port 8000.
+my-python-app → Name of the Docker image.
+📌 Output: If your application runs correctly, you should see logs from the Python app, and it will be accessible at:
+
+arduino
+Copy
+Edit
+http://localhost:8000
+🔹 Step 5: Push the Image to Google Cloud Container Registry (Optional)
+If you want to store your Docker image in Google Container Registry (GCR), follow these steps:
+
+1️⃣ Authenticate Docker with Google Cloud:
+
+sh
+Copy
+Edit
+gcloud auth configure-docker
+2️⃣ Tag the image for GCR:
+
+sh
+Copy
+Edit
+docker tag my-python-app gcr.io/$PROJECT_ID/my-python-app
+
+docker tag test-chatbot gcr.io/testrig-chatboat/my-python-app
+
+ docker tag test-chatbot gcr.io/testrig-chatboat/test-chatbot
+Replace $PROJECT_ID with your Google Cloud project ID.
+
+3️⃣ Push the image to GCR:
+
+sh
+Copy
+Edit
+docker push gcr.io/$PROJECT_ID/my-python-app
+
+docker push gcr.io/testrig-chatboat/testrig-chatboat
+
+
+📌 Now, your image is stored in Google Cloud Container Registry! 🎉
+
+✅ Summary
+Step	Command
+1. Create a Dockerfile	Define how your app runs inside a container
+2. Build the Docker image	docker build -t my-python-app .
+3. Verify the image	docker images
+4. Run the container	docker run -p 8000:8000 my-python-app
+5. Push to GCR (Optional)	docker push gcr.io/$PROJECT_ID/my-python-app
+Now your Python app is containerized and ready for deployment! 🚀🔥
+
+Let me know if you need help! 😊
+
+=======================================================================
+docker
+
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Windows\system32> docker build -t testrig-chatbot .
+[+] Building 0.4s (1/1) FINISHED                                                                                                                                        docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 2B                                                                                                                                                      0.1s
+ERROR: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
+PS C:\Windows\system32> cd C:\Users\TESTRIG\chatbot-testrig\docker-build
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot .
+[+] Building 401.3s (9/9) FINISHED                                                                                                                                      docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 456B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.7s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                      55.3s
+ => => transferring context: 497.73MB                                                                                                                                                  55.1s
+ => [1/4] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => CACHED [2/4] WORKDIR /app                                                                                                                                                           0.0s
+ => [3/4] COPY . /app                                                                                                                                                                  13.7s
+ => [4/4] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                          235.7s
+ => exporting to image                                                                                                                                                                 92.9s
+ => => exporting layers                                                                                                                                                                37.7s
+ => => exporting manifest sha256:e6b668738cd0d6d266a7d77d5babbf03c4cf176ede78cd0d7d2b8c07a71795fb                                                                                       0.1s
+ => => exporting config sha256:016346fb90b959e7ff7b182cb9849234fa224944e6d52d7b8c19f6dbda9c41c6                                                                                         0.0s
+ => => exporting attestation manifest sha256:d7b43148ea22e47a14b223140f733a874990ec0f2100341a489488ed87cce617                                                                           0.2s
+ => => exporting manifest list sha256:4909219d426f3ffcca9d183d1274cf957cc661a5902e045cfc3c8b75a2f5fbff                                                                                  0.2s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              54.6s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker images
+REPOSITORY            TAG       IMAGE ID       CREATED         SIZE
+test-chatbot          latest    4909219d426f   3 minutes ago   2.95GB
+chatbot               latest    7c35e8d0b2a8   2 hours ago     2.25GB
+chatbot-application   latest    6da3b477ff28   2 hours ago     2.25GB
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker rmi -f 6da3b477ff28
+Untagged: chatbot-application:latest
+Deleted: sha256:6da3b477ff28546a64ec70a00203cbcce179b7ce898b7ce87aba1fbacadfebb8
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker rmi -f 7c35e8d0b2a8
+Untagged: chatbot:latest
+Deleted: sha256:7c35e8d0b2a8dd2b0d6844d093514e708076ac970f94fbc48e3af80a515db1db
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run -p 8000:8000 test-chatbot
+Traceback (most recent call last):
+  File "/app/main.py", line 3, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+[+] Building 10.2s (9/9) FINISHED                                                                                                                                       docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 456B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.8s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/4] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       6.3s
+ => => transferring context: 2.59MB                                                                                                                                                     6.0s
+ => CACHED [2/4] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/4] COPY . /app                                                                                                                                                            0.0s
+ => CACHED [4/4] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                                  0.4s
+ => => exporting layers                                                                                                                                                                 0.0s
+ => => exporting manifest sha256:e6b668738cd0d6d266a7d77d5babbf03c4cf176ede78cd0d7d2b8c07a71795fb                                                                                       0.0s
+ => => exporting config sha256:016346fb90b959e7ff7b182cb9849234fa224944e6d52d7b8c19f6dbda9c41c6                                                                                         0.0s
+ => => exporting attestation manifest sha256:0fa954ad2d59e0990d8902bbff9266e50cba12e80a6b05211f138e47ed2ca16d                                                                           0.1s
+ => => exporting manifest list sha256:2827db15eade255df43265deb6aa228bf977de5e16cb5e5f15e152a2e9738fe2                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbots:latest                                                                                                                                 0.0s
+ => => unpacking to docker.io/library/test-chatbots:latest                                                                                                                              0.0s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> python --version
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Manage App Execution Aliases.
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> python --version
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Manage App Execution Aliases.
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker images
+REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
+test-chatbots   latest    2827db15eade   33 minutes ago   2.95GB
+test-chatbot    latest    4909219d426f   33 minutes ago   2.95GB
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build test-chatbot
+[+] Building 0.0s (0/0)                                                                                                                                                 docker:desktop-linux
+ERROR: unable to prepare context: path "test-chatbot" not found
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot
+[+] Building 257.0s (10/10) FINISHED                                                                                                                                    docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.0s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       2.8s
+ => => transferring context: 2.59MB                                                                                                                                                     2.7s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => [3/5] COPY requirements.txt /app/                                                                                                                                                   0.2s
+ => [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                          144.0s
+ => [5/5] COPY . /app                                                                                                                                                                  45.2s
+ => exporting to image                                                                                                                                                                 61.7s
+ => => exporting layers                                                                                                                                                                28.3s
+ => => exporting manifest sha256:33bb350ff51dfebed857b78e258f09328d7dfdd3f7de301a401984021e0e32a6                                                                                       0.1s
+ => => exporting config sha256:3b108285249cab352f5acda6dd632eadc9beebd4ea7a1839b72df7061e6d743b                                                                                         0.1s
+ => => exporting attestation manifest sha256:a6ffc75d094b7931e0d8edda340ec0439962354db6f7b66706ecef0f916342ea                                                                           0.1s
+ => => exporting manifest list sha256:d7ea64985412175a71f0ca93627f97f670ff6aa08a21351fc7aac0eb2c5d7d42                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              33.0s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Traceback (most recent call last):g\docker-build> docker build -t test-chatbot .
+  File "/app/main.py", line 3, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot .
+[+] Building 50.5s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           1.9s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                       6.3s
+ => => transferring context: 4.37MB                                                                                                                                                     6.2s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   7.8s
+ => exporting to image                                                                                                                                                                 33.8s
+ => => exporting layers                                                                                                                                                                23.1s
+ => => exporting manifest sha256:059d3b9de30b7ed86a2f1bd1ff45201d9e54cefe0eed69c492ad6a84330c76ba                                                                                       0.1s
+ => => exporting config sha256:ec2f5860721f1c9280b131270c735a5e41f192733a272945d17b7421009c6712                                                                                         0.0s
+ => => exporting attestation manifest sha256:a1074f78c0704fa922ccef3115d3831c9c74d9d02028c6865203e44650c5062a                                                                           0.1s
+ => => exporting manifest list sha256:a292efd02d149322fdb7c90b0d06261928c8b02d1665231089c059c8db18bde7                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              10.4s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Traceback (most recent call last):
+  File "/app/main.py", line 3, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+[+] Building 64.7s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           1.9s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       7.0s
+ => => transferring context: 2.64MB                                                                                                                                                     6.9s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   6.0s
+ => exporting to image                                                                                                                                                                 49.1s
+ => => exporting layers                                                                                                                                                                23.2s
+ => => exporting manifest sha256:8cef27a390bc3bbdb5ed4a0f1fdf491b89cb66c8ea3222d82078ee3c2c445545                                                                                       0.1s
+ => => exporting config sha256:4d20e268d9cc0eb77c6c635d4d5dc81ecd49157f093dc14db991dc018b70412c                                                                                         0.0s
+ => => exporting attestation manifest sha256:94c63706c1b55ac6b9cc948dea44073aa72b0a652b9c869af62ea9ddcd6674dd                                                                           0.1s
+ => => exporting manifest list sha256:40538f6eb703809c3670e24960f1004b353ceabef8e2bfe8e62204e0693bdcf8                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              25.5s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Google Cloud Storage client initialized successfully!
+Traceback (most recent call last):
+  File "/app/main.py", line 70, in <module>
+    datastore_client = datastore.Client()
+NameError: name 'datastore' is not defined
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot .
+[+] Building 93.9s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.1s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.2s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.3s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.2s
+ => [internal] load build context                                                                                                                                                       8.3s
+ => => transferring context: 2.64MB                                                                                                                                                     8.0s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                  46.8s
+ => exporting to image                                                                                                                                                                 35.7s
+ => => exporting layers                                                                                                                                                                24.6s
+ => => exporting manifest sha256:cb401aa2a9ff5e7989393a3396e237b3d0967b9ed086aec5da6bbb2ef30a6b1d                                                                                       0.1s
+ => => exporting config sha256:77175fea8643028e0bd8024486302781679fa3c8d62b5871d2c8e0844a7feed4                                                                                         0.1s
+ => => exporting attestation manifest sha256:cbb04aff26af10c518ec277a3ce8f35562800766a4a9d9dfd1488dc622df9c12                                                                           0.1s
+ => => exporting manifest list sha256:db21c8238202ee7d9b6eeaf734b804ec7f3d4ea86c703218e25ebbcc2e40848d                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              10.7s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Google Cloud Storage client initialized successfully!
+b781a4d7107fedef1e7bcda95b68c679c81b8a062ce7acf8724a669b7dbc7863
+2025-02-21 10:42:17,140 - __main__ - INFO - Extracted keywords: ['identifies', 've', 'his', 'extended', 'enhancing', 'to', 'the', 'business', 'regularly', 'understood', 'in', 'services', 'tests', 'lambdatest', 'india', 'assurance', 'activities', 'experiences', 'doing', 'devops']
+/app/main.py:156: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+2025-02-21 10:42:29,771 - __main__ - ERROR - Failed to fetch content from URL: Could not import sentence_transformers python package. Please install it with `pip install sentence-transformers`.
+ * Serving Flask app 'main'
+ * Debug mode: off
+2025-02-21 10:42:29,792 - werkzeug - INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2025-02-21 10:42:29,792 - werkzeug - INFO - Press CTRL+C to quit
+=======================================================================================
+
+
+
+Understanding the Registry Name in GCP
+In the context of Google Cloud Platform (GCP) and Docker,
+ the registry name refers to the container registry URL where your Docker images are stored.
+ GCP provides two main container registries:
+
+Artifact Registry (Recommended) - Uses domain format:
+
+us-docker.pkg.dev
+europe-docker.pkg.dev
+asia-docker.pkg.dev
+
+Example: us-docker.pkg.dev/my-project/my-repository/test-chatbot
+
+Container Registry (Legacy) - Uses domain format:
+
+gcr.io
+us.gcr.io
+eu.gcr.io
+asia.gcr.io
+Example: gcr.io/my-project/test-chatbot
+
+In your command:
+
+sh
+Copy
+Edit
+gcloud auth configure-docker
+It is setting authentication for all Google Container Registries (gcr.io, us.gcr.io, etc.), but you can configure it for only the one you need.
+
+Configuring Docker in GCP
+To use Docker with Google Container Registry (GCR) or Artifact Registry, follow these steps:
+
+Step 1: Enable Required Services
+Before pushing Docker images, ensure that the Artifact Registry API or Container Registry API is enabled in your GCP project:
+
+sh
+Copy
+Edit
+gcloud services enable artifactregistry.googleapis.com
+gcloud services enable containerregistry.googleapis.com
+Step 2: Authenticate Docker with GCP
+To authenticate your Docker client with GCR, run:
+
+sh
+Copy
+Edit
+gcloud auth configure-docker gcr.io
+OR if you are using Artifact Registry:
+
+sh
+Copy
+Edit
+gcloud auth configure-docker us-docker.pkg.dev
+Building and Pushing Docker Images to GCP
+For Google Container Registry (GCR)
+Build the Docker image:
+
+sh
+Copy
+Edit
+docker build -t gcr.io/PROJECT-ID/test-chatbot .
+Replace PROJECT-ID with your GCP project ID.
+
+Push the image to GCR:
+
+sh
+Copy
+Edit
+docker push gcr.io/PROJECT-ID/test-chatbot
+For Artifact Registry (Recommended)
+Create an Artifact Registry repository:
+
+sh
+Copy
+Edit
+gcloud artifacts repositories create my-repo --repository-format=docker --location=us
+Tag and push the image:
+
+sh
+Copy
+Edit
+docker tag test-chatbot us-docker.pkg.dev/PROJECT-ID/my-repo/test-chatbot
+docker push us-docker.pkg.dev/PROJECT-ID/my-repo/test-chatbot
+Running the Docker Container from GCP Registry
+Once pushed, you can run the container from GCP:
+
+sh
+Copy
+Edit
+docker run gcr.io/PROJECT-ID/test-chatbot
+or
+
+sh
+Copy
+Edit
+docker run us-docker.pkg.dev/PROJECT-ID/my-repo/test-chatbot
+Deploying the Docker Container to Cloud Run
+If you want to deploy it to Cloud Run:
+
+sh
+Copy
+Edit
+gcloud run deploy test-chatbot --image=gcr.io/PROJECT-ID/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated
+Let me know if you need any modifications! 🚀
+
+powershell
+Copy
+Edit
+gcloud config list
+Ensure the correct project_id is set.
+
+If not, set it using:
+
+powershell
+Copy
+Edit
+gcloud config set project PROJECT_ID
+(Replace PROJECT_ID with your actual Google Cloud project ID.)
+
+Step 2: Authenticate gcloud CLI with Docker
+Run this command in PowerShell:
+
+powershell
+Copy
+Edit
+gcloud auth configure-docker gcr.io
+This updates Docker’s config file (~/.docker/config.json) to allow pushing images to Google Container Registry (GCR).
+
+To authenticate manually (if the above fails):
+
+powershell
+Copy
+Edit
+gcloud auth login
+gcloud auth configure-docker gcr.io
+Step 3: Tag Your Docker Image Correctly
+From your docker images output, you have:
+
+bash
+Copy
+Edit
+REPOSITORY                              TAG       IMAGE ID       CREATED       SIZE
+test-chatbot                            latest    db21c8238202   2 hours ago   2.95GB
+gcr.io/testrig-chatboat/my-python-app   latest    db21c8238202   2 hours ago   2.95GB
+gcr.io/testrig-chatboat/test-chatbot    latest    db21c8238202   2 hours ago   2.95GB
+Since gcr.io/testrig-chatboat/test-chatbot is already tagged, no need to tag again. But if needed, use:
+
+powershell
+Copy
+Edit
+docker tag test-chatbot gcr.io/testrig-chatboat/test-chatbot
+
+
+Step 4: Push Docker Image to Google Container Registry
+Now, push the image to Google Container Registry:
+
+powershell
+Copy
+Edit
+docker push gcr.io/testrig-chatboat/test-chatbot
+Step 5: Verify the Image in GCR
+Check if the image was successfully pushed:
+
+powershell
+Copy
+Edit
+gcloud container images list --repository gcr.io/testrig-chatboat
+To see image versions/tags:
+
+powershell
+Copy
+Edit
+gcloud container images list-tags gcr.io/testrig-chatboat/test-chatbot
+Step 6: Run the Image from Google Container Registry
+Once the image is pushed, you can run it directly from GCR:
+
+powershell
+Copy
+Edit
+docker run gcr.io/testrig-chatboat/test-chatbot
+If you want to deploy to Cloud Run:
+
+powershell
+Copy
+Edit
+gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated
+Troubleshooting Common Errors
+Error: "denied: Permission denied"
+Fix: Make sure you are authenticated:
+
+powershell
+Copy
+Edit
+gcloud auth configure-docker gcr.io
+If needed, try:
+
+powershell
+Copy
+Edit
+gcloud auth application-default login
+Error: "Tag does not exist"
+Fix: Ensure the image is tagged correctly before pushing.
+
+Check images:
+
+powershell
+Copy
+Edit
+docker images
+If necessary, retag the image:
+
+powershell
+Copy
+Edit
+docker tag test-chatbot gcr.io/testrig-chatboat/test-chatbot
+docker push gcr.io/testrig-chatboat/test-chatbot
+Final Summary
+✅ Authenticate Docker with GCP
+✅ Tag Docker Image Correctly
+✅ Push Image to GCR
+✅ Verify Image in GCR
+✅ Run or Deploy Image from GCR
+
+
+============
+
+powershell -docker 
+
+
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Windows\system32> docker build -t testrig-chatbot .
+[+] Building 0.4s (1/1) FINISHED                                                                                                                                        docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 2B                                                                                                                                                      0.1s
+ERROR: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
+PS C:\Windows\system32> cd C:\Users\TESTRIG\chatbot-testrig\docker-build
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot .
+[+] Building 401.3s (9/9) FINISHED                                                                                                                                      docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 456B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.7s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                      55.3s
+ => => transferring context: 497.73MB                                                                                                                                                  55.1s
+ => [1/4] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => CACHED [2/4] WORKDIR /app                                                                                                                                                           0.0s
+ => [3/4] COPY . /app                                                                                                                                                                  13.7s
+ => [4/4] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                          235.7s
+ => exporting to image                                                                                                                                                                 92.9s
+ => => exporting layers                                                                                                                                                                37.7s
+ => => exporting manifest sha256:e6b668738cd0d6d266a7d77d5babbf03c4cf176ede78cd0d7d2b8c07a71795fb                                                                                       0.1s
+ => => exporting config sha256:016346fb90b959e7ff7b182cb9849234fa224944e6d52d7b8c19f6dbda9c41c6                                                                                         0.0s
+ => => exporting attestation manifest sha256:d7b43148ea22e47a14b223140f733a874990ec0f2100341a489488ed87cce617                                                                           0.2s
+ => => exporting manifest list sha256:4909219d426f3ffcca9d183d1274cf957cc661a5902e045cfc3c8b75a2f5fbff                                                                                  0.2s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              54.6s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker images
+REPOSITORY            TAG       IMAGE ID       CREATED         SIZE
+test-chatbot          latest    4909219d426f   3 minutes ago   2.95GB
+chatbot               latest    7c35e8d0b2a8   2 hours ago     2.25GB
+chatbot-application   latest    6da3b477ff28   2 hours ago     2.25GB
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker rmi -f 6da3b477ff28
+Untagged: chatbot-application:latest
+Deleted: sha256:6da3b477ff28546a64ec70a00203cbcce179b7ce898b7ce87aba1fbacadfebb8
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker rmi -f 7c35e8d0b2a8
+Untagged: chatbot:latest
+Deleted: sha256:7c35e8d0b2a8dd2b0d6844d093514e708076ac970f94fbc48e3af80a515db1db
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run -p 8000:8000 test-chatbot
+Traceback (most recent call last):
+  File "/app/main.py", line 3, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+[+] Building 10.2s (9/9) FINISHED                                                                                                                                       docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 456B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.8s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/4] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       6.3s
+ => => transferring context: 2.59MB                                                                                                                                                     6.0s
+ => CACHED [2/4] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/4] COPY . /app                                                                                                                                                            0.0s
+ => CACHED [4/4] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                                  0.4s
+ => => exporting layers                                                                                                                                                                 0.0s
+ => => exporting manifest sha256:e6b668738cd0d6d266a7d77d5babbf03c4cf176ede78cd0d7d2b8c07a71795fb                                                                                       0.0s
+ => => exporting config sha256:016346fb90b959e7ff7b182cb9849234fa224944e6d52d7b8c19f6dbda9c41c6                                                                                         0.0s
+ => => exporting attestation manifest sha256:0fa954ad2d59e0990d8902bbff9266e50cba12e80a6b05211f138e47ed2ca16d                                                                           0.1s
+ => => exporting manifest list sha256:2827db15eade255df43265deb6aa228bf977de5e16cb5e5f15e152a2e9738fe2                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbots:latest                                                                                                                                 0.0s
+ => => unpacking to docker.io/library/test-chatbots:latest                                                                                                                              0.0s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> python --version
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Manage App Execution Aliases.
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> python --version
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Manage App Execution Aliases.
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker images
+REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
+test-chatbots   latest    2827db15eade   33 minutes ago   2.95GB
+test-chatbot    latest    4909219d426f   33 minutes ago   2.95GB
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build test-chatbot
+[+] Building 0.0s (0/0)                                                                                                                                                 docker:desktop-linux
+ERROR: unable to prepare context: path "test-chatbot" not found
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot
+[+] Building 257.0s (10/10) FINISHED                                                                                                                                    docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.0s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       2.8s
+ => => transferring context: 2.59MB                                                                                                                                                     2.7s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => [3/5] COPY requirements.txt /app/                                                                                                                                                   0.2s
+ => [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                          144.0s
+ => [5/5] COPY . /app                                                                                                                                                                  45.2s
+ => exporting to image                                                                                                                                                                 61.7s
+ => => exporting layers                                                                                                                                                                28.3s
+ => => exporting manifest sha256:33bb350ff51dfebed857b78e258f09328d7dfdd3f7de301a401984021e0e32a6                                                                                       0.1s
+ => => exporting config sha256:3b108285249cab352f5acda6dd632eadc9beebd4ea7a1839b72df7061e6d743b                                                                                         0.1s
+ => => exporting attestation manifest sha256:a6ffc75d094b7931e0d8edda340ec0439962354db6f7b66706ecef0f916342ea                                                                           0.1s
+ => => exporting manifest list sha256:d7ea64985412175a71f0ca93627f97f670ff6aa08a21351fc7aac0eb2c5d7d42                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              33.0s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Traceback (most recent call last):g\docker-build> docker build -t test-chatbot .
+  File "/app/main.py", line 3, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot .
+[+] Building 50.5s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           1.9s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                       6.3s
+ => => transferring context: 4.37MB                                                                                                                                                     6.2s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   7.8s
+ => exporting to image                                                                                                                                                                 33.8s
+ => => exporting layers                                                                                                                                                                23.1s
+ => => exporting manifest sha256:059d3b9de30b7ed86a2f1bd1ff45201d9e54cefe0eed69c492ad6a84330c76ba                                                                                       0.1s
+ => => exporting config sha256:ec2f5860721f1c9280b131270c735a5e41f192733a272945d17b7421009c6712                                                                                         0.0s
+ => => exporting attestation manifest sha256:a1074f78c0704fa922ccef3115d3831c9c74d9d02028c6865203e44650c5062a                                                                           0.1s
+ => => exporting manifest list sha256:a292efd02d149322fdb7c90b0d06261928c8b02d1665231089c059c8db18bde7                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              10.4s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Traceback (most recent call last):
+  File "/app/main.py", line 3, in <module>
+    from google.cloud import datastore
+ImportError: cannot import name 'datastore' from 'google.cloud' (unknown location)
+[+] Building 64.7s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           1.9s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       7.0s
+ => => transferring context: 2.64MB                                                                                                                                                     6.9s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   6.0s
+ => exporting to image                                                                                                                                                                 49.1s
+ => => exporting layers                                                                                                                                                                23.2s
+ => => exporting manifest sha256:8cef27a390bc3bbdb5ed4a0f1fdf491b89cb66c8ea3222d82078ee3c2c445545                                                                                       0.1s
+ => => exporting config sha256:4d20e268d9cc0eb77c6c635d4d5dc81ecd49157f093dc14db991dc018b70412c                                                                                         0.0s
+ => => exporting attestation manifest sha256:94c63706c1b55ac6b9cc948dea44073aa72b0a652b9c869af62ea9ddcd6674dd                                                                           0.1s
+ => => exporting manifest list sha256:40538f6eb703809c3670e24960f1004b353ceabef8e2bfe8e62204e0693bdcf8                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              25.5s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Google Cloud Storage client initialized successfully!
+Traceback (most recent call last):
+  File "/app/main.py", line 70, in <module>
+    datastore_client = datastore.Client()
+NameError: name 'datastore' is not defined
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker build -t test-chatbot .
+[+] Building 93.9s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 594B                                                                                                                                                    0.1s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.2s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.3s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.2s
+ => [internal] load build context                                                                                                                                                       8.3s
+ => => transferring context: 2.64MB                                                                                                                                                     8.0s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                  46.8s
+ => exporting to image                                                                                                                                                                 35.7s
+ => => exporting layers                                                                                                                                                                24.6s
+ => => exporting manifest sha256:cb401aa2a9ff5e7989393a3396e237b3d0967b9ed086aec5da6bbb2ef30a6b1d                                                                                       0.1s
+ => => exporting config sha256:77175fea8643028e0bd8024486302781679fa3c8d62b5871d2c8e0844a7feed4                                                                                         0.1s
+ => => exporting attestation manifest sha256:cbb04aff26af10c518ec277a3ce8f35562800766a4a9d9dfd1488dc622df9c12                                                                           0.1s
+ => => exporting manifest list sha256:db21c8238202ee7d9b6eeaf734b804ec7f3d4ea86c703218e25ebbcc2e40848d                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              10.7s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Google Cloud Storage client initialized successfully!
+b781a4d7107fedef1e7bcda95b68c679c81b8a062ce7acf8724a669b7dbc7863
+2025-02-21 10:42:17,140 - __main__ - INFO - Extracted keywords: ['identifies', 've', 'his', 'extended', 'enhancing', 'to', 'the', 'business', 'regularly', 'understood', 'in', 'services', 'tests', 'lambdatest', 'india', 'assurance', 'activities', 'experiences', 'doing', 'devops']
+/app/main.py:156: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+2025-02-21 10:42:29,771 - __main__ - ERROR - Failed to fetch content from URL: Could not import sentence_transformers python package. Please install it with `pip install sentence-transformers`.
+ * Serving Flask app 'main'
+ * Debug mode: off
+2025-02-21 10:42:29,792 - werkzeug - INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2025-02-21 10:42:29,792 - werkzeug - INFO - Press CTRL+C to quit
+
+got 3 SIGTERM/SIGINTs, forcefully exiting
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run test-chatbot
+Traceback (most recent call last):
+  File "/app/main.py", line 10, in <module>
+    import google.generativeai as genai
+  File "/usr/local/lib/python3.9/site-packages/google/generativeai/__init__.py", line 45, in <module>
+    from google.generativeai import caching
+  File "/usr/local/lib/python3.9/site-packages/google/generativeai/caching.py", line 21, in <module>
+    from google.generativeai import protos
+  File "/usr/local/lib/python3.9/site-packages/google/generativeai/protos.py", line 74, in <module>
+    from google.ai.generativelanguage_v1beta.types import *
+  File "/usr/local/lib/python3.9/site-packages/google/ai/generativelanguage_v1beta/__init__.py", line 28, in <module>
+    from .services.model_service import ModelServiceAsyncClient, ModelServiceClient
+  File "/usr/local/lib/python3.9/site-packages/google/ai/generativelanguage_v1beta/services/model_service/__init__.py", line 16, in <module>
+    from .async_client import ModelServiceAsyncClient
+  File "/usr/local/lib/python3.9/site-packages/google/ai/generativelanguage_v1beta/services/model_service/async_client.py", line 57, in <module>
+    from .client import ModelServiceClient
+  File "/usr/local/lib/python3.9/site-packages/google/ai/generativelanguage_v1beta/services/model_service/client.py", line 72, in <module>
+    from .transports.base import DEFAULT_CLIENT_INFO, ModelServiceTransport
+  File "/usr/local/lib/python3.9/site-packages/google/ai/generativelanguage_v1beta/services/model_service/transports/__init__.py", line 19, in <module>
+    from .base import ModelServiceTransport
+  File "/usr/local/lib/python3.9/site-packages/google/ai/generativelanguage_v1beta/services/model_service/transports/base.py", line 21, in <module>
+    from google.api_core import gapic_v1, operations_v1
+  File "/usr/local/lib/python3.9/site-packages/google/api_core/operations_v1/__init__.py", line 17, in <module>
+    from google.api_core.operations_v1.abstract_operations_client import AbstractOperationsClient
+  File "/usr/local/lib/python3.9/site-packages/google/api_core/operations_v1/abstract_operations_client.py", line 22, in <module>
+    from google.api_core.operations_v1.transports.base import (
+  File "/usr/local/lib/python3.9/site-packages/google/api_core/operations_v1/transports/__init__.py", line 29, in <module>
+    from .rest_asyncio import AsyncOperationsRestTransport
+  File "/usr/local/lib/python3.9/site-packages/google/api_core/operations_v1/transports/rest_asyncio.py", line 23, in <module>
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession  # type: ignore
+  File "/usr/local/lib/python3.9/site-packages/google/auth/aio/transport/sessions.py", line 27, in <module>
+    from google.auth.aio.transport.aiohttp import Request as AiohttpRequest
+  File "/usr/local/lib/python3.9/site-packages/google/auth/aio/transport/aiohttp.py", line 22, in <module>
+    import aiohttp  # type: ignore
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/__init__.py", line 6, in <module>
+    from .client import (
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/client.py", line 73, in <module>
+    from .client_reqrep import (
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/client_reqrep.py", line 32, in <module>
+    from . import hdrs, helpers, http, multipart, payload
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/multipart.py", line 56, in <module>
+    Self = TypeVar("Self", bound="BodyPartReader")
+  File "/usr/local/lib/python3.9/typing.py", line 642, in __init__
+    self.__bound__ = _type_check(bound, "Bound must be a type.")
+  File "/usr/local/lib/python3.9/typing.py", line 155, in _type_check
+    arg = _type_convert(arg, module=module, allow_special_forms=allow_special_forms)
+  File "/usr/local/lib/python3.9/typing.py", line 133, in _type_convert
+    return ForwardRef(arg, module=module, is_class=allow_special_forms)
+  File "/usr/local/lib/python3.9/typing.py", line 528, in __init__
+    code = compile(arg, '<string>', 'eval')
+KeyboardInterrupt
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud auth configure-docker
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth configure-docker
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker tag test-chatbot gcr.io/testrig-chatboat/my-python-app
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker tag test-chatbot gcr.io/testrig-chatboat/test-chatbot
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build>
+>> docker push gcr.io/testrig-chatboat/testrig-chatboat
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/testrig-chatboat]
+tag does not exist: gcr.io/testrig-chatboat/testrig-chatboat:latest
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker tag test-chatbot gcr.io/testrig-chatboat/test-chatbot
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+24125c5ccd66: Waiting
+34ebcaeb2b96: Waiting
+35af2a7690f2: Waiting
+cd9204957ecb: Waiting
+7576b00d9bb1: Waiting
+473a8a2dea02: Waiting
+32b550be6cb6: Waiting
+375fcbb578c8: Waiting
+8ccfaa3abdee: Waiting
+a492eee5e559: Waiting
+898bf867b580: Waiting
+a99bce2787d5: Waiting
+failed to authorize: failed to fetch anonymous token: unexpected status from GET request to https://gcr.io/v2/token?scope=repository%3Atestrig-chatboat%2Fgcr.io%2Ftest-chatbot%3Apull&scope=repository%3Atestrig-chatboat%2Ftest-chatbot%3Apull%2Cpush&service=gcr.io: 403 Forbidden
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud container images list --repository gcr.io/testrig-chatboat
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud container images list --repository gcr.io/testrig-chatboat
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud auth configure-docker gcr.io
+>>
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth configure-docker gcr.io
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud auth login
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth login
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> Set-ExecutionPolicy Unrestricted -Scope Process
+>>
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): N
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud container images list --repository gcr.io/testrig-chatboat
+>> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker images
+>> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> Set-ExecutionPolicy Unrestricted -Scope Process
+>> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> Set-ExecutionPolicy Restricted -Scope Process
+>>
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): Set-ExecutionPolicy Restricted -Scope Process
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): N
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker images
+REPOSITORY                              TAG       IMAGE ID       CREATED       SIZE
+test-chatbot                            latest    db21c8238202   2 hours ago   2.95GB
+gcr.io/testrig-chatboat/my-python-app   latest    db21c8238202   2 hours ago   2.95GB
+gcr.io/testrig-chatboat/test-chatbot    latest    db21c8238202   2 hours ago   2.95GB
+test-chatbots                           latest    2827db15eade   3 hours ago   2.95GB
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud auth login
+gcloud : File C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:1
++ gcloud auth login
++ ~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> Set-ExecutionPolicy Unrestricted -Scope Process
+>>
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud auth login
+Your browser has been opened to visit:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940559.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8085%2F&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fsqlservice.login+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=lj60mRxDXd6bsWPZogAD9i3ikOqZV1&access_type=offline&code_challenge=iEBgyyamJcUprlaV1Gqn3FCcAdtlaBjWPfxopXv6FNg&code_challenge_method=S256
+
+
+You are now logged in as [sonysinha526@gmail.com].
+Your current project is [None].  You can change this setting by running:
+  $ gcloud config set project PROJECT_ID
+
+
+Updates are available for some Google Cloud CLI components.  To install them,
+please run:
+  $ gcloud components update
+
+
+
+To take a quick anonymous survey, run:
+  $ gcloud survey
+
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud auth configure-docker gcr.io
+Adding credentials for: gcr.io
+After update, the following will be written to your Docker config file located at [C:\Users\admin\.docker\config.json]:
+ {
+  "credHelpers": {
+    "gcr.io": "gcloud"
+  }
+}
+
+Do you want to continue (Y/n)?  y
+
+Docker configuration file updated.
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker tag test-chatbot gcr.io/testrig-chatboat/test-chatbot
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+7576b00d9bb1: Layer already exists
+473a8a2dea02: Pushed
+898bf867b580: Pushed
+24125c5ccd66: Pushed
+375fcbb578c8: Pushed
+a492eee5e559: Layer already exists
+cd9204957ecb: Pushed
+a99bce2787d5: Layer already exists
+34ebcaeb2b96: Layer already exists
+8ccfaa3abdee: Layer already exists
+32b550be6cb6: Layer already exists
+35af2a7690f2: Layer already exists
+latest: digest: sha256:db21c8238202ee7d9b6eeaf734b804ec7f3d4ea86c703218e25ebbcc2e40848d size: 856
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud container images list --repository gcr.io/testrig-chatboat
+NAME: gcr.io/testrig-chatboat/test-chatbot
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud container images list-tags gcr.io/testrig-chatboat/test-chatbot
+DIGEST: cb401aa2a9ff
+TAGS:
+
+DIGEST: cbb04aff26af
+TAGS:
+
+DIGEST: db21c8238202
+TAGS: latest
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker run gcr.io/testrig-chatboat/test-chatbot
+
+
+
+Google Cloud Storage client initialized successfully!
+eb8134c84e1bf40353bf116219c97b5712a1472cfd3b993df11f1a14719e7520
+2025-02-21 13:08:57,646 - __main__ - INFO - Extracted keywords: ['discretionary', 'effort', 'relationships', 'on', 'handling', 'better', 'customer', 'ha74wl', 'office', 'every', 'beta', 'has', 'no', 'india', 'pentagon', 'testrail', 'doing', 'have', 'closely', 'anyone']
+/app/main.py:156: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+2025-02-21 13:09:09,890 - __main__ - ERROR - Failed to fetch content from URL: Could not import sentence_transformers python package. Please install it with `pip install sentence-transformers`.
+ * Serving Flask app 'main'
+ * Debug mode: off
+2025-02-21 13:09:09,907 - werkzeug - INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2025-02-21 13:09:09,907 - werkzeug - INFO - Press CTRL+C to quit
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated
+ERROR: (gcloud.run.deploy) The [project] resource is not properly specified. Please specify the argument [--project] on the command line or set the property [core/project].
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build>
+
+
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=testrig-chatboat
+>>
+
+
+
+
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build>
+[+] Building 159.7s (10/10) FINISHED                                                                                                                                    docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 655B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.4s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                      11.3s
+ => => transferring context: 2.84MB                                                                                                                                                    10.7s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                  80.0s
+ => exporting to image                                                                                                                                                                 65.3s
+ => => exporting layers                                                                                                                                                                38.9s
+ => => exporting manifest sha256:c75a003cefc2c4482403234082cd6786057698a3d0678b8420fbffe207ad39be                                                                                       0.1s
+ => => exporting config sha256:388de5ea17db682909ee168c07885fed9b52670e4e15208c096f55e63ac6ac34                                                                                         0.1s
+ => => exporting attestation manifest sha256:425e11c13fba109f2be9b85158cf491a0ed790e77839dad5c2616e64196d1697                                                                           0.1s
+ => => exporting manifest list sha256:29da0864c6cd8b70b4c45038863e39c55c2fe276e74532bfd29c3600327d4d49                                                                                  0.1s
+ => => naming to gcr.io/testrig-chatboat/test-chatbot:latest                                                                                                                            0.0s
+ => => unpacking to gcr.io/testrig-chatboat/test-chatbot:latest                                                                                                                        25.9s
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+24125c5ccd66: Layer already exists
+a99bce2787d5: Layer already exists
+34ebcaeb2b96: Layer already exists
+375fcbb578c8: Layer already exists
+32b550be6cb6: Layer already exists
+35af2a7690f2: Layer already exists
+f712f713473b: Pushed
+8ccfaa3abdee: Layer already exists
+cd9204957ecb: Layer already exists
+7576b00d9bb1: Layer already exists
+a492eee5e559: Layer already exists
+1965dbbf5933: Pushing [=======>                                           ]  18.87MB/129MB
+context canceled
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+1965dbbf5933: Pushing [===========================>                       ]   71.3MB/129MB
+34ebcaeb2b96: Layer already exists
+8ccfaa3abdee: Layer already exists
+cd9204957ecb: Pushing [=====================>                             ]  66.06MB/152.9MB
+35af2a7690f2: Layer already exists
+7576b00d9bb1: Layer already exists
+32b550be6cb6: Layer already exists
+f712f713473b: Pushed
+a99bce2787d5: Layer already exists
+24125c5ccd66: Pushed
+375fcbb578c8: Pushed
+a492eee5e559: Layer already exists
+context canceled
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+24125c5ccd66: Pushed
+32b550be6cb6: Layer already exists
+a99bce2787d5: Layer already exists
+f712f713473b: Pushed
+1965dbbf5933: Pushed
+7576b00d9bb1: Layer already exists
+8ccfaa3abdee: Layer already exists
+a492eee5e559: Layer already exists
+375fcbb578c8: Pushed
+cd9204957ecb: Pushed
+34ebcaeb2b96: Layer already exists
+35af2a7690f2: Layer already exists
+latest: digest: sha256:29da0864c6cd8b70b4c45038863e39c55c2fe276e74532bfd29c3600327d4d49 size: 856
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build>  gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=testrig-chatboat^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> ^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\gcloud.py", line 193, in <module>
+    main()
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\gcloud.py", line 187, in main
+    gcloud_main = _import_gcloud_main()
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\gcloud.py", line 90, in _import_gcloud_main
+    import googlecloudsdk.gcloud_main
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\gcloud_main.py", line 34, in <module>
+    from googlecloudsdk.calliope import base
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\calliope\base.py", line 30, in <module>
+    from googlecloudsdk.calliope import arg_parsers
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\calliope\arg_parsers.py", line 64, in <module>
+    from googlecloudsdk.core import log
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\core\log.py", line 32, in <module>
+    from googlecloudsdk.core import properties
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\core\properties.py", line 4307, in <module>
+    VALUES = _Sections()
+             ^^^^^^^^^^^
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\core\properties.py", line 507, in __init__
+    self.api_endpoint_overrides = _SectionApiEndpointOverrides()
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\core\properties.py", line 1399, in __init__
+    self.securityposture = self._Add('securityposture', hidden=True)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\core\properties.py", line 1462, in _Add
+    return super(_SectionApiEndpointOverrides, self)._Add(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+^C^C^C
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=testrig-chatboat
+Deploying container to Cloud Run service [test-chatbot] in project [testrig-chatboat] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [test-chatbot] revision [test-chatbot-00002-nfj] has been deployed and is serving 100 percent of traffic.
+Service URL: https://test-chatbot-185679386862.us-central1.run.app
+PS C:\Users\TESTRIG\chatbot-testrig\docker-build>
+
+
+=====================
+
+
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build>docker build -t gcr.io/testrig-chatboat/test-chatbot .
+[+] Building 94.5s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 655B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           3.8s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       4.8s
+ => => transferring context: 2.64MB                                                                                                                                                     4.7s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                  50.1s
+ => exporting to image                                                                                                                                                                 35.0s
+ => => exporting layers                                                                                                                                                                24.9s
+ => => exporting manifest sha256:e6ce250aaa3bdc3244cfd5e9c3750c233fd0d80f137181c63e8927bf805ff3b9                                                                                       0.1s
+ => => exporting config sha256:c027c279819aee7fa7750f1160af7392f13e39893c5cb32ea0f75d666ce1aa5e                                                                                         0.1s
+ => => exporting attestation manifest sha256:92bb550e81b748d68d69f576ddc170523303dac4db5a607494c651597333782d                                                                           0.1s
+ => => exporting manifest list sha256:c8313c962bdb6e0c4d071399c2991a468fdeece45741cbb3acb45885f8c9eba9                                                                                  0.1s
+ => => naming to gcr.io/testrig-chatboat/test-chatbot:latest                                                                                                                            0.0s
+ => => unpacking to gcr.io/testrig-chatboat/test-chatbot:latest                                                                                                                         9.7s
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build>docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+35af2a7690f2: Layer already exists
+7576b00d9bb1: Layer already exists
+a492eee5e559: Layer already exists
+24125c5ccd66: Pushed
+cd9204957ecb: Pushed
+a30e8abfdcf8: Pushed
+42ed4227ef4a: Pushed
+32b550be6cb6: Layer already exists
+375fcbb578c8: Pushed
+8ccfaa3abdee: Layer already exists
+a99bce2787d5: Layer already exists
+34ebcaeb2b96: Layer already exists
+latest: digest: sha256:c8313c962bdb6e0c4d071399c2991a468fdeece45741cbb3acb45885f8c9eba9 size: 856
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=testrig-chatboat
+Deploying container to Cloud Run service [test-chatbot] in project [testrig-chatboat] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [test-chatbot] revision [test-chatbot-00003-jv7] has been deployed and is serving 100 percent of traffic.
+Service URL: https://test-chatbot-185679386862.us-central1.run.app
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build>
+
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build>docker build -t gcr.io/testrig-chatboat/test-chatbot .
+[+] Building 94.5s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 655B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           3.8s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => => resolve docker.io/library/python:3.9@sha256:c17c71e1f5f258803a6b7c391f8013adbf84285af54c2a811de4a5a1ac5a8676                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       4.8s
+ => => transferring context: 2.64MB                                                                                                                                                     4.7s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                  50.1s
+ => exporting to image                                                                                                                                                                 35.0s
+ => => exporting layers                                                                                                                                                                24.9s
+ => => exporting manifest sha256:e6ce250aaa3bdc3244cfd5e9c3750c233fd0d80f137181c63e8927bf805ff3b9                                                                                       0.1s
+ => => exporting config sha256:c027c279819aee7fa7750f1160af7392f13e39893c5cb32ea0f75d666ce1aa5e                                                                                         0.1s
+ => => exporting attestation manifest sha256:92bb550e81b748d68d69f576ddc170523303dac4db5a607494c651597333782d                                                                           0.1s
+ => => exporting manifest list sha256:c8313c962bdb6e0c4d071399c2991a468fdeece45741cbb3acb45885f8c9eba9                                                                                  0.1s
+ => => naming to gcr.io/testrig-chatboat/test-chatbot:latest                                                                                                                            0.0s
+ => => unpacking to gcr.io/testrig-chatboat/test-chatbot:latest                                                                                                                         9.7s
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build>docker push gcr.io/testrig-chatboat/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/testrig-chatboat/test-chatbot]
+35af2a7690f2: Layer already exists
+7576b00d9bb1: Layer already exists
+a492eee5e559: Layer already exists
+24125c5ccd66: Pushed
+cd9204957ecb: Pushed
+a30e8abfdcf8: Pushed
+42ed4227ef4a: Pushed
+32b550be6cb6: Layer already exists
+375fcbb578c8: Pushed
+8ccfaa3abdee: Layer already exists
+a99bce2787d5: Layer already exists
+34ebcaeb2b96: Layer already exists
+latest: digest: sha256:c8313c962bdb6e0c4d071399c2991a468fdeece45741cbb3acb45885f8c9eba9 size: 856
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build> gcloud run deploy test-chatbot --image gcr.io/testrig-chatboat/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=testrig-chatboat
+Deploying container to Cloud Run service [test-chatbot] in project [testrig-chatboat] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [test-chatbot] revision [test-chatbot-00003-jv7] has been deployed and is serving 100 percent of traffic.
+Service URL: https://test-chatbot-185679386862.us-central1.run.app
+
+C:\Users\TESTRIG\chatbot-testrig\docker-build>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
