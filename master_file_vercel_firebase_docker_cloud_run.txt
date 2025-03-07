@@ -1,0 +1,684 @@
+
+
+firebase:
+cmd
+
+Microsoft Windows [Version 10.0.19045.5487]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\TESTRIG>npm install -g firebase-tools
+
+changed 631 packages in 2m
+
+71 packages are looking for funding
+  run `npm fund` for details
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 11.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+npm notice To update run: npm install -g npm@11.2.0
+npm notice
+
+C:\Users\TESTRIG>firebase --version
+13.33.0
+
+C:\Users\TESTRIG>firebase login
+Already logged in as sonysinha526@gmail.com
+
+C:\Users\TESTRIG>mkdir chatbot-testrig
+A subdirectory or file chatbot-testrig already exists.
+
+C:\Users\TESTRIG>mkdir testrig-bot
+
+C:\Users\TESTRIG>cd testrig-bot
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices.
+
+Error: Must select at least one feature. Use SPACEBAR to select features, or specify a feature by running firebase init [feature_name]
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. (Press <space> to select, <a> to
+toggle all, <i> to invert selection, and <enter> to proceed)
+>(*) Data Connect: Set up a Firebase Data Connect service
+ ( ) Firestore: Configure security rules and indexes files for Firestore
+ ( ) Genkit: Setup a new Genkit project with Firebase
+ ( ) Functions: Configure a Cloud Functions directory and its files
+ ( ) App Hosting: Configure an apphosting.yaml file for App Hosting
+ ( ) Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys
+ ( ) Storage: Configure a security rules file for Cloud Storage
+(Move up and down to reveal more choices)
+C:\Users\TESTRIG\testrig-bot>
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Use an existing project
+
+Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+
+Having trouble? Try again or contact support with contents of firebase-debug.log
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Add Firebase to an existing Google Cloud Platform project
+
+Error: Failed to list available Google Cloud Platform projects. See firebase-debug.log for more info.
+
+Having trouble? Try again or contact support with contents of firebase-debug.log
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Add Firebase to an existing Google Cloud Platform project
+
+Error: Failed to list available Google Cloud Platform projects. See firebase-debug.log for more info.
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Create a new project
+i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project.
+? Please specify a unique project id (warning: cannot be modified afterward) [6-30 characters]:
+ ()
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Use an existing project
+
+Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+
+Having trouble? Try again or contact support with contents of firebase-debug.log
+
+C:\Users\TESTRIG\testrig-bot>firebase projects:list
+× Preparing the list of your Firebase projects
+
+Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+
+Having trouble? Try again or contact support with contents of firebase-debug.log
+
+C:\Users\TESTRIG\testrig-bot>firebase login
+Already logged in as sonysinha526@gmail.com
+
+C:\Users\TESTRIG\testrig-bot>notepad firebase-debug.log
+
+C:\Users\TESTRIG\testrig-bot>notepad firebase-debug.log
+
+C:\Users\TESTRIG\testrig-bot>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Create a new project
+i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project.
+? Please specify a unique project id (warning: cannot be modified afterward) [6-30 characters]:
+ testrig-bot-march-03
+? What would you like to call your project? (defaults to your project ID) chatbot
+× Creating Google Cloud Platform project
+
+Error: Failed to create project. See firebase-debug.log for more info.
+
+C:\Users\TESTRIG\testrig-bot>
+
+C:\Users\TESTRIG\testrig-bot>firebase logout
+!  Invalid refresh token for sonysinha526@gmail.com, did not need to deauthorize
++  Logged out from sonysinha526@gmail.com
+
+C:\Users\TESTRIG\testrig-bot>
+C:\Users\TESTRIG\testrig-bot>firebase login
+i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+
+? Allow Firebase to collect CLI and Emulator Suite usage and error reporting information? Yes
+i  To change your data collection preference at any time, run `firebase logout` and log in again.
+
+Visit this URL on this device to log in:
+https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=1784574&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+
+Waiting for authentication...
+
++  Success! Logged in as sonysinha526@gmail.com
+
+C:\Users\TESTRIG\testrig-bot>firebase --version
+13.33.0
+
+C:\Users\TESTRIG\testrig-bot>mkdir bot-testrig
+
+C:\Users\TESTRIG\testrig-bot>cd bot-testrig
+
+C:\Users\TESTRIG\testrig-bot\bot-testrig>firebase init
+
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\TESTRIG\testrig-bot\bot-testrig
+
+? Are you ready to proceed? Yes
+? Which Firebase features do you want to set up for this directory? Press Space to select features, then Enter to confirm your choices. Hosting: Configure files for
+Firebase Hosting and (optionally) set up GitHub Action deploys
+
+=== Project Setup
+
+First, let's associate this project directory with a Firebase project.
+You can create multiple project aliases by running firebase use --add,
+but for now we'll just set up a default project.
+
+? Please select an option: Use an existing project
+? Select a default Firebase project for this directory: chatbot-testrig (Chatbot-testrig)
+i  Using project chatbot-testrig (Chatbot-testrig)
+
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? PUBLIC
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
++  Wrote PUBLIC/404.html
+? File PUBLIC/index.html already exists. Overwrite? Yes
++  Wrote PUBLIC/index.html
+
+i  Writing configuration info to firebase.json...
+i  Writing project information to .firebaserc...
+i  Writing gitignore file to .gitignore...
+
++  Firebase initialization complete!
+
+C:\Users\TESTRIG\testrig-bot\bot-testrig>firebase deploy
+
+=== Deploying to 'chatbot-testrig'...
+
+i  deploying hosting
+i  hosting[chatbot-testrig]: beginning deploy...
+i  hosting[chatbot-testrig]: found 4 files in PUBLIC
++  hosting[chatbot-testrig]: file upload complete
+i  hosting[chatbot-testrig]: finalizing version...
++  hosting[chatbot-testrig]: version finalized
+i  hosting[chatbot-testrig]: releasing new version...
++  hosting[chatbot-testrig]: release complete
+
++  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/chatbot-testrig/overview
+Hosting URL: https://chatbot-testrig.web.app
+
+C:\Users\TESTRIG\testrig-bot\bot-testrig>
+
+==================
+
+cmd
+
+vercel
+
+
+Microsoft Windows [Version 10.0.19045.5487]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\TESTRIG>npm install -g vercel
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated uuid@3.3.2: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+
+added 3 packages, removed 10 packages, and changed 234 packages in 25s
+
+26 packages are looking for funding
+  run `npm fund` for details
+
+C:\Users\TESTRIG>vercel login
+Vercel CLI 41.3.2
+? Log in to Vercel Cancel
+
+C:\Users\TESTRIG>vercel login
+Vercel CLI 41.3.2
+? Log in to Vercel Continue with Email
+? Enter your email address: sonysinha932@gmail.com
+We sent an email to sonysinha932@gmail.com. Please follow the steps provided inside it and make sure the security code matches Evil Falcon.
+Error: Invalid verification token. Your link or token may have expired. (403)
+
+C:\Users\TESTRIG>vercel login
+Vercel CLI 41.3.2
+? Log in to Vercel Continue with Email
+? Enter your email address: sonysinha932@gmail.com
+We sent an email to sonysinha932@gmail.com. Please follow the steps provided inside it and make sure the security code matches Lively Crested Penguin.
+> Success! Email authentication complete for sonysinha932@gmail.com
+Congratulations! You are now logged in. In order to deploy something, run `vercel`.
+💡  Connect your Git Repositories to deploy every branch push automatically (https://vercel.link/git).
+
+C:\Users\TESTRIG>vercel
+Vercel CLI 41.3.2
+? You are deploying your home directory. Do you want to continue? no
+Canceled
+
+C:\Users\TESTRIG>vercel
+Vercel CLI 41.3.2
+? Set up and deploy “C:\s_codes\best_codes\working_codes\firebase_testrig_bot\public”? yes
+? Which scope should contain your project? (Use arrow keys)
+> sony sinha's projects\s_codes\best_codes\working_codes\firebase_testrig_bot
+
+C:\s_codes\best_codes\working_codes\firebase_testrig_bot\public>vercel
+Vercel CLI 41.3.2
+? Set up and deploy “C:\s_codes\best_codes\working_codes\firebase_testrig_bot\public”? yes
+? Which scope should contain your project? (Use arrow keys)
+> sony sinha's projects\s_codes\best_codes\working_codes\firebase_testrig_bot\public”? (Y/n)
+
+C:\s_codes\best_codes\working_codes\firebase_testrig_bot\public>vercel
+Vercel CLI 41.3.2
+? Set up and deploy “C:\s_codes\best_codes\working_codes\firebase_testrig_bot\public”? yes
+? Which scope should contain your project? sony sinha's projects
+? Link to existing project? no
+? What’s your project’s name? try_bot
+? In which directory is your code located? ./
+Local settings detected in vercel.json:
+No framework detected. Default Project Settings:
+- Build Command: `npm run vercel-build` or `npm run build`
+- Development Command: None
+- Install Command: `yarn install`, `pnpm install`, `npm install`, or `bun install`
+- Output Directory: `public` if it exists, or `.`
+? Want to modify these settings? yes
+? Which settings would you like to overwrite (select multiple)? Output Directory
+? What's your Output Directory? public
+🔗  Linked to sony-sinhas-projects/try_bot (created .vercel and added it to .gitignore)
+🔍  Inspect: https://vercel.com/sony-sinhas-projects/try_bot/2Vn1TkBMBrdneV8CQcpBCFN9AfPf [2s]
+✅  Production: https://try-hmuxv643y-sony-sinhas-projects.vercel.app [2s]
+📝  Deployed to production. Run `vercel --prod` to overwrite later (https://vercel.link/2F).
+💡  To change the domain or build command, go to https://vercel.com/sony-sinhas-projects/try_bot/settings
+
+C:\s_codes\best_codes\working_codes\firebase_testrig_bot\public>
+
+
+
+====================
+
+
+Windows PowerShell
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Windows\system32> cd C:\s_codes\best_codes\working_codes\recent_bot
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker imahes
+docker: 'imahes' is not a docker command.
+See 'docker --help'
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker images
+REPOSITORY                                    TAG       IMAGE ID       CREATED          SIZE
+test-chatbot                                  latest    554b341397d9   10 minutes ago   2.39GB
+gcr.io/chat-bot-project-452312/test-chatbot   latest    554b341397d9   10 minutes ago   2.39GB
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker rmi -f 554b341397d9
+Untagged: test-chatbot:latest
+Untagged: gcr.io/chat-bot-project-452312/test-chatbot:latest
+Deleted: sha256:554b341397d99669369d40e5658512e4d3d87bcff893bc9ddb9209dd23214503
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker build -t test-chatbot .
+[+] Building 16.2s (10/10) FINISHED                                                                docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                               0.1s
+ => => transferring dockerfile: 651B                                                                               0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                      2.2s
+ => [internal] load .dockerignore                                                                                  0.1s
+ => => transferring context: 2B                                                                                    0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633a  0.1s
+ => => resolve docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633a  0.1s
+ => [internal] load build context                                                                                  0.1s
+ => => transferring context: 43.41kB                                                                               0.0s
+ => CACHED [2/5] WORKDIR /app                                                                                      0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                       0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                0.0s
+ => [5/5] COPY . /app                                                                                              0.3s
+ => exporting to image                                                                                            12.7s
+ => => exporting layers                                                                                            0.4s
+ => => exporting manifest sha256:2a32818a909621f5130272c5b0549cb7ea625af83923a66b50a999b203cfd368                  0.1s
+ => => exporting config sha256:1a6b551c5c92fa1297d02b8dc4a2cb37c15d4a5cb493a684240903b1bc2b27f3                    0.1s
+ => => exporting attestation manifest sha256:5009cb003a3b4d2d230351b306b668f3555433adeee8073298305374dd4647d7      0.3s
+ => => exporting manifest list sha256:c1e97d1e386f07893a75995d2931ca8f00b89a6d2b4f9d4bbae55e6891b06bc1             0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                             0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                         11.5s
+PS C:\s_codes\best_codes\working_codes\recent_bot>  Set-ExecutionPolicy Unrestricted -Scope Process
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker rmi -f 554b341397d9
+Error response from daemon: No such image: 554b341397d9:latest
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker images
+REPOSITORY     TAG       IMAGE ID       CREATED              SIZE
+test-chatbot   latest    c1e97d1e386f   About a minute ago   2.39GB
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker tag test-chatbot gcr.io/chat-bot-project-452312/test-chatbot
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker push gcr.io/chat-bot-project-452312/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/chat-bot-project-452312/test-chatbot]
+93bee3686f31: Layer already exists
+62a04f9b7b93: Pushed
+8031108f3cda: Layer already exists
+7187280ef013: Pushed
+447713e77b4f: Layer already exists
+95b7226c62e1: Layer already exists
+5c100612cdf5: Pushed
+c87d50853266: Pushed
+155ad54a8b28: Layer already exists
+11e68f87efd0: Pushed
+521cad6ddc53: Layer already exists
+1d281e50d3e4: Layer already exists
+latest: digest: sha256:c1e97d1e386f07893a75995d2931ca8f00b89a6d2b4f9d4bbae55e6891b06bc1 size: 856
+PS C:\s_codes\best_codes\working_codes\recent_bot> gcloud container images list-tags gcr.io/chat-bot-project-452312/test-chatbot
+DIGEST: 2a32818a9096
+TAGS:
+
+DIGEST: 5009cb003a3b
+TAGS:
+
+DIGEST: c1e97d1e386f
+TAGS: latest
+PS C:\s_codes\best_codes\working_codes\recent_bot> gcloud run deploy test-chatbot --image gcr.io/chat-bot-project-452312/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=chat-bot-project-452312
+Deploying container to Cloud Run service [test-chatbot] in project [chat-bot-project-452312] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [test-chatbot] revision [test-chatbot-00003-qnn] has been deployed and is serving 100 percent of traffic.
+Service URL: https://test-chatbot-61875479783.us-central1.run.app
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker images
+REPOSITORY                                    TAG       IMAGE ID       CREATED          SIZE
+test-chatbot                                  latest    c1e97d1e386f   37 minutes ago   2.39GB
+gcr.io/chat-bot-project-452312/test-chatbot   latest    c1e97d1e386f   37 minutes ago   2.39GB
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker rmi -f c1e97d1e386f
+Untagged: test-chatbot:latest
+Untagged: gcr.io/chat-bot-project-452312/test-chatbot:latest
+Deleted: sha256:c1e97d1e386f07893a75995d2931ca8f00b89a6d2b4f9d4bbae55e6891b06bc1
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker build -t test-chatbot .
+[+] Building 18.2s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 651B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           2.6s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.2s
+ => => resolve docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.1s
+ => [internal] load build context                                                                                                                                                       0.1s
+ => => transferring context: 44.73kB                                                                                                                                                    0.0s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   0.3s
+ => exporting to image                                                                                                                                                                 14.4s
+ => => exporting layers                                                                                                                                                                 0.7s
+ => => exporting manifest sha256:237bc5f952b75acc2a29fde000008a7410d1cdd09b08b0ca2745ea846ffaa5cf                                                                                       0.2s
+ => => exporting config sha256:1e278eb6732f7c99b0332d0a1ebd708e4a2fe0a77ea8e66f900ced3302791c1b                                                                                         0.2s
+ => => exporting attestation manifest sha256:06a3ffb694e5adecd2b8e57574b658f6d8bdf5363baeb52b08e7a5f8b48bbb03                                                                           0.3s
+ => => exporting manifest list sha256:4fb26ae8819ba3123826d8bac5cec71e01676c684d7fe504527aa7bbca800853                                                                                  0.2s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              12.6s
+PS C:\s_codes\best_codes\working_codes\recent_bot>  Set-ExecutionPolicy Unrestricted -Scope Process
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker tag test-chatbot gcr.io/chat-bot-project-452312/test-chatbot
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker push gcr.io/chat-bot-project-452312/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/chat-bot-project-452312/test-chatbot]
+62a04f9b7b93: Pushed
+7187280ef013: Pushed
+95b7226c62e1: Layer already exists
+1d281e50d3e4: Layer already exists
+447713e77b4f: Layer already exists
+155ad54a8b28: Layer already exists
+13e9674a1f76: Pushed
+60a5354e6883: Pushed
+93bee3686f31: Layer already exists
+521cad6ddc53: Layer already exists
+8031108f3cda: Layer already exists
+11e68f87efd0: Pushed
+latest: digest: sha256:4fb26ae8819ba3123826d8bac5cec71e01676c684d7fe504527aa7bbca800853 size: 856
+PS C:\s_codes\best_codes\working_codes\recent_bot> gcloud container images list-tags gcr.io/chat-bot-project-452312/test-chatbot
+DIGEST: 237bc5f952b7
+TAGS:
+
+DIGEST: 06a3ffb694e5
+TAGS:
+
+DIGEST: 4fb26ae8819b
+TAGS: latest
+PS C:\s_codes\best_codes\working_codes\recent_bot> gcloud run deploy test-chatbot --image gcr.io/chat-bot-project-452312/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=chat-bot-project-452312
+Deploying container to Cloud Run service [test-chatbot] in project [chat-bot-project-452312] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [test-chatbot] revision [test-chatbot-00004-xdx] has been deployed and is serving 100 percent of traffic.
+Service URL: https://test-chatbot-61875479783.us-central1.run.app
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker images
+REPOSITORY                                    TAG       IMAGE ID       CREATED       SIZE
+test-chatbot                                  latest    4fb26ae8819b   3 hours ago   2.39GB
+gcr.io/chat-bot-project-452312/test-chatbot   latest    4fb26ae8819b   3 hours ago   2.39GB
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker rmi -f 4fb26ae8819b
+Untagged: test-chatbot:latest
+Untagged: gcr.io/chat-bot-project-452312/test-chatbot:latest
+Deleted: sha256:4fb26ae8819ba3123826d8bac5cec71e01676c684d7fe504527aa7bbca800853
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker build -t test-chatbot .
+[+] Building 18.4s (10/10) FINISHED                                                                                                                                     docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                                    0.1s
+ => => transferring dockerfile: 651B                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.9                                                                                                                           3.9s
+ => [internal] load .dockerignore                                                                                                                                                       0.1s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.2s
+ => => resolve docker.io/library/python:3.9@sha256:5ea663a1c6ba266fdcac5949d1d2ea364ce30a2da92a3df95bb3c01437633ad9                                                                     0.2s
+ => [internal] load build context                                                                                                                                                       0.1s
+ => => transferring context: 44.39kB                                                                                                                                                    0.1s
+ => CACHED [2/5] WORKDIR /app                                                                                                                                                           0.0s
+ => CACHED [3/5] COPY requirements.txt /app/                                                                                                                                            0.0s
+ => CACHED [4/5] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                     0.0s
+ => [5/5] COPY . /app                                                                                                                                                                   0.2s
+ => exporting to image                                                                                                                                                                 13.2s
+ => => exporting layers                                                                                                                                                                 0.5s
+ => => exporting manifest sha256:cb66e2a33ce7cbe4980ebe1f7b461064c31145992e4429751508b03d4e769344                                                                                       0.1s
+ => => exporting config sha256:2e3186d8ce647fc7a01dab3e2e34e3056bc7ff1952e93aa9b5bb5ce1e47a5535                                                                                         0.1s
+ => => exporting attestation manifest sha256:b1dfb4266db9f862899b8c5743bca4432af56dd3ce569745d7c227ff2690db04                                                                           0.2s
+ => => exporting manifest list sha256:02c0eb6bee05d62a5b6057e41b47e0b952a940000bf1adb4b8df26922263c1d3                                                                                  0.1s
+ => => naming to docker.io/library/test-chatbot:latest                                                                                                                                  0.0s
+ => => unpacking to docker.io/library/test-chatbot:latest                                                                                                                              12.1s
+PS C:\s_codes\best_codes\working_codes\recent_bot>  Set-ExecutionPolicy Unrestricted -Scope Process
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies
+help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker tag test-chatbot gcr.io/chat-bot-project-452312/test-chatbot
+PS C:\s_codes\best_codes\working_codes\recent_bot> docker push gcr.io/chat-bot-project-452312/test-chatbot
+Using default tag: latest
+The push refers to repository [gcr.io/chat-bot-project-452312/test-chatbot]
+447713e77b4f: Layer already exists
+95b7226c62e1: Layer already exists
+f501b319b24d: Pushed
+ecee04bd6036: Pushed
+93bee3686f31: Layer already exists
+155ad54a8b28: Layer already exists
+62a04f9b7b93: Pushed
+1d281e50d3e4: Layer already exists
+521cad6ddc53: Layer already exists
+11e68f87efd0: Pushed
+8031108f3cda: Layer already exists
+7187280ef013: Pushed
+latest: digest: sha256:02c0eb6bee05d62a5b6057e41b47e0b952a940000bf1adb4b8df26922263c1d3 size: 856
+PS C:\s_codes\best_codes\working_codes\recent_bot> gcloud container images list-tags gcr.io/chat-bot-project-452312/test-chatbot
+DIGEST: cb66e2a33ce7
+TAGS:
+
+DIGEST: 02c0eb6bee05
+TAGS: latest
+
+DIGEST: b1dfb4266db9
+TAGS:
+PS C:\s_codes\best_codes\working_codes\recent_bot> gcloud run deploy test-chatbot --image gcr.io/chat-bot-project-452312/test-chatbot --platform=managed --region=us-central1 --allow-unauthenticated --project=chat-bot-project-452312
+Deploying container to Cloud Run service [test-chatbot] in project [chat-bot-project-452312] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [test-chatbot] revision [test-chatbot-00005-ttt] has been deployed and is serving 100 percent of traffic.
+Service URL: https://test-chatbot-61875479783.us-central1.run.app
+PS C:\s_codes\best_codes\working_codes\recent_bot>
+
+
+========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
