@@ -1,0 +1,347 @@
+.chat-container {
+    position: fixed;
+    bottom: 1vw;
+    right: 1vw;    
+    width: 25.5vw; 
+    border: 0.1rem solid #ccc;
+    border-radius: 0.2vw;
+    background-color: whitesmoke;
+    box-shadow: 0 0.5rem 1rem slategrey;
+    z-index: 1000;
+    margin-bottom:0.1vw ;
+}
+.chat-header {
+    background: linear-gradient(to bottom right,#E5E4E2,#C0C0C0); 
+    padding: 0.5vw;
+    text-align: center;
+    font-size: 0.55vw;
+    font-weight: bold;
+    border-radius: 0.1vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.chat-header img {
+    height: 2.1vw;
+    margin-right: 0.3vw;
+}
+.chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1vw;
+    cursor: pointer;
+}
+
+.chat-window {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.4vw;
+    /* font-size: 1.3rem; */
+    background-color:whitesmoke;
+    height: 30vw;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size:0.8vw;
+    /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+} */
+}
+
+.chatbot-message{
+    border-radius: 0.5vw;
+    line-height: 1.1vw;
+}
+
+.chatbot-message {
+    background: #E5E4E2;
+    margin: 0.3vw 0;
+    max-width: 93%;
+    position: relative;
+    display: inline-block;
+    padding: 0.3vw;
+    font-size:1.2vw;
+}
+
+.chatbot-image {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    position: absolute;
+    top: -3vw;
+}
+
+.chat-input-container {
+    font-size: 2vw;
+    display: flex;
+    align-items: center;
+    /* gap: -0.3vw;
+    padding:0.4vw; */
+    /* border-top: 0.1rem solid #ccc; */
+    background-color: whitesmoke;
+    font-family: 'Times New Roman', Times, serif;
+    /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+}
+
+#user-input {
+    width:22.02vw;
+    height: 1.6vw;
+    background-color:#E5E4E2;
+    padding: 0.3vw;
+    border: 0.1vw solid #ccc;
+    /* border-radius: 0.1rem; */
+    /* font-size: 1rem; */
+    resize: none; 
+    /* margin-right: 13vw; */
+    overflow-y: auto; 
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    /* margin-top: 0.4vw;
+    margin-bottom: -1.5vw; */
+} 
+
+/* Chat Toggle Button */
+.chat-toggle-btn {
+    position: fixed;
+    bottom: 2vw;
+    right: 2vw;
+    background-color: rgb(255, 255, 255); 
+    border: none;
+    border-radius: 1%;
+    cursor: pointer; 
+} 
+
+.chat-window::-webkit-scrollbar {
+    width: 0.1vw;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+    background-color: silver;
+    border-radius: 0.5vw;
+    background: transparent; 
+}
+
+.chat-window::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+      
+}
+
+.chatbot-button {
+    background-color:#E5E4E2;
+    color:#0F766E;
+    border:none;
+    border-radius:0.3vw;  
+    margin-top: 0.2vw;   
+    margin-right:12vw;
+    margin-bottom: 0.2vw; 
+    cursor: pointer;
+    white-space: nowrap;
+    font-size:1.1vw;
+    padding-left: 0.2vw;
+    padding-right:0.1vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Hide scrollbar for textarea */
+#user-input {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+} 
+
+#user-input::-webkit-scrollbar {
+    display: none; 
+}  
+
+
+
+.testrig-bot img {
+    height: 3vw; 
+    width: 3vw; 
+    margin-right: 1vw; 
+    border-radius: 1%; 
+}
+
+.message-time {
+    font-size: 1.5vw; 
+    color: gray; 
+    margin-left: 0.5vw; 
+    display: inline-block; 
+    vertical-align: bottom; 
+}
+/* Send Button */
+.chat-input-container button {
+    padding: 0.1vw;
+    background-color:#d3d3d3;
+    color: whitesmoke;
+    border: none;
+    border-radius: 0.5vw;
+    font-size: 0.2vw;
+    cursor: pointer;
+}
+
+/* Loading container */
+.loading-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    text-align: left;
+    color: #0F766E;
+    font-size: 1vw;
+}
+
+/* Ensure messages wrap properly */
+.message span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* Message wrapper */
+.message-wrapper {
+    display: flex;
+    align-items: center;
+    width: 20vw;
+}
+
+/* Message text */
+.message-wrapper > span {
+    width: 16vw;
+}
+
+/* Break long words */
+.message-wrapper > span > a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.chat-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap:0.2vw;  
+}
+
+#send-btn {
+    position: absolute;
+    right: 0.01vw;  
+    bottom: 50%;
+    transform: translateY(45%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#send-btn img {
+    height: 2.3vw;
+    width: auto; 
+    max-width: 95%; 
+    top:20%;
+    /* bottom: 5%;  */
+}
+
+/* Message wrapper */
+.message-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    width: auto;
+}
+
+.message-wrapper > span {
+    display: inline-block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.message-timestamp {
+    font-size: 0.75vw; 
+    color: #666;
+    margin-right: 0.1rem; 
+}
+
+.user-icon {
+    height: 1.7vw; 
+    vertical-align: middle;
+    margin-left: 0.4rem;
+}
+
+/* User message time */
+.user-message-time {
+    color: black;
+    margin-right: 0.1vw;
+}
+
+.user-message { 
+    font-size: 1.2vw;
+    line-height: 1.2;
+}
+
+.user-message-container {
+    display: flex;
+    justify-content: flex-end;  
+    margin-bottom: 0.1vw;
+    max-width: 100%; 
+    align-items: flex-start; 
+}
+
+.user-message-box {
+    display: flex;
+    background-color: #d9edf7;
+    color: black;
+    padding: 0.2vw;
+    border-radius: 0.6vw;
+    max-width: 40vw; 
+    word-break: break-word; 
+    overflow-wrap: anywhere; 
+    white-space: normal;
+    margin: 0.2vw;
+    font-size: 1.2vw; 
+}
+
+.user-message-timestamp {
+    font-size: 0.65vw; 
+    color: gray;
+    margin-left: 0.1vw;
+}
+
+.user-message-icon {
+    width: 1.5vw; 
+    height: 1.5vw;
+    margin-left: 0.1vw;
+    vertical-align: middle;
+}
+
+.chatbot-message .message-time {
+    font-size: 0.6vw;
+    color: gray;
+    margin-left: 0.1vh;
+}
+
+.input-wrapper {
+    margin-left: 0.22vw;
+    bottom:11vw;
+    /* border-radius: 0.1vw; */
+
+}
+
+user-input {
+    width: 22.02vw;
+    height: 1.6vw;
+#send-btn img {
+    height: 2vw;
+    width: auto;
+    max-width: 95%;
