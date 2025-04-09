@@ -1,0 +1,733 @@
+from flask import Flask, request, jsonify, render_template
+import uuid
+import pytz
+
+from dotenv import load_dotenv
+from flask import Flask, request, jsonify, render_template, session
+from flask_session import Session
+import uuid
+from flask_cors import CORS
+import os
+import time
+import google.generativeai as genai
+from bs4 import BeautifulSoup
+import requests
+import random
+import re
+import json
+import logging as log
+from datetime import datetime
+from langchain_community.document_loaders import UnstructuredURLLoader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+from google.cloud import storage
+from html.parser import HTMLParser
+import secrets
+from google.cloud import firestore
+
+app = Flask(__name__)
+
+config_file_path='C:/s_codes/git_clone/poc_chatbot/version1/chatbot_codes/config/.env'
+load_dotenv(dotenv_path=config_file_path)
+
+## Configure logging
+log.basicConfig(level=log.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+log = log.getLogger(__name__)
+
+## Load environment variables from .env file
+env_path = os.path.join(os.path.dirname(__file__), "config", ".env")
+load_dotenv(env_path)
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'config', '.env')
+load_dotenv(dotenv_path=dotenv_path)
+
+## API Key
+google_api_key = os.getenv('google_api_key')
+if not google_api_key:
+    log.error("Required API keys are missing from environment variables.")
+    raise EnvironmentError("Required API keys are missing from environment variables.")
+
+## GOOGLE_APPLICATION_CREDENTIALS
+google_credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if not google_credentials_path:
+    log.error("Required google_credentials_path are missing from environment variables.")
+    raise EnvironmentError("Required google_credentials_path are missing from environment variables.")
+
+## Set GOOGLE_APPLICATION_CREDENTIALS environment variable
+if google_credentials_path:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_credentials_path
+print("GOOGLE_APPLICATION_CREDENTIALS:", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+
+## Initialize Google Cloud Storage client
+firestore_client = firestore.Client()
+
+storage_client = storage.Client()
+BUCKET_NAME = "testrig-bot-static-files"
+bucket = storage_client.bucket(BUCKET_NAME)
+print("Google Cloud Storage client initialized successfully!")
+
+## Store chat sessions temporarily
+chat_sessions = {}
+
+genai.configure(api_key=google_api_key)
+model = genai.GenerativeModel("gemini-1.5-pro")
+chat = model.start_chat()
+
+CORS(app, supports_credentials=True)
+
+## List of URLs to fetch and process
+url_input = [
+    "https://testalloy.com/",
+    "https://walrus-app-aidtw.ondigitalocean.app/user-details/subscription",
+    "https://testalloy.com/testalloydemo/",
+    "https://walrus-app-aidtw.ondigitalocean.app/manual-test",
+    "https://walrus-app-aidtw.ondigitalocean.app/automation-testing",
+    "https://walrus-app-aidtw.ondigitalocean.app/securityTesting",          
+    "https://walrus-app-aidtw.ondigitalocean.app/performanceTesting",
+    "https://walrus-app-aidtw.ondigitalocean.app/ai-testing",
+    "https://walrus-app-aidtw.ondigitalocean.app/",
+    "https://walrus-app-aidtw.ondigitalocean.app/releases",
+    "https://www.testrigtechnologies.com/",
+]
+
+## Preprocess query
+def preprocess_query(user_query):
+    corrected_query = user_query.strip().lower()
+    if "software testing" in corrected_query:
+        rephrased_query = f"Could you provide information about {corrected_query.replace('software testing', 'software testing related topics')}?"
+    else:
+        rephrased_query = f"Can you tell me more about {corrected_query}?"
+    return rephrased_query
+
+## Fetch and process content from URL
+def fetch_text_from_url(url_input):
+    try:
+        response = requests.get(url_input)
+        soup = BeautifulSoup(response.content, "html.parser")
+        text = " ".join(p.get_text() for p in soup.find_all("p"))
+        return text
+    except Exception as e:
+        log.error(f"Error fetching text from URL: {e}")
+        return ""
+
+def fetch_keywords_from_url(url_input):
+    try:
+        response = requests.get(url_input)
+        soup = BeautifulSoup(response.content, "html.parser")
+        text = " ".join(p.get_text() for p in soup.find_all("p"))
+        keywords = set(re.findall(r'\b\w+\b', text.lower()))
+        return keywords
+    except Exception as e:
+        log.error(f"Error fetching keywords from URL: {e}")
+        return set()
+    
+url_input = "https://testalloy.com/"
+keywords = fetch_keywords_from_url(url_input)
+log.info(f"Extracted keywords: {list(keywords)[:20]}")
+
+## System Prompt defining chatbot's role and behaviour
+system_prompt = """
+Test Alloy is a Software Testing Product of Testrig Technologies developed for end-to-end testing solutions with features like AI-Powered Test Case Generation, Modern Test Management, Defect Tracking, Release Management, and Project Management Dashboard.
+
+You must behave strictly as the TestAlloy chatbot and only use content from:
+- https://testalloy.com/
+- https://testalloy.com/testalloydemo/
+- https://walrus-app-aidtw.ondigitalocean.app/user-details/subscription
+- https://walrus-app-aidtw.ondigitalocean.app/automation-testing
+- https://walrus-app-aidtw.ondigitalocean.app/releases
+
+Your response should:
+- Be **minimum 30 words and maximum 90 words**
+- **Not contain any numeric values** (counts, prices, days, etc.)
+- **Never use numbering or bullet points**
+- Include **bold headers/subheaders** 
+- When switching sections, switch to new line.
+- Always append relevant links
+- Never hallucinate or provide imagined or general knowledge responses
+
+For off-topic queries (e.g., rainbow, sky, ocean,water,games,weather,dance,clothes,food,planet,feelings), respond:
+Please feel Free to ask about TestAlloy, and We will be happy to assist.  
+💻: <a href="https://testalloy.com/testalloydemo/" target="_blank">Free Trial</a>
+"""
+
+# system_prompt = """
+# Test Alloy is a Software Testing Product of Testrig Technologies developed for end to end testing solutions with features like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Project Management Dashboard.
+# You have to behave as a TestAlloy chatbot and You have to response fetching content or context only from "https://testalloy.com/" or "https://testalloy.com/testalloydemo/" or "https://walrus-app-aidtw.ondigitalocean.app/user-details/subscription" or "https://walrus-app-aidtw.ondigitalocean.app/automation-testing" or "https://walrus-app-aidtw.ondigitalocean.app/releases"
+# You need to compulsory appends links from the website while generating response of user query.
+# please refer few_shot_qna(question) prompt type before answering any query and provide links for each services or blogs.
+# You are strictly prohibited to be provide personalized responses or imagine anything or hallucinate.
+# The response provided by gemini model should be strictly limited to 50 words for each response.
+# The most important is that your response should be numbered in numbers like 1,2,3...so on and non repititive and brief.
+# The most important is you should not provide any type of estimate on costs, price, count of employees, number of days taken to do any type of testing, in numeric figures or integers of any services or products.
+# Always remember that if query on general knowledge topics like rainbow,earth,planet,hacking,ocean,water,sky,games,dances,music,clothes,food,houses outside Software Testing and Software Development,then response by saying:Please feel Free to ask about TestAlloy, and We will be happy to assist.Please visit <a href="https://testalloy.com/testalloydemo/" target="_blank">Free Trial</a>
+# """
+
+def strict_prompt(query):
+     return system_prompt.format(query=query)
+
+def fetch_texts_from_urls(urls):
+    url_data = {}
+    with ThreadPoolExecutor() as executor:
+        futures = {executor.submit(fetch_text_from_url, url): url for url in urls}
+        for future in futures:
+            url = futures[future]
+            try:
+                url_data[url] = future.result()
+            except Exception as e:
+                log.error(f"Error fetching content from {url}: {e}")
+    return url_data
+
+## Initialize vector database and embeddings
+def initialize_vectordb(urls):
+    loader = UnstructuredURLLoader(urls=urls)
+    data = loader.load()
+    text_splitter = CharacterTextSplitter(separator='\n', chunk_size=1000, chunk_overlap=200)
+    text_chunks = text_splitter.split_documents(data)
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    vectordb = Chroma.from_documents(text_chunks, embedding=embeddings, persist_directory="db")
+    vectordb.persist()
+    return vectordb
+
+def few_shot_qna(question):
+    examples = [
+        ("who created you or who developed you and Why?",
+        "I am a Techbot created by Testrig Technologies developed to provide End to End Testing Solutions with features like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Project Management Dashboard."),
+        ("Is TestAlloy a product of Testrig Technologies?",
+        "Yes, TestAlloy is a Testing Software Product of Testrig Technologies developed to provide End to End Testing Solutions with features like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Project Management Dashboard."),
+        ("Test Alloy advantages or benefits or usefulness or uniqueness or necessity in software testing",
+        """AI-Powered Test Case Generation: Leverages artificial intelligence to automatically generate test cases, significantly reducing the time and effort required for test design while improving test coverage.
+           Modern Test Management: Provides a centralized platform for managing all testing activities, from requirements gathering and test case design to execution and reporting. This streamlines workflows and improves team collaboration.
+           Integrated Defect Tracking: Seamlessly integrates defect tracking within the platform, enabling efficient identification, reporting, and resolution of bugs, leading to faster turnaround times.
+           Improved Test Coverage: The AI-powered test case generation ensures comprehensive test coverage, minimizing the risk of undetected bugs and enhancing the overall software quality.
+           Release Management: Supports efficient release management processes, enabling teams to plan, execute, and track releases with greater control and visibility, ensuring smoother deployments.
+           Project Management Dashboard: Offers a comprehensive project management dashboard that provides real-time insights into project progress, key metrics, and potential roadblocks. This empowers stakeholders to make informed decisions and ensure project success.
+           End-to-End Testing Solutions: Provides a complete suite of testing capabilities, covering various testing types, including functional, performance, security, and API testing. This eliminates the need for multiple disparate tools and simplifies the testing process.
+           Increased Efficiency: Automating various testing tasks reduces manual effort, freeing up testers to focus on more complex and exploratory testing activities, ultimately improving efficiency and productivity.
+           Reduced Time-to-Market: Streamlined testing processes and efficient defect management contribute to faster release cycles, enabling organizations to get their products to market more quickly.
+           Enhanced Collaboration: The centralized platform fosters better communication and collaboration among testing teams, developers, and other stakeholders, promoting transparency and alignment throughout the project.
+           You can learn more about TestAlloy and its features on the Testrig Technologies website or by contacting their sales team."""),
+        ("Do you or test alloy provides LLM Model API Keys for AI test case generation", 
+        "TestAlloy doesnt provide LLM API Keys for AI-Powered Test Case Generation,It works on BYOK(Bring Your Own key)"),
+        ("Which LLM Model does Test Alloy use", 
+        "TestAlloy uses CLAUDE 3.5 Sonnet for AI-Powered Test Case Generation,It works on BYOK(Bring Your Own key)"),
+        ("what is test alloy", 
+         "TestAlloy is a product of Testrig Technologies developed for end to end testing solutions with feactures like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Project Management Dashboard."),
+        ("Do you offer security testing services?", 
+         "Yes, we offer Security testing services.<br>You can read more: <a href='https://walrus-app-aidtw.ondigitalocean.app/securityTesting' target='_blank'>Security Testing Services</a><br>"),
+        ("Do you offer AI/ML testing services?", 
+         "Yes, we offer AI/ML testing services.<br>You can read more: <a href='https://walrus-app-aidtw.ondigitalocean.app/ai-testing' target='_blank'>AI/ML Testing Services</a><br>"),
+        ("Do you offer Manual testing services?", 
+         "Yes, we offer Manual Testing services.<br>You can read more: <a href='https://walrus-app-aidtw.ondigitalocean.app/manual-test' target='_blank'>API Testing Services</a><br>"),
+        ("Do you offer Performance Testing services?", 
+         "Yes, we offer Performance Testing services.<br>You can read more: <a href='https://walrus-app-aidtw.ondigitalocean.app/performanceTesting' target='_blank'>Performance Testing Services</a><br>"),
+        ("Do you offer training or demo for testing teams?", 
+         "Absolutely, We provide Free Demo and Training for TestAlloy.<br>Please visit for 💻: <a href='https://testalloy.com/testalloydemo/'target='_blank'>Free Trial</a><br>"),
+         ("Is Testalloy a product of Testrig Technologies?", 
+         "Absolutely, TestAlloy is a product of Testrig Technologies devloped for end to end testing solutions with feactures like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Project Management Dashboard."),
+        ("How to contact Testrig Technologies for TestAlloy?",
+         """You can connect with us through the following channels:<br>
+         1 Schedule a meeting directly with our team: <a href='https://www.testrigtechnologies.com/about-us/' target='_blank'>About Us</a><br>
+         2 Email us at: <a href='info@testrigtechnologies.com'>info@testrigtechnologies.com</a><br>
+         3 Submit your inquiry via our contact form: <a href='https://www.testrigtechnologies.com/contact-us/' target='_blank'>Contact Us</a>"""),
+         ("What kind of reporting process does Testrig Technologies follow?",
+          """We maintain a clear and transparent reporting process:<br>
+             1.Daily Updates: Detailed test execution reports shared regularly. <br>
+             2.Collaborative Calls: Essential calls with development teams to address blockers and align on progress. <br>
+             3.Custom Reports: Tailored reporting formats to meet client-specific requirements, providing actionable insights. <br>
+             This ensures seamless communication and progress tracking throughout the project lifecycle.<br> 
+             We have a daily report format with essential calls from the development team. We believe “on connect” on a daily basis as per need."""),
+            ("What is TestAlloy?",
+                """TestAlloy is a premier software testing tool specializing in comprehensive end-to-end testing solutions.<br>TestAlloy has some features like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Project Management Dashboard."""),
+            ("What are the features of TestAlloy?",
+                """TestAlloy is a premier software testing tool specializing in comprehensive end-to-end testing solutions.<br>TestAlloy has some features like AI-Powered Test Case Generation,Modern Test Management and Defect tracking,Release Management,Automation Testing, Project Management Dashboard,Robust Security Testing,High-Performance Testing"""),                  
+                ("What is Testrig Technology?",
+                """Testrig Technologies is a premier software testing and quality assurance firm specializing in comprehensive end-to-end testing solutions.<br>Testrig ensures the reliability, scalability, and security of software applications.<br>The company excels in delivering high-quality services across web and mobile application testing, API validation, performance engineering, and security testing, empowering organizations to achieve seamless digital transformation while optimizing their time-to-market and operational efficiency."""),
+                ("Who is the CEO and Founder of Testrig Technologies? ",
+                """Parimal Kumar, the CEO and Founder of Testrig Technologies, is a dynamic leader with extensive expertise in Software Testing and Quality Assurance.<br>His forward-thinking approach leverages advanced methodologies, including AI and ML-powered testing frameworks, to deliver cutting-edge solutions.<br>Passionate about fostering excellence, Parimal is dedicated to empowering businesses worldwide by ensuring robust, secure, and high-performing software applications. <br>Connect with him on LinkedIn to learn more about his professional journey and insights."""),
+                ("do u have any testimonials or success stories or use cases",
+                """Yes, we have client testimonials available on our website. Here's the link: <a href='https://www.testrigtechnologies.com/testimonials/' target='_blank'>Explore our Testimonials</a>"""),
+                ("colors of rainbow,sky is blue, ocean,earth,sun,moon,cricket,football,games,dance,players,stars,dresses,books,hockey,medical",
+                """Please feel free to ask about our domain, and we will be happy to assist.<br>Please visit <a href="https://www.testrigtechnologies.com/contact-us/" target="_blank">Contact Us</a> for more information."""),
+                ("Who is the CEO and Founder of Testrig Technologies? ",
+                 """Parimal Kumar, the CEO and Founder of Testrig Technologies, is a dynamic leader with extensive expertise in Software Testing and Quality Assurance.<br>His forward-thinking approach leverages advanced methodologies, including AI and ML-powered testing frameworks, to deliver cutting-edge solutions.<br>Passionate about fostering excellence, Parimal is dedicated to empowering businesses worldwide by ensuring robust, secure, and high-performing software applications. <br>Connect with him on LinkedIn:<a href='href='https://www.linkedin.com/in/parimalkr/' target='_blank'>Connect on Linkedln</a to explore more about his professional journey and insights."""),
+                ("what is mission of TestAlloy",
+                 """Yes, Testrig Technologies has vision of Empowering businesses through innovative and reliable testingsolutions.<br>Testrig Technologies envisions becoming a global leader in software testing, driving digital transformation, and ensuring exceptional quality in every software product."""),
+                ("what is mission of TestAlloy",
+                """At Testrig Technologies is dedicated to delivering exceptional software testing services that empower organizations to build robust, reliable, and secure software products, driving their success in a competitive marketplace."""),
+                ("what is Core Values of Testrig Technologies",
+                """Customer Centric,Trust,Continuous Learning,Ownership,Team Work are core values of Testrig Technologies """),
+                ("what is Foundation Day of Testrig Technologies ",
+                """Testrig Technologies is founded on 15 Oct, 2015 by Parimal Kumar.Connect:<a href='https://www.linkedin.com/in/parimalkr/' target='_blank'>Connect on Linkedln</a> """),
+                ("how many days takes for performance or load or security or manual or ai/ml or mobile or web app testing or any other testing services",
+                """The duration of automation testing can vary depending on various factors such as the complexity of the application, the size of the test suite, and the number of resources allocated.<br>Schedule a meeting directly with our team: <a href='https://www.testrigtechnologies.com/about-us/' target='_blank'>About Us</a><br>"""),
+                ("what is the cost of performance or load or security or manual or ai/ml or mobile or web app testing or any other testing services",
+                """The cost of testing services can vary depending on the specific requirements of your project.For an accurate quote, we recommend scheduling a free consultation with our team.<br>This will allow us to better understand your needs and provide you with a tailored solution that meets your budget.<br>Schedule a meeting directly with our team: <a href='https://www.testrigtechnologies.com/about-us/' target='_blank'>About Us</a><br>"""),
+                ("what is the number of staffs for performance or load or security or manual or ai/ml or mobile or web app testing or any other testing services",
+                """We employ a dedicated team of highly skilled and certified testing professionals who are passionate about delivering exceptional services.<br>This will allow us to better understand your needs and provide you with a tailored solution that meets your budget.<br>Schedule a meeting directly with our team: <a href='https://www.testrigtechnologies.com/about-us/' target='_blank'>About Us</a><br>"""),
+                ]
+
+    formatted_examples = "\n".join([f"Q: {ex[0]}\nA: {ex[1]}" for ex in examples])
+    return f"{formatted_examples}\nQ: {question}"
+
+## Summarization template
+def summarization_template(text):
+    return f"Summarize the following information based on information found only in the URL https://www.testrigtechnologies.com/:\n\n{text}"
+
+## Q&A template
+def qna_template(question):
+    return f"Answer the following Testrig Technology-related question in simple terms:\n\n{question}"
+
+
+def get_gemini_response(question, context=None, prompt_type="few_shot_qna", min_words=30, max_words=90):
+    try:
+        chat = model.start_chat(history=[])
+        if context:
+            question = f"{context}: {question}"
+
+        query_keywords = set(re.findall(r'\b\w+\b', question.lower()))
+        if prompt_type == "few_shot_qna":
+            question = few_shot_qna(question)
+
+        if not query_keywords.intersection(keywords):
+            return """We are unable to assist with your query.
+                      Please feel free to ask about Test Alloy, We will be happy to assist 😊.<br>
+                      💻:<a href="https://testalloy.com/testalloydemo/" target="_blank">Free Trial</a>
+                      📧:<a href="mailto:info@testrigtechnologies.com">info@testrigtechnologies.com</a>"""
+
+        response = chat.send_message(question, stream=True)
+        full_response = "".join([chunk.text for chunk in response])
+
+        # Clean up unwanted formatting or numbered lists
+        full_response = re.sub(r'\*+|\d+\.', '', full_response)
+        full_response = re.sub(r'\s+', ' ', full_response).strip()
+
+        # Enforce word limits
+        words = full_response.split()
+        if len(words) < min_words:
+            return format_response(full_response)
+
+        limited_response = " ".join(words[:max_words])
+        sentences = re.split(r'(?<=[.!?]) +', limited_response)
+        final_response = " ".join(sentences[:-1]) if len(" ".join(sentences[:-1]).split()) >= min_words else limited_response
+
+        # Formatting headers/subheaders in bold on new lines
+        def format_text(text):
+            lines = []
+            for line in re.split(r'(?<=\.)\s+(?=[A-Z])', text):
+                line = line.strip()
+                if ':' in line:
+                    header, rest = line.split(':', 1)
+                    lines.append(f"<br><b>{header.strip()}:</b><br>{rest.strip()}")
+                else:
+                    lines.append(line)
+            return "<br>".join(lines)
+
+        final_response = format_text(final_response)
+        final_response += '<br><br>💻: <a href="https://testalloy.com/" target="_blank">Free Trial</a><br>💬:<a href="mailto:info@testrigtechnologies.com">info@testrigtechnologies.com</a><br>'
+
+        return format_response(final_response)
+
+    except Exception as e:
+        log.error(f"Error in Gemini API response: {e}")
+        return 'Server is busy.<br>💬: <a href="mailto:info@testrigtechnologies.com">info@testrigtechnologies.com</a><br>'
+
+
+# def get_gemini_response(question, context=None, prompt_type="few_shot_qna", min_words=30, max_words=80):
+#     """
+#     Sends a question to the Gemini API, applies context, and limits the response within a word range.
+#     Formats the output for better readability like making headers and subheaders bold.
+
+#     Args:
+#         question: The user's input question.
+#         context: Additional context for the question.
+#         prompt_type: Type of prompt (e.g., "qna", "few_shot_qna").
+#         min_words: Minimum word count for the response.
+#         max_words: Maximum word count for the response.
+
+#     Returns:
+#         The trimmed and formatted response string with links if applicable.
+#     """
+#     try:
+#         chat = model.start_chat(history=[])
+#         if context:
+#             question = f"{context}: {question}"
+#         query_keywords = set(re.findall(r'\b\w+\b', question.lower()))
+#         if prompt_type == "few_shot_qna":
+#             question = few_shot_qna(question)
+
+#         ## Check if the question is related to Testrig Technologies
+#         if not query_keywords.intersection(keywords):
+#             return """We’re unable to assist with your query.<br>
+#                       Please feel free to ask about Test Alloy,We will be happy to serve😊.
+#                       💻: <a href="https://testalloy.com/" target="_blank">Free Trial</a><br>
+#                       📧:<a href=info@testrigtechnologies.com>info@testrigtechnologies.com</a>"""
+                                      
+#         ## Generate response from Gemini API
+#         response = chat.send_message(question, stream=True)
+#         full_response = "".join([chunk.text for chunk in response])
+
+#         ## Replace '*' with improved line breaks and remove all extra spaces
+#         full_response = re.sub(r'\*+', '', full_response)
+#         full_response = re.sub(r'\s+', ' ', full_response).strip()
+
+#         ## Ensure response is within the defined range
+#         words = full_response.split()
+#         if len(words) < min_words:
+#             return format_response(full_response)
+
+#         ## Find the closest sentence boundary within the range
+#         limited_response = " ".join(words[:max_words])
+#         sentences = re.split(r'(?<=[.!?]) +', limited_response)
+
+#         ## Ensure the response ends at a complete sentence
+#         if len(sentences) > 1:
+#             final_response = " ".join(sentences[:-1]) if len(" ".join(sentences[:-1]).split()) >= min_words else limited_response
+#         else:
+#             final_response = limited_response
+
+#         ## Format text by preserving subheaders and adding new lines between sections
+#         def format_text(text):
+#             formatted_response = []
+
+#             # Extract subheaders
+#             subheaders = re.findall(r"(?<=\n)(.*?:)", text)
+
+#             # Split paragraphs by double newlines or sentence boundaries
+#             paragraphs = re.split(r'\n\n|(?<=\.)\s+(?=[A-Z])', text)
+
+#             for para in paragraphs:
+#                 para = para.strip()
+#                 if not para:
+#                     continue
+
+#                 # Identify and bold subheaders with a new line after
+#                 if any(header in para for header in subheaders):
+#                     para = re.sub(r"(.*?:)", r"<b>\1</b><br>", para)
+
+#                 # Add plain paragraphs without bullet points
+#                 formatted_response.append(f"<p style='margin:0;'>{para}</p>")
+
+#             return "".join(formatted_response)
+
+#         final_response = format_text(final_response)
+#         ## Append a helpful link for additional resources
+#         final_response += '<br>💻: <a href="https://testalloy.com/testalloydemo/" target="_blank">Free Trial</a><br>💬:<a href="mailto:info@testrigtechnologies.com">info@testrigtechnologies.com</a><br>'
+#         return format_response(final_response)
+
+#     except Exception as e:
+#         # Log the error to the terminal (not shown to the user)
+#         log.error(f"Error in Gemini API response: {e}")
+        
+#         # Return a generic message to the user
+
+#         return 'Server is busy<br>💬: <a href="mailto:info@testrigtechnologies.com">info@testrigtechnologies.com</a><br>'
+
+
+## Process URL content
+def process_url_content(url):
+    try:
+        with ThreadPoolExecutor() as executor:
+            future = executor.submit(fetch_text_from_url, url)
+            text = future.result()
+        text_splitter = CharacterTextSplitter(separator='\n', chunk_size=1000, chunk_overlap=200)
+        chunks = text_splitter.split_text(text)
+        return chunks
+    except Exception as e:
+        log.error(f"Error processing URL content: {e}")
+        return []
+
+## Initialize context
+url_input = "https://testalloy.com/"
+if url_input:
+    try:
+        context_text = fetch_text_from_url(url_input)
+        vectordb = initialize_vectordb([url_input])
+        retriever = vectordb.as_retriever()
+        log.info("URL content loaded successfully.")
+    except Exception as e:
+        log.error(f"Failed to fetch content from URL: {e}")
+
+## Function to remove HTML tags
+def strip_html_tags(text):
+    # Remove HTML tags, including malformed ones
+    clean = re.compile(r'</?p[^>]*>|<br\s*/?>', re.IGNORECASE)
+    text = re.sub(clean, '', text)
+    return text
+
+def clean_html_tags(text):
+    """
+    Replace specific HTML fragments with a space:
+    '</p><p style='margin:0;', '<p style='margin:0;', '</p><br>', '</p>', and '<br>'.
+    """
+    return re.sub(r"</?p(?: style='margin:0;')?>|<br>", ' ', text).strip()
+
+
+def format_response(response):
+    # response_id = str(uuid.uuid4())
+    response = response.lstrip("A:").strip()
+    response = re.sub(r"\*{1,2}(\S.*?\S?)\*{1,2}", r"\1", response)  
+    return response
+
+## Predefined responses
+responses = {
+    "greetings": [
+        "Hi there!", "Hello!", "Greetings!", "Hey! Nice to see you.","hi","hii","hiii,"
+        "Good to have you here!", "Hi! How's it going?", "What's up?", "Hey there!"
+    ],
+    "how are you?": [
+        "Thanks for asking!", "Doing well, how about you?",
+        "I'm here to assist!", "I'm functioning at full capacity!",
+        "I'm doing great!", "Ready to assist! How are you today?",
+        "Thanks for asking! How about yourself?"
+    ],
+    "bye": [
+        "Goodbye!", "See you later!", "Take care!",
+        "Have a good one!", "Catch you later!", "Bye for now!", "Goodbye, have a great day!"
+    ],
+    "what is time": [
+        "I'm sure it's the perfect time to be productive!",
+        "I can help you anytime!", "It is always a good time for a chat!"
+    ],
+    "how can you help": [
+        "I'm here to assist from answering questions to offering support.",
+        "Feel free to ask me anything, I'm ready to help.",
+        "Let me know what you need, and I'll do my best to assist."
+    ]
+}
+
+def get_date_folder():
+    return datetime.now().strftime("%b-%d-%Y").lower()
+
+
+def save_user_details_to_gcs(username, email, session_id, service, chat_entry=None):
+    date_folder = get_date_folder()
+    folder = f"user_details/{date_folder}/"
+    file_name = f"{folder}{email}.txt"
+    bucket = storage_client.bucket(BUCKET_NAME)
+    blob = bucket.blob(file_name)    
+    if blob.exists():
+        existing_content = blob.download_as_text()
+    else:
+        existing_content = f"User: {username}\nEmail: {email}\nSession ID: {session_id}\nService: {service}\n\n"
+    if chat_entry:
+        existing_content += f"\n{chat_entry}\n"    
+    existing_content = strip_html_tags(existing_content)
+    blob.upload_from_string(existing_content)
+    print(f"User details saved to GCS: {file_name}")
+    timestamp = datetime.utcnow().isoformat()
+
+    # Save to Firestore
+    data_to_store = {
+        'timestamp': datetime.utcnow(),
+        'username': username,
+        'email': email,
+        'sessionId': session_id,
+        'service': service,
+        'visit time': timestamp,
+        'time': timestamp, 
+        'chat_entry': chat_entry or ""
+    }
+    firestore_client.collection("user_details").add(data_to_store)
+    print("Saved to Firestore (user_details):", data_to_store)
+
+
+def save_combined_chat_logs_to_gcs(service, email, username, chat_history_path):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(BUCKET_NAME)
+
+    with open(chat_history_path, 'r') as f:
+        chat_content = f.read()
+        chat_content = strip_html_tags(chat_content)
+
+    date_folder = get_date_folder()
+    folder = f"testalloy/{date_folder}/"
+    os.makedirs(folder, exist_ok=True)
+
+    session_id = str(uuid.uuid4())
+    local_file_path = os.path.join(folder, f"{session_id}.txt")
+
+    with open(local_file_path, 'w') as f:
+        f.write(chat_content)
+
+    blob = bucket.blob(f"{folder}/{session_id}.txt")
+    blob.upload_from_filename(local_file_path)
+    print("Chat log saved to GCS")
+    timestamp = datetime.utcnow().isoformat()
+    # Save to Firestore
+    log_data = {
+        'timestamp': datetime.utcnow(),
+        'username': username,
+        'email': email,
+        'sessionId': session_id,
+        'service': service,
+        'visit time': timestamp,
+        'chat_history': chat_content
+    }
+    firestore_client.collection("chat_logs").add(log_data)
+    print("Saved to Firestore (chat_logs):", log_data)
+
+
+# -------------------- Routes --------------------
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/get_session', methods=['POST'])
+def get_session():
+    data = request.json
+    email = data.get("email")
+    if not email:
+        return jsonify({"response": "Please enter your email ID."}), 400
+    
+    session_id = str(uuid.uuid4())
+    chat_sessions[session_id] = []
+    return jsonify({
+        "exists": False,
+        "session_id": session_id,
+        "response": "Welcome to Test Alloy🎉. Please share your name:"
+    })
+
+@app.route('/ask', methods=['POST'])
+def ask():
+    data = request.json
+    message = data.get("message")
+    session_id = data.get("sessionID")
+    email = data.get("email")
+    username = data.get("username")
+    service = data.get("service", "Unknown")
+    if not message or not session_id:
+        return jsonify({"error": "Invalid request. Missing message or session ID."}), 400
+    
+    if message.strip().lower() in ["hi", "hii", "hiii", "hello","hey","hey there","this side"]:
+        response = random.choice(responses["Greetings🎉 How may I assist you"])
+    else:
+        response = get_gemini_response(message, prompt_type="few_shot_qna")
+
+    
+    # Store in chat session
+    if session_id in chat_sessions:
+        chat_sessions[session_id].append(f"User: {message}")
+        chat_sessions[session_id].append(f"Bot: {response}")
+
+    # Save to Firestore: Bot query & response
+    log_bot_interaction(session_id, email, username, message, response)
+
+    new_chat_entry = f"User: {message}\nBot: {response}"
+    save_session()
+    return jsonify({"response": response})
+
+def log_bot_interaction(session_id, email, username, user_query, bot_response):
+    doc_ref = firestore_client.collection("testalloy_queries").document(session_id)
+    try:
+        # Get the existing document (if any)
+        doc = doc_ref.get()
+        data = doc.to_dict() if doc.exists else {}
+        # Count existing query/response pairs
+        existing_queries = [key for key in data.keys() if key.startswith("query_by_bot")]
+        query_count = len(existing_queries) + 1
+
+        # Prepare new fields
+        update_data = {
+            f"query_by_bot{query_count}": user_query,
+            f"response_by_bot{query_count}": strip_html_tags(bot_response),
+            "timestamp": datetime.utcnow(),
+            "time": datetime.utcnow().isoformat(),
+            "sessionId": session_id
+            # "username": username,
+            # "email": email
+        }
+
+        # Update the Firestore document (merge fields)
+        doc_ref.set(update_data, merge=True)
+        print(f"Updated Firestore document for session {session_id} with query/response #{query_count}")
+
+    except Exception as e:
+        print("Error saving to Firestore:", e)
+
+
+BUCKET_NAME = "testrig-bot-static-files"
+FOLDER_NAME = "testalloy" 
+
+def get_date_based_folder():
+    """Generate a subfolder name based on the current date."""
+    today = datetime.utcnow().strftime("%B-%d-%y").lower()  
+    return f"{FOLDER_NAME}/{today}" 
+
+def get_next_filename(prefix="chathistory_"):
+    """Generates an incrementing filename like chathistory_1.json, chathistory_2.json, etc."""
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(BUCKET_NAME)
+    folder_path = get_date_based_folder()  
+    blobs = list(bucket.list_blobs(prefix=folder_path + "/"))
+    existing_files = [blob.name for blob in blobs]
+    count = sum(1 for name in existing_files if prefix in name and name.endswith(".json"))
+    return f"{prefix}{count + 1}.json"
+
+
+def get_indian_timestamp():
+    india_tz = pytz.timezone("Asia/Kolkata")
+    ist_now = datetime.now(india_tz)
+    return ist_now.strftime("%Y-%m-%dT%H:%M:%S") 
+
+@app.route('/save_session', methods=['POST'])
+def save_session():
+    """Saves session data to GCS within a date-based subfolder."""
+    data = request.json
+    if not data.get("name") or not data.get("email"):
+        return jsonify({"error": "Name and email are required"}), 400
+    # Generate session ID
+    session_id = str(os.urandom(8).hex())
+    # Generate session filenames
+    session_file_name = get_next_filename(prefix="chathistory_") 
+    session_id_file_name = f"user-info_{session_id}.json" 
+    ## Get date-based folder path
+    session_folder = get_date_based_folder()  
+    # Complete file paths in GCS
+    session_file_path = f"{session_folder}/{session_file_name}"
+    session_id_file_path = f"{session_folder}/{session_id_file_name}"
+    
+    # timestamp = datetime.utcnow().isoformat()
+    timestamp=get_indian_timestamp()
+
+
+    session_data = {
+        "session_id": session_id,
+        "username": data["name"],
+        "email": data["email"],
+        "time": timestamp,
+        "service": data.get("service_clicked_by_user", "Not provided"),
+        "chat_history": []
+    }
+    try:
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(BUCKET_NAME)
+
+        # Save session ID filename
+        blob2 = bucket.blob(session_id_file_path)
+        blob2.upload_from_string(json.dumps(session_data, indent=2), content_type="application/json")
+        try:
+            firestore_client.collection("testAlloy_UserDetails").document(session_id).set(session_data)
+            print("Saved session to Firestore (testAlloy_UserDetails):", session_data)
+        except Exception as e:
+            print(" Firestore write failed:", e)
+
+        #firestore_client.collection("testAlloy_UserDetails").add(session_data)
+        print("Saved session to Firestore (testAlloy_UserDetails):", session_data)
+        formatted_username = session_data["username"].capitalize()
+        chatbot_response = f"Thanks, {formatted_username}! Feel free to chat with us."
+        return jsonify({
+            "message": "Session saved",
+            "session_id": session_id,
+            "incrementing_filename": session_file_name,
+            "session_id_filename": session_id_file_name,
+            'visit time': timestamp,
+            "response": chatbot_response
+        })
+    except Exception as e:
+        return jsonify({"error": f"Failed to save session: {str(e)}"}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8087)
