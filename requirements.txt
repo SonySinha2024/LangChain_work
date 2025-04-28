@@ -1,0 +1,10 @@
+pandas
+seaborn
+streamlit
+scikit-learn
+
+
+
+
+
+
