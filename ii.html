@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #3498db;
+            padding: 20px;
+        }
+
+        .container {
+            /* background-image: url('/static/images/picss.jpeg'); Update path as needed */
+            background-color: aqua;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 40px; /* Optional: Gives some spacing inside the container */
+            border-radius: 8px; /* Optional: Rounded corners */
+            color:#3498db; /* Ensure text is visible */
+        }
+
+        .container {
+            background-color: lavender;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .container {
+            overflow-x: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .metrics-card {
+            background-color: #f1f8ff;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .result-card {
+            background-color: #e8f5e9;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+
+        button:hover {
+            background-color: #3498db;
+        }
+
+        /* table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        } */
+
+        table {
+            width: 59.1%;
+            table-layout: fixed; /* Ensures columns do not overflow */
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap; /* Prevents text from wrapping and causing overflow */
+            overflow: hidden;    /* Hides overflow content */
+            text-overflow: ellipsis; /* Adds '...' if text is too long */
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #3498db;
+        }
+
+        .bg-image-wrapper {
+            /* background-image: url('/static/images/collegepic.JPG'); */
+            background-size: cover;
+            background-position: center;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .bg-primary {
+             
+            background-color: #3498db !important;
+        }
+        .bg-info {
+        
+        background-color: #3498db !important;
+       }
+       .btn-info {
+        background-color: #3498db !important;
+       }
+       .btn-info {
+            color: white !important;
+        }
+
+        /* Unify all button colors to the requested blue */
+        .btn-outline-danger, .btn-danger {
+            color: #3498db;
+            border-color: #3498db;
+            background-color: transparent;
+        }
+        .btn-outline-danger:hover, .btn-danger:hover {
+            color: #3498db;
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .card-header.bg-danger {
+            background-color: #3498db !important;
+        }
+        /* Change success color to #3498db */
+        .btn-success {
+            background-color: #3498db !important;
+            border-color: #3498db !important;
+        }
+        .btn-success:hover {
+            background-color: #3498db !important;
+            border-color:  #3498db !important;
+        }
+        .card-header.bg-success {
+            background-color: #3498db !important;
+        }
+        .custom-btn {
+            font-size: 1.5rem;           /* Increased font size */
+            font-weight: bold;
+            padding: 14px 28px;
+            color: black;                /* Set text color to black */
+            background-color:#3498db;   /* Bright background for conspicuous look */
+            border: 2px solid blanchedalmond;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Makes it pop */
+            cursor: pointer;
+            transition: none;            /* Removes hover animation */
+        }
+
+        /* Remove hover effect */
+        .custom-btn:hover {
+            background-color:#00FA9A;   /* Keep same as original */
+            transform: none;
+            box-shadow: none;
+        }
+
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+
+    <!-- <div class="container">
+        <h1>🎓 Admission Prediction</h1>
+    
+        <!Display images -->
+        <!-- <div class="image-row mb-3 text-center">
+            <img src="/static/images/admis.jpg" alt="Admission Banner" class="img-fluid me-2" style="max-width: 45%;">
+            <img src="/static/images/college_pic.JPG" alt="College Picture" class="img-fluid" style="max-width: 45%;">
+        </div>
+    
+        <div class="mb-4 text-center bg-image-wrapper">
+            <button class="btn btn-outline-primary me-2" onclick="showVisitorForm()">Visitor</button>
+            <button class="btn btn-outline-primary" onclick="showAdminLogin()">Admin</button>
+        </div> -->
+    <!-- </div>  -->
+    <div class="container">
+        <h1 id="title-heading">🎓 Admission Prediction</h1>
+    
+        <!-- Display images -->
+        <div class="image-row mb-3 text-center">
+            <img src="/static/images/admis.jpg" alt="Admission Banner" class="img-fluid me-2" style="max-width: 37%;">
+            <img src="/static/images/admpics.jpg" alt="College Picture" class="img-fluid" style="max-width: 45%;">
+        </div>
+    
+        <div class="mb-4 text-center bg-image-wrapper">
+            <button class="btn custom-btn me-3" onclick="showVisitorForm()">Student👤</button>
+            <button class="btn custom-btn" onclick="showAdminLogin()">Admin🔐</button>
+        </div>
+    </div>
+    
+    
+    
+        
+    <!-- Visitor Registration Form -->
+    <div id="visitorForm" class="card mx-auto mb-4" style="max-width: 400px; display: none;">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Visitor Registration</h5>
+        </div>
+        <div class="card-body">
+            <form id="registerForm">
+                <div class="mb-3">
+                    <label for="visitorEmail" class="form-label">Email ID</label>
+                    <input type="email" class="form-control" id="visitorEmail" placeholder="Enter your email ID" required>
+                </div>
+                <div class="mb-3">
+                    <label for="visitorPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="visitorPassword" required>
+                </div>
+                <button type="submit" class="btn btn-info w-100">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Form -->
+    <div id="adminLogin" class="card mx-auto mb-4" style="max-width: 400px; display: none;">
+        <div class="card-header bg-primary text-white">
+            <!-- <h5 class="mb-0">Admin Login</h5> -->
+            <h5 class="mb-0" style="background-color: #3498db; color: white; padding: 8px; border-radius: 4px;">
+                Admin Login
+              </h5>
+        </div>
+        <div class="card-body">
+            <form id="adminLoginForm">
+                <div class="mb-3">
+                    <label for="adminLoginEmail" class="form-label">Admin Email</label>
+                    <input type="email" class="form-control" id="adminLoginEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="adminLoginPassword" class="form-label">Admin Password</label>
+                    <input type="password" class="form-control" id="adminLoginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Section -->
+    <div id="adminDashboard" style="display: none;">
+        <h4>Admission Model Evaluation Dashboard</h4>
+        <button onclick="fetchMetrics()" class="btn btn-primary mb-3">Display Model Evaluation Summary</button>
+        <table border="1" id="metricsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Model Name</th>
+                    <th>R² Value</th>
+                    <th>Adjusted R²</th>
+                    <th>MAE</th>
+                    <th>MSE</th>
+                    <th>RMSE</th>
+                </tr>
+            </thead>
+            <tbody id="metricsBody"></tbody>
+        </table>
+    </div>
+    
+    <!-- Model Metrics Section -->
+    <div class="row mb-4" id="metricsSection">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Model Metrics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="polyDegree" class="form-label">Polynomial Degree:</label>
+                        <select id="polyDegree" class="form-select">
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <button id="getMetricsBtn" class="btn btn-primary">Get Model Metrics</button>
+                    
+                    <div id="metricsResult" class="mt-4" style="display: none;">
+                        <h6>Model Performance Metrics:</h6>
+                        <div class="metrics-card">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><strong>R² Score:</strong> <span id="r2"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Adjusted R²:</strong> <span id="adjR2"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>MAE:</strong> <span id="mae"></span></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><strong>MSE:</strong> <span id="mse"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>RMSE:</strong> <span id="rmse"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Polynomial Degree:</strong> <span id="degree"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Prediction Section -->
+    <div class="row" id="predictionSection">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Predict Admission Chance</h5>
+                </div>
+                <div class="card-body">
+                    <form id="predictionForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="gre" class="form-label">GRE Score:</label>
+                                <input type="number" class="form-control" id="gre" min="0" max="340" value="320" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="toefl" class="form-label">TOEFL Score:</label>
+                                <input type="number" class="form-control" id="toefl" min="0" max="120" value="110" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="univRating" class="form-label">University Rating (1-5):</label>
+                                <input type="number" class="form-control" id="univRating" min="1" max="5" value="4" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="sop" class="form-label">SOP (1-5):</label>
+                                <input type="number" class="form-control" id="sop" min="1" max="5" step="0.5" value="4" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="lor" class="form-label">LOR (1-5):</label>
+                                <input type="number" class="form-control" id="lor" min="1" max="5" step="0.5" value="4.5" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cgpa" class="form-label">CGPA (0-10):</label>
+                                <input type="number" class="form-control" id="cgpa" min="0" max="10" step="0.01" value="9.2" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="research" class="form-label">Research Experience:</label>
+                                <select class="form-select" id="research" required>
+                                    <option value="1" selected>Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="predPolyDegree" class="form-label">Polynomial Degree for Prediction:</label>
+                            <select id="predPolyDegree" class="form-select">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Predict Admission Chance</button>
+                    </form>
+                    
+                    <div id="predictionResult" class="result-card mt-4" style="display: none;">
+                        <h5 class="mb-3">Prediction Result</h5>
+                        <p><strong>Chance of Admission:</strong> <span id="admissionChance"></span></p>
+                        
+                        <h6 class="mt-4">Model Performance Metrics:</h6>
+                        <div class="metrics-card">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><strong>R² Score:</strong> <span id="predR2"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Adjusted R²:</strong> <span id="predAdjR2"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>MAE:</strong> <span id="predMae"></span></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><strong>MSE:</strong> <span id="predMse"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>RMSE:</strong> <span id="predRmse"></span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Polynomial Degree:</strong> <span id="predDegree"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visitor Login Button -->
+    <div id="visitorLoginBtn" style="display: none;" class="text-center mb-3">
+        <!-- <button class="btn btn-primary" onclick="showVisitorLogin()">Login as Visitor</button> -->
+    </div>
+
+    <!-- Visitor Login Form -->
+    <div id="visitorLoginForm" class="card mx-auto mb-4" style="max-width: 400px; display: none;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Visitor Login</h5>
+        </div>
+        <div class="card-body">
+            <form id="visitorLoginFormInner">
+                <div class="mb-3">
+                    <label for="visitorLoginEmail" class="form-label">Email ID</label>
+                    <input type="email" class="form-control" id="visitorLoginEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="visitorLoginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="visitorLoginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // API endpoint
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // Admin credentials
+        const adminCredentials = [
+            { email: "niks@gmail.com", password: "projects2025" },
+            { email: "nik@gmail.com", password: "project2025" }
+        ];
+
+        // Initially hide the prediction and metrics sections
+        document.getElementById('metricsSection').style.display = 'none';
+        document.getElementById('predictionSection').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'none';
+        
+        // Show visitor registration form
+        function showVisitorForm() {
+            document.getElementById('visitorForm').style.display = 'block';
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('visitorLoginForm').style.display = 'none';
+            document.getElementById('metricsSection').style.display = 'none';
+            document.getElementById('predictionSection').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+
+        // Show admin login form
+        function showAdminLogin() {
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('visitorForm').style.display = 'none';
+            document.getElementById('visitorLoginForm').style.display = 'none';
+            document.getElementById('metricsSection').style.display = 'none';
+            document.getElementById('predictionSection').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+
+        // Show visitor login form
+        function showVisitorLogin() {
+            document.getElementById('visitorLoginForm').style.display = 'block';
+            document.getElementById('visitorForm').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'none';
+        }
+
+        // Handle visitor registration
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('visitorEmail').value;
+            alert(`Visitor Registered with Email: ${email}`);
+            document.getElementById('visitorLoginBtn').style.display = 'block';
+            document.getElementById('visitorForm').style.display = 'none';
+            
+            // Show prediction section for visitors
+            document.getElementById('predictionSection').style.display = 'block';
+        });
+
+        // Handle admin login
+        document.getElementById('adminLoginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('adminLoginEmail').value;
+            const password = document.getElementById('adminLoginPassword').value;
+            
+            // Check if the provided credentials match any admin credentials
+            const isValidAdmin = adminCredentials.some(admin => 
+                admin.email === email && admin.password === password
+            );
+            
+            if (isValidAdmin) {
+                alert(`Admin Logged in with Email: ${email}`);
+                document.getElementById('adminLogin').style.display = 'none';
+                
+                // Show all sections for admin
+                document.getElementById('metricsSection').style.display = 'block';
+                document.getElementById('predictionSection').style.display = 'block';
+                document.getElementById('adminDashboard').style.display = 'block';
+            } else {
+                alert('Invalid admin credentials. Please try again.');
+            }
+        });
+
+        // Handle visitor login
+        document.getElementById('visitorLoginFormInner').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('visitorLoginEmail').value;
+            alert(`Visitor Logged in with Email: ${email}`);
+            document.getElementById('visitorLoginForm').style.display = 'none';
+            
+            // Show prediction section for visitors
+            document.getElementById('predictionSection').style.display = 'block';
+        });
+
+        // Get metrics function
+        document.getElementById('getMetricsBtn').addEventListener('click', async () => {
+            try {
+                const polyDegree = document.getElementById('polyDegree').value;
+                const response = await fetch(`${API_BASE_URL}/model-metrics?polynomial_degree=${polyDegree}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                // Display metrics
+                document.getElementById('r2').textContent = data.r2_score;
+                document.getElementById('adjR2').textContent = data.adjusted_r2;
+                document.getElementById('mae').textContent = data.mean_absolute_error;
+                document.getElementById('mse').textContent = data.mean_squared_error;
+                document.getElementById('rmse').textContent = data.root_mean_squared_error;
+                document.getElementById('degree').textContent = data.polynomial_degree;
+                
+                document.getElementById('metricsResult').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error fetching model metrics. Please check if the API server is running.');
+            }
+        });
+        
+        // Prediction form submission
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const payload = {
+                    gre: parseFloat(document.getElementById('gre').value),
+                    toefl: parseFloat(document.getElementById('toefl').value),
+                    university_rating: parseFloat(document.getElementById('univRating').value),
+                    sop: parseFloat(document.getElementById('sop').value),
+                    lor: parseFloat(document.getElementById('lor').value),
+                    cgpa: parseFloat(document.getElementById('cgpa').value),
+                    research: parseInt(document.getElementById('research').value),
+                    polynomial_degree: parseInt(document.getElementById('predPolyDegree').value)
+                };
+                
+                const response = await fetch(`${API_BASE_URL}/predict-admission`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                // Display prediction result
+                document.getElementById('admissionChance').textContent = `${(data.prediction * 100).toFixed(2)}%`;
+                
+                // Display metrics
+                document.getElementById('predR2').textContent = data.model_metrics.r2_score;
+                document.getElementById('predAdjR2').textContent = data.model_metrics.adjusted_r2;
+                document.getElementById('predMae').textContent = data.model_metrics.mean_absolute_error;
+                document.getElementById('predMse').textContent = data.model_metrics.mean_squared_error;
+                document.getElementById('predRmse').textContent = data.model_metrics.root_mean_squared_error;
+                document.getElementById('predDegree').textContent = data.model_metrics.polynomial_degree;
+                
+                document.getElementById('predictionResult').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error making prediction. Please check if the API server is running.');
+            }
+        });
+
+        // Fetch metrics for all models
+        async function fetchMetrics() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/evaluate-all-models`);
+                const data = await response.json();
+                
+                const tbody = document.getElementById("metricsBody");
+                tbody.innerHTML = ""; // clear previous rows
+
+                data.forEach(row => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${row["Model Name"]}</td>
+                        <td>${row["R Square Value"]}</td>
+                        <td>${row["Adjusted R square value"]}</td>
+                        <td>${row["Mean Absolute Error"]}</td>
+                        <td>${row["Mean Square Error"]}</td>
+                        <td>${row["Root Mean Square Error"]}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById("metricsTable").style.display = "block";
+            } catch (error) {
+                console.error("Error fetching model metrics:", error);
+                alert('Error fetching model evaluation metrics. Please check if the API server is running.');
+            }
+        }
+    </script>
+</body>
+</html>
